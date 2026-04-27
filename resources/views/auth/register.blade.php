@@ -1,354 +1,258 @@
 <x-guest-layout>
-
 <style>
-    /* Override guest layout card width for register */
-    .auth-container { max-width: 980px !important; gap: 40px !important; }
-
-    .form-card.register-card {
-        max-width: 440px !important;
-        padding: 40px 40px 36px !important;
+    /* Unified Pro Layout */
+    .auth-container { 
+        max-width: 850px !important; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 50px !important; 
     }
 
-    .form-card.register-card h2 {
-        font-size: 1.55rem;
-        margin-bottom: 6px;
+    .form-card.register-card { 
+        max-width: 400px !important; 
+        padding: 35px !important; 
+        background: rgba(255, 255, 255, 0.03) !important;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    
+    .form-card.register-card h2 { 
+        font-size: 1.6rem; 
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        margin-bottom: 4px; 
+        background: linear-gradient(to right, #fff, rgba(255,255,255,0.5));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
-    .register-subtitle {
-        text-align: center;
-        color: rgba(255,255,255,0.45);
-        font-size: 0.8rem;
-        margin-bottom: 28px;
-        letter-spacing: 0.01em;
+    .register-subtitle { 
+        font-size: 0.8rem; 
+        color: rgba(255,255,255,0.35); 
+        margin-bottom: 24px; 
     }
 
-    /* Field label */
-    .field-label {
-        display: block;
-        font-size: 0.7rem;
+    /* Refined Input Groups */
+    .input-group { position: relative; margin-bottom: 20px; }
+    
+    .field-label { 
+        font-size: 0.65rem; 
+        color: rgba(255,255,255,0.4); 
+        margin-bottom: 6px; 
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.07em;
-        color: rgba(255,255,255,0.45);
-        margin-bottom: 7px;
+        letter-spacing: 0.05em;
     }
 
-    /* Styled select to match inputs */
-    .input-group select {
+    .input-group input, .input-group select { 
         width: 100%;
-        background: transparent;
-        border: none;
-        border-bottom: 1.5px solid rgba(255,255,255,0.5);
-        color: rgba(255,255,255,0.9);
-        font-size: 0.9rem;
-        padding: 8px 36px 8px 4px;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+        color: #fff !important;
+        font-size: 0.9rem !important; 
+        padding: 8px 0 !important; 
+        transition: all 0.3s ease;
+    }
+
+    .input-group input:focus, .input-group select:focus { 
+        border-bottom-color: #66bb6a !important;
         outline: none;
-        transition: border-color 0.2s;
-        font-family: 'Inter', sans-serif;
-        cursor: pointer;
-        appearance: none;
-        -webkit-appearance: none;
     }
 
-    .input-group select:focus { border-bottom-color: #66bb6a; }
-
-    .input-group select option {
-        background: #1a3a1a;
-        color: #fff;
+    /* Split Row Logic */
+    .field-row { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 20px; 
+        margin-bottom: 10px;
     }
 
-    /* Two-column row for role + photo */
-    .field-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-        margin-bottom: 18px;
-    }
-
-    .field-row .input-group { margin-bottom: 0; }
-
-    /* File upload button */
+    /* Photo Upload Button - Pro Style */
     .file-upload-btn {
         display: flex;
         align-items: center;
-        gap: 8px;
-        width: 100%;
-        background: rgba(255,255,255,0.06);
-        border: 1.5px dashed rgba(255,255,255,0.3);
-        border-radius: 10px;
-        padding: 9px 12px;
-        color: rgba(255,255,255,0.55);
-        font-size: 0.82rem;
+        justify-content: center;
+        height: 38px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        color: rgba(255,255,255,0.6);
+        font-size: 0.75rem;
+        font-weight: 600;
         cursor: pointer;
-        transition: all 0.2s;
-        font-family: 'Inter', sans-serif;
+        transition: all 0.3s;
     }
 
     .file-upload-btn:hover {
+        background: rgba(102, 187, 106, 0.1);
         border-color: #66bb6a;
-        color: #a5d6a7;
-        background: rgba(102,187,106,0.07);
-    }
-
-    .file-upload-btn svg {
-        width: 16px;
-        height: 16px;
-        fill: currentColor;
-        flex-shrink: 0;
-    }
-
-    .file-name-label {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-
-    /* Avatar preview */
-    .avatar-preview {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #66bb6a;
-        display: none;
-        flex-shrink: 0;
-    }
-
-    /* Password strength bar */
-    .strength-bar-wrap {
-        height: 3px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 99px;
-        margin-top: 6px;
-        overflow: hidden;
-    }
-
-    .strength-bar {
-        height: 100%;
-        width: 0%;
-        border-radius: 99px;
-        transition: width 0.3s, background 0.3s;
-    }
-
-    .strength-label {
-        font-size: 0.68rem;
-        color: rgba(255,255,255,0.35);
-        margin-top: 3px;
-        min-height: 14px;
-        transition: color 0.2s;
-    }
-
-    /* Divider */
-    .form-divider {
-        border: none;
-        border-top: 1px solid rgba(255,255,255,0.1);
-        margin: 20px 0;
-    }
-
-    .btn-register {
-        width: 100%;
-        padding: 12px;
-        margin-top: 4px;
-        background: linear-gradient(135deg, #2e7d32, #1b5e20);
         color: #fff;
-        font-size: 0.95rem;
-        font-weight: 700;
-        border: none;
-        border-radius: 30px;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-family: 'Inter', sans-serif;
-        box-shadow: 0 4px 15px rgba(46,125,50,0.5);
-        letter-spacing: 0.03em;
     }
 
-    .btn-register:hover {
-        background: linear-gradient(135deg, #388e3c, #2e7d32);
-        transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(46,125,50,0.6);
+    /* Social Section */
+    .compact-divider { 
+        display: flex; 
+        align-items: center; 
+        gap: 15px; 
+        margin: 25px 0 15px; 
     }
 
-    .btn-register:active { transform: scale(0.98); }
+    .compact-divider div { height: 1px; flex: 1; background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent); }
+    
+    .google-icon-btn {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
+        margin: 0 auto;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .google-icon-btn:hover { 
+        background: rgba(255,255,255,0.07); 
+        transform: scale(1.1) rotate(5deg);
+        border-color: rgba(255,255,255,0.2);
+    }
 </style>
 
 <div class="auth-container">
-    {{-- Logo Card --}}
     <div class="logo-card">
-        <img src="{{ asset('assets/images/pig-logo.png') }}" alt="PorciTrack Logo">
+        <img src="{{ asset('assets/images/pig-logo.png') }}" alt="PorciTrack Logo" style="filter: drop-shadow(0 0 20px rgba(102,187,106,0.2));">
     </div>
 
-    {{-- Register Form Card --}}
     <div class="form-card register-card">
         <h2>Create Account</h2>
-        <p class="register-subtitle">Join PorciTrack — Farm Management System</p>
+        <p class="register-subtitle">Farm Management System</p>
 
         <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" id="registerForm">
             @csrf
 
-            {{-- Name --}}
             <div class="input-group">
-                <label class="field-label" for="name">Full Name</label>
-                <input id="name" type="text" name="name" value="{{ old('name') }}"
-                    placeholder="e.g. Juan dela Cruz" required autofocus autocomplete="name">
-                <span class="input-icon">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 12c2.7 0 4-1.34 4-4s-1.3-4-4-4-4 1.34-4 4 1.3 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                    </svg>
-                </span>
-                @error('name')
-                    <div class="error-msg">{{ $message }}</div>
-                @enderror
+                <label class="field-label">Full Name</label>
+                <input id="name" type="text" name="name" value="{{ old('name') }}" required placeholder="Juan dela Cruz">
             </div>
 
-            {{-- Email --}}
             <div class="input-group">
-                <label class="field-label" for="email">Email Address</label>
-                <input id="email" type="email" name="email" value="{{ old('email') }}"
-                    placeholder="you@example.com" required autocomplete="username">
-                <span class="input-icon">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                    </svg>
-                </span>
-                @error('email')
-                    <div class="error-msg">{{ $message }}</div>
-                @enderror
+                <label class="field-label">Email Address</label>
+                <input id="email" type="email" name="email" value="{{ old('email') }}" required placeholder="you@example.com">
             </div>
 
-            {{-- Role + Photo side by side --}}
             <div class="field-row">
-                {{-- Role --}}
                 <div class="input-group">
-                    <label class="field-label" for="role">Role</label>
-                    <span class="input-icon">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-                        </svg>
-                    </span>
+                    <label class="field-label">Role</label>
                     <select id="role" name="role" required>
-                        <option value="" disabled selected>Select…</option>
-                        <option value="farm_worker" {{ old('role') == 'farm_worker' ? 'selected' : '' }}>Farm Worker</option>
-                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Administrator</option>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="farm_worker">Worker</option>
+                        <option value="admin">Admin</option>
                     </select>
-                    @error('role')
-                        <div class="error-msg">{{ $message }}</div>
-                    @enderror
                 </div>
 
-                {{-- Profile Photo --}}
                 <div class="input-group">
                     <label class="field-label">Profile Photo</label>
-                    <input id="photo" type="file" name="photo" accept="image/*" class="hidden"
-                        onchange="handlePhotoChange(this)">
+                    <input id="photo" type="file" name="photo" accept="image/*" class="hidden" onchange="handlePhotoChange(this)">
                     <button type="button" class="file-upload-btn" onclick="document.getElementById('photo').click()">
-                        <img id="avatarPreview" class="avatar-preview" src="" alt="">
-                        <svg id="uploadIcon" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-                        <span class="file-name-label" id="photo-label">Upload Photo</span>
+                        <span id="photo-label">Select File</span>
                     </button>
-                    @error('photo')
-                        <div class="error-msg">{{ $message }}</div>
-                    @enderror
                 </div>
             </div>
 
-            <hr class="form-divider">
-
-            {{-- Password --}}
             <div class="input-group">
-                <label class="field-label" for="password">Password</label>
-                <input id="password" type="password" name="password"
-                    placeholder="Min. 8 characters" required autocomplete="new-password"
-                    oninput="checkStrength(this.value)">
-                <span class="input-icon">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-                    </svg>
-                </span>
-                <div class="strength-bar-wrap"><div class="strength-bar" id="strengthBar"></div></div>
-                <div class="strength-label" id="strengthLabel"></div>
-                @error('password')
-                    <div class="error-msg">{{ $message }}</div>
-                @enderror
+                <label class="field-label">Password</label>
+                <input id="password" type="password" name="password" required oninput="checkStrength(this.value)" placeholder="••••••••">
+                <div class="strength-bar-wrap" style="height: 2px; margin-top: 8px;"><div class="strength-bar" id="strengthBar"></div></div>
             </div>
 
-            {{-- Confirm Password --}}
             <div class="input-group">
-                <label class="field-label" for="password_confirmation">Confirm Password</label>
-                <input id="password_confirmation" type="password" name="password_confirmation"
-                    placeholder="Re-enter password" required autocomplete="new-password"
-                    oninput="checkMatch()">
-                <span class="input-icon">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                    </svg>
-                </span>
-                <div class="strength-label" id="matchLabel"></div>
-                @error('password_confirmation')
-                    <div class="error-msg">{{ $message }}</div>
-                @enderror
+                <label class="field-label">Confirm Password</label>
+                <input id="password_confirmation" type="password" name="password_confirmation" required oninput="checkMatch()" placeholder="••••••••">
+                <div id="matchLabel" style="font-size: 10px; margin-top: 5px;"></div>
             </div>
 
-            <button type="submit" class="btn-register">Create Account</button>
+            <button type="submit" class="btn-register" style="margin-top: 10px;">Sign Up</button>
 
-            <div class="form-links center" style="margin-top:18px;">
-                <a href="{{ route('login') }}">Already have an account? Sign in</a>
+            <div class="compact-divider">
+                <div></div><span style="font-size: 9px; color: rgba(255,255,255,0.2);">OR REGISTER WITH</span><div></div>
+            </div>
+
+            <button type="button" onclick="window.registerWithGoogle()" class="google-icon-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                </svg>
+            </button>
+
+            <div style="text-align: center; margin-top: 25px;">
+                <a href="{{ route('login') }}" style="color: rgba(255,255,255,0.4); font-size: 0.8rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#66bb6a'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">
+                    Already have an account? <span style="color: #66bb6a; font-weight: 600;">Sign in</span>
+                </a>
             </div>
         </form>
     </div>
 </div>
 
-<script>
-function handlePhotoChange(input) {
-    const label = document.getElementById('photo-label');
-    const preview = document.getElementById('avatarPreview');
-    const icon = document.getElementById('uploadIcon');
-    if (input.files && input.files[0]) {
-        label.textContent = input.files[0].name;
-        const reader = new FileReader();
-        reader.onload = e => {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-            icon.style.display = 'none';
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-function checkStrength(val) {
-    const bar = document.getElementById('strengthBar');
-    const lbl = document.getElementById('strengthLabel');
-    let score = 0;
-    if (val.length >= 8) score++;
-    if (/[A-Z]/.test(val)) score++;
-    if (/[0-9]/.test(val)) score++;
-    if (/[^A-Za-z0-9]/.test(val)) score++;
+    const firebaseConfig = {
+        apiKey: "AIzaSyAhpOY61Jtap1SM_SSSns6S8LjBxZiR76k",
+        authDomain: "porcitrack-3aaa2.firebaseapp.com",
+        projectId: "porcitrack-3aaa2",
+        storageBucket: "porcitrack-3aaa2.firebasestorage.app",
+        messagingSenderId: "901038528980",
+        appId: "1:901038528980:web:4364e93fbc22f3a01f9e41"
+    };
 
-    const configs = [
-        { width: '0%',   color: 'transparent', text: '' },
-        { width: '25%',  color: '#ef5350',      text: 'Weak' },
-        { width: '50%',  color: '#ffa726',      text: 'Fair' },
-        { width: '75%',  color: '#66bb6a',      text: 'Good' },
-        { width: '100%', color: '#26a69a',      text: 'Strong' },
-    ];
-    const c = configs[score];
-    bar.style.width  = c.width;
-    bar.style.background = c.color;
-    lbl.textContent  = c.text;
-    lbl.style.color  = c.color;
-}
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    const registerForm = document.getElementById('registerForm');
 
-function checkMatch() {
-    const pw  = document.getElementById('password').value;
-    const pw2 = document.getElementById('password_confirmation').value;
-    const lbl = document.getElementById('matchLabel');
-    if (!pw2) { lbl.textContent = ''; return; }
-    if (pw === pw2) {
-        lbl.textContent = '✓ Passwords match';
-        lbl.style.color = '#66bb6a';
-    } else {
-        lbl.textContent = '✗ Passwords do not match';
-        lbl.style.color = '#ef5350';
-    }
-}
+    // ── Google Registration ──
+    window.registerWithGoogle = async () => {
+        const role = document.getElementById('role').value;
+        if (!role) { Swal.fire('Role Required', 'Please select a role before registering.', 'info'); return; }
+        try {
+            const result = await signInWithPopup(auth, provider);
+            document.getElementById('name').value = result.user.displayName;
+            document.getElementById('email').value = result.user.email;
+            const dummy = "GoogleUser_" + result.user.uid;
+            document.getElementById('password').value = dummy;
+            document.getElementById('password_confirmation').value = dummy;
+            registerForm.submit();
+        } catch (e) { Swal.fire('Error', e.message, 'error'); }
+    };
+
+    // ── Email/Password Registration ──
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        Swal.fire({ title: 'Processing...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Try Firebase first (optional), then always submit to Laravel
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+        } catch (firebaseError) {
+            // Firebase failed — that's okay, Laravel will handle local registration
+            console.log("Firebase registration skipped:", firebaseError.message);
+        }
+
+        Swal.close();
+        // Always submit the form natively to Laravel (includes @csrf token)
+        registerForm.submit();
+    });
 </script>
 </x-guest-layout>
