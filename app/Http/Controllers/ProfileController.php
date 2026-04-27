@@ -260,16 +260,54 @@ class ProfileController extends Controller
     }
 
     // Update settings specifically for workers
-    public function updateWorkerSettings(Request $request)
+public function updateWorkerSettings(Request $request): RedirectResponse
 {
-    $request->validate([
-        'theme' => 'required|in:light,dark'
+    $user = auth()->user();
+
+    $validated = $request->validate([
+        'name'      => ['required', 'string', 'max:255'],
+        'password'  => ['nullable', 'string', 'min:8', 'confirmed'],
+        'photo'     => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+        'theme'     => ['nullable', 'in:light,dark'],
     ]);
 
-    $user = auth()->user();
-    $user->theme = $request->theme;
+    // Update name
+    $user->name = $validated['name'];
+
+    // Update password if provided
+    if (!empty($validated['password'])) {
+        $user->password = Hash::make($validated['password']);
+    }
+
+    // HANDLE PHOTO UPLOAD
+    if ($request->hasFile('photo')) {
+
+        // delete old photo
+        if ($user->photo) {
+            Storage::disk('public')->delete($user->photo);
+        }
+
+        $photo = $request->file('photo');
+        $photoName = time() . '_' . uniqid() . '.jpg';
+
+        Storage::disk('public')->makeDirectory('users');
+
+        $manager = new ImageManager(new Driver());
+        $manager->read($photo)
+            ->scaleDown(width: 300)
+            ->toJpeg(80)
+            ->save(storage_path('app/public/users/' . $photoName));
+
+        $user->photo = 'users/' . $photoName;
+    }
+
+    // Update theme if exists
+    if ($request->filled('theme')) {
+        $user->theme = $validated['theme'];
+    }
+
     $user->save();
 
-    return back()->with('success', 'Settings updated');
+    return back()->with('success', 'Profile updated successfully.');
 }
 }
