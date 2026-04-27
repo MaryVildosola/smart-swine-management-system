@@ -83,7 +83,7 @@
                 </a>
                 <ul class="slide-menu child1">
                     <li class="slide {{ request()->routeIs('subject.*') ? 'active' : '' }}">
-                        <a href="{{ route('subject.index') }}" class="side-menu__item">Live Analytics</a>
+                        <a href="#" class="side-menu__item">Live Analytics</a>
                     </li>
                     <li class="slide {{ request()->routeIs('admin.reports*') ? 'active' : '' }}">
                         <a href="{{ route('admin.reports') }}" class="side-menu__item">Weekly Reports</a>
@@ -109,15 +109,12 @@
     <!-- End::nav -->
 
     <div class="sidebar-logout">
-        <form method="POST" action="{{ route('logout') }}" id="adminLogoutForm">
-            @csrf
-            <button type="button" class="sidebar-logout-btn" onclick="confirmAdminLogout()">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" fill="currentColor" />
-                </svg>
-                <span>Logout</span>
-            </button>
-        </form>
+        <form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button type="submit" class="logout-link" style="background: none; border: none; color: inherit; cursor: pointer;">
+        <i class="bx bx-log-out"></i> Logout
+    </button>
+</form>
     </div>
 
     <script>
