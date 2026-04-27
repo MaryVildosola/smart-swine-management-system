@@ -20,12 +20,12 @@ class ReportController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        
+
         // Stats
         $pendingTasks = Task::where('assigned_to', $user->id)->where('status', 'pending')->count();
         $totalPigs = Pig::whereNotIn('status', ['Sold', 'Disposed'])->count();
         $sickPigsCount = Pig::where('health_status', 'Sick')->count();
-        
+
         $totalDelivered = FeedDelivery::sum('quantity');
         $totalConsumed = FeedConsumption::sum('quantity');
         $feedStock = max($totalDelivered - $totalConsumed, 0);
@@ -41,12 +41,12 @@ class ReportController extends Controller
         $criticalAlerts = Pig::where('health_status', 'Sick')->with('pen')->latest()->limit(1)->get();
 
         // Pens Overview
-        $pens = Pen::with(['pigs' => function($q) {
+        $pens = Pen::with(['pigs' => function ($q) {
             $q->whereNotIn('status', ['Sold', 'Disposed']);
-        }])->get()->map(function($pen) {
+        }])->get()->map(function ($pen) {
             $avgWeight = $pen->pigs->avg('weight') ?? 0;
             $sickCount = $pen->pigs->where('health_status', 'Sick')->count();
-            
+
             // Map tag and color based on status
             $statusMap = [
                 'Good' => ['tag' => 'Good', 'color' => 'green'],
@@ -56,15 +56,15 @@ class ReportController extends Controller
             $statusInfo = $statusMap[$pen->status] ?? $statusMap['Good'];
 
             return [
-                'id' => $pen->id,
-                'name' => $pen->name,
-                'type' => $pen->section ?? 'N/A',
-                'count' => $pen->pigs->count(),
-                'sick' => $sickCount,
-                'weight' => round($avgWeight),
-                'progress' => $pen->progress,
-                'tag' => $statusInfo['tag'],
-                'color' => $statusInfo['color']
+            'id' => $pen->id,
+            'name' => $pen->name,
+            'type' => $pen->section ?? 'N/A',
+            'count' => $pen->pigs->count(),
+            'sick' => $sickCount,
+            'weight' => round($avgWeight),
+            'progress' => $pen->progress,
+            'tag' => $statusInfo['tag'],
+            'color' => $statusInfo['color']
             ];
         });
 
@@ -82,7 +82,7 @@ class ReportController extends Controller
     {
         $workers = User::where('role', 'farm_worker')->get();
         $thisWeek = Carbon::now()->startOfWeek()->format('Y-m-d');
-        
+
         $reports = WeeklyReport::with('user')
             ->where('week_start_date', $thisWeek)
             ->get()
@@ -104,7 +104,7 @@ class ReportController extends Controller
         $user = Auth::user();
         $thisWeekStart = Carbon::now()->startOfWeek();
         $thisWeek = $thisWeekStart->format('Y-m-d');
-        
+
         $existingReport = WeeklyReport::where('user_id', $user->id)
             ->where('week_start_date', $thisWeek)
             ->where('status', 'submitted')
@@ -115,14 +115,14 @@ class ReportController extends Controller
         $totalPigs = (clone $activePigs)->count();
         $sickPigs = (clone $activePigs)->where('health_status', 'Sick')->count();
         $avgWeight = (clone $activePigs)->avg('weight') ?? 0;
-        
+
         $totalDelivered = FeedDelivery::sum('quantity');
         $totalConsumed = FeedConsumption::sum('quantity');
         $availableStock = max($totalDelivered - $totalConsumed, 0);
 
         $tasksThisWeek = Task::where('assigned_to', $user->id)
             ->whereBetween('created_at', [$thisWeekStart, Carbon::now()->endOfWeek()]);
-        
+
         $tasksDone = (clone $tasksThisWeek)->where('status', 'completed')->count();
         $tasksPending = (clone $tasksThisWeek)->where('status', 'pending')->count();
 
@@ -137,15 +137,17 @@ class ReportController extends Controller
         ];
 
         $userId = $user->id;
-        $pens = Pen::with(['pigs' => function($q) use ($userId) {
+        $pens = Pen::with(['pigs' => function ($q) use ($userId) {
             $q->whereNotIn('status', ['Sold', 'Disposed'])
-              ->orderByRaw("CASE health_status WHEN 'Sick' THEN 0 WHEN 'Warning' THEN 1 ELSE 2 END")
-              ->with(['tasks' => function($tq) use ($userId) {
-                  $tq->where('assigned_to', $userId)->where('status', '!=', 'completed');
-              }, 'activities' => function($aq) {
-                  $aq->where('is_critical_alert', true)->whereNull('acknowledged_at');
-              }]);
-        }])->get()->sortByDesc(function($pen) {
+                ->orderByRaw("CASE health_status WHEN 'Sick' THEN 0 WHEN 'Warning' THEN 1 ELSE 2 END")
+                ->with(['tasks' => function ($tq) use ($userId) {
+                $tq->where('assigned_to', $userId)->where('status', '!=', 'completed');
+            }
+                    , 'activities' => function ($aq) {
+                $aq->where('is_critical_alert', true)->whereNull('acknowledged_at');
+            }
+                ]);
+        }])->get()->sortByDesc(function ($pen) {
             return $pen->pigs->where('health_status', '!=', 'Healthy')->count();
         });
 
@@ -166,18 +168,18 @@ class ReportController extends Controller
         $thisWeek = Carbon::now()->startOfWeek()->format('Y-m-d');
 
         WeeklyReport::updateOrCreate(
-            [
-                'user_id' => Auth::id(),
-                'week_start_date' => $thisWeek,
-            ],
-            [
-                'total_pigs' => $request->total_pigs,
-                'sick_pigs' => $request->sick_pigs,
-                'avg_weight' => $request->avg_weight,
-                'feed_consumed' => $request->feed_consumed,
-                'details' => $request->details,
-                'status' => 'submitted'
-            ]
+        [
+            'user_id' => Auth::id(),
+            'week_start_date' => $thisWeek,
+        ],
+        [
+            'total_pigs' => $request->total_pigs,
+            'sick_pigs' => $request->sick_pigs,
+            'avg_weight' => $request->avg_weight,
+            'feed_consumed' => $request->feed_consumed,
+            'details' => $request->details,
+            'status' => 'submitted'
+        ]
         );
 
         return redirect()->route('worker.reports')->with('success', 'Weekly report submitted successfully!');
