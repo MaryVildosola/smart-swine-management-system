@@ -8,25 +8,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
-     */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (! $request->user() || $request->user()->role !== $role) {
-            
-            // Polite redirection fallback based on actual role
-            if ($request->user()) {
-                if ($request->user()->role === 'admin') {
-                    return redirect('/admin/dashboard');
-                } elseif ($request->user()->role === 'farm_worker') {
-                    return redirect('/worker/dashboard');
-                }
-            }
-            
-            return redirect('/dashboard');
+        // If the user isn't logged in, or their role doesn't match, block them.
+        if (!$request->user() || $request->user()->role !== $role) {
+            abort(403, 'Unauthorized access.');
         }
 
         return $next($request);
