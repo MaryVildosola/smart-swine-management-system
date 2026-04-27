@@ -42,12 +42,12 @@
 
             {{-- Success/Alert Messages --}}
             @if(session('success'))
-                <div class="mb-8 p-4 bg-green-500/20 border border-green-500/30 rounded-2xl text-green-300 text-sm flex items-center gap-3">
-                    <i class='bx bx-check-circle text-xl'></i>
-                    {{ session('success') }}
-                </div>
-            @endif
-
+    <div id="successAlert"
+         class="mb-8 p-4 bg-green-500/20 border border-green-500/30 rounded-2xl text-green-300 text-sm flex items-center gap-3">
+        <i class='bx bx-check-circle text-xl'></i>
+        {{ session('success') }}
+    </div>
+@endif
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
                 <!-- Left: Profile Photo -->
@@ -56,7 +56,7 @@
                         <div class="relative group cursor-pointer">
                             <div class="w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl relative bg-white/5">
                                 <img id="profilePreview"
-                                     src="{{ auth()->user()->photo ? asset('storage/' . auth()->user()->photo) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=65a767&color=fff&size=200' }}"
+                                     src="{{ auth()->user()->photo ?asset('storage/' . auth()->user()->photo) . '?v=' . time() : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=65a767&color=fff&size=200' }}"
                                      alt="Profile Photo"
                                      class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
                                 <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
@@ -97,7 +97,7 @@
                         <div class="space-y-5">
                             <div>
                                 <label class="block text-xs font-semibold text-white/50 uppercase tracking-widest mb-2">Full Name</label>
-                                <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}""
+                                <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}"
                                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-green-500/50 transition">
                                 @error('name') <p class="text-red-400 text-[10px] mt-1">{{ $message }}</p> @enderror
                             </div>
@@ -153,6 +153,7 @@
 
                     <!-- Theme Toggle -->
                     <div class="glass-panel p-6 md:p-8 rounded-3xl shadow-xl border-l-4 border-l-blue-500/30">
+                        <input type="hidden" name="theme" id="themeInput" value="{{ auth()->user()->theme ?? 'dark' }}">
                         <h2 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
                             <i class='bx bx-slider-alt text-blue-400'></i> General Settings
                         </h2>
@@ -194,17 +195,46 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     // Sync the toggle switch to match current theme on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        const theme = localStorage.getItem('porcitrack-worker-theme') || 'dark';
-        const toggle = document.getElementById('themeToggleSwitch');
-        if (toggle) toggle.checked = (theme === 'dark');
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    const theme = localStorage.getItem('porcitrack-worker-theme') || 'dark';
+    const toggle = document.getElementById('themeToggleSwitch');
 
-    // Image preview
-    document.getElementById('photoInput').onchange = evt => {
-        const [file] = evt.target.files;
-        if (file) document.getElementById('profilePreview').src = URL.createObjectURL(file);
-    };
+    if (toggle) toggle.checked = (theme === 'dark');
+
+    // ✅ sync hidden input
+    const input = document.getElementById('themeInput');
+    if (input) input.value = theme;
+});
+
+document.getElementById('photoInput').addEventListener('change', function (event) {
+    const file = event.target.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            document.getElementById('profilePreview').src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const alert = document.getElementById('successAlert');
+
+    if (alert) {
+        setTimeout(() => {
+            alert.style.transition = 'opacity 0.5s ease';
+            alert.style.opacity = '0';
+
+            setTimeout(() => {
+                alert.remove();
+            }, 500);
+        }, 2500); // success alert disappears after 2.5s
+    }
+});
+
 
     function requestAdmin(field) {
         Swal.fire({
@@ -230,6 +260,20 @@
             }
         });
     }
+
+    function toggleWorkerTheme() {
+    const toggle = document.getElementById('themeToggleSwitch');
+    const theme = toggle.checked ? 'dark' : 'light';
+
+    // Save locally (UI)
+    localStorage.setItem('porcitrack-worker-theme', theme);
+
+    // ✅ SEND TO BACKEND
+    document.getElementById('themeInput').value = theme;
+
+    // Apply instantly
+    document.body.classList.toggle('light-theme', theme === 'light');
+}
 </script>
 
 <style>
