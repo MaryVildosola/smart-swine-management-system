@@ -96,29 +96,30 @@
                 </form>
 
                 <script>
-                function confirmNavLogout() {
-                    const formId = document.getElementById('navLogoutFormMobile') ? 'navLogoutFormMobile' : 'navLogoutForm';
-                    Swal.fire({
-                        title: '<span style="font-weight:900;color:#1e293b;">Log Out?</span>',
-                        html: '<p style="color:#64748b;font-size:0.88rem;margin:0;">Are you sure you want to log out of PorciTrack?</p>',
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, log out',
-                        cancelButtonText: 'Stay',
-                        confirmButtonColor: '#ef4444',
-                        cancelButtonColor: '#94a3b8',
-                        customClass: {
-                            popup: 'rounded-3xl border-none shadow-2xl',
-                            confirmButton: 'px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-xs',
-                            cancelButton: 'px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-xs'
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            document.getElementById(formId).submit();
-                        }
-                    });
+    function handleLogout(formId) {
+        Swal.fire({
+            title: 'Log Out?',
+            text: 'Are you sure?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById(formId);
+                
+                // FORCE REFRESH THE TOKEN
+                const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                let tokenInput = form.querySelector('input[name="_token"]');
+                
+                if (tokenInput) {
+                    tokenInput.value = token; // Sync the form token with the fresh meta token
                 }
-                </script>
+
+                form.submit();
+            }
+        });
+    }
+</script>
             </div>
         </div>
     </div>
