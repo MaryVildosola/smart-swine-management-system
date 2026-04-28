@@ -1,0 +1,156 @@
+// Use DBML to define your database structure
+// Use docs at https://dbml.dbdiagram.io/docs
+
+Table users {
+  id integer [primary key]
+  name varchar
+  email varchar [unique]
+  password varchar
+  role varchar [note: "admin or farm_worker"]
+  theme varchar [default: "light"]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table pens {
+  id integer [primary key]
+  name varchar
+  section varchar
+  status varchar [default: "Good"]
+  healthy_pigs integer [default: 0]
+  sick_pigs integer [default: 0]
+  avg_weight varchar
+  target_weight varchar
+  progress integer [default: 0]
+  assigned_to integer [ref: > users.id]
+  start_date date
+  end_date date
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table pigs {
+  id integer [primary key]
+  tag varchar [unique]
+  breed varchar
+  pen_id integer [ref: > pens.id]
+  status varchar [default: "active"]
+  birth_date date
+  weight integer
+  health_status varchar [default: "Healthy"]
+  bcs_score integer [default: 3]
+  feeding_status varchar [default: "Normal"]
+  symptoms varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table tasks {
+  id integer [primary key]
+  title varchar
+  description text
+  assigned_to integer [ref: > users.id]
+  pen_id integer [ref: > pens.id]
+  pig_id integer [ref: > pigs.id]
+  status varchar [default: "pending"]
+  priority varchar [default: "Medium"]
+  progress integer [default: 0]
+  findings json
+  due_date date
+  completed_at timestamp
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table pig_activities {
+  id integer [primary key]
+  pig_id integer [ref: > pigs.id]
+  user_id integer [ref: > users.id]
+  type varchar
+  action varchar
+  details text
+  is_critical_alert boolean [default: false]
+  acknowledged_at timestamp
+  acknowledged_by integer [ref: > users.id]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table pig_health_reports {
+  id integer [primary key]
+  pig_id integer [ref: > pigs.id]
+  user_id integer [ref: > users.id]
+  findings text
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table weekly_reports {
+  id integer [primary key]
+  user_id integer [ref: > users.id]
+  total_pigs integer
+  sick_pigs integer
+  feed_consumed_kg integer
+  notes text
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table pig_sales {
+  id integer [primary key]
+  pig_id integer [ref: > pigs.id]
+  type varchar [note: "Sold or Disposed"]
+  amount decimal
+  buyer_name varchar
+  transaction_date date
+  notes text
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table feed_ingredients {
+  id integer [primary key]
+  name varchar
+  stock_quantity decimal
+  unit varchar [default: "kg"]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table feed_formulas {
+  id integer [primary key]
+  name varchar
+  target_growth_stage varchar
+  notes text
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table feed_formula_ingredients {
+  id integer [primary key]
+  feed_formula_id integer [ref: > feed_formulas.id]
+  feed_ingredient_id integer [ref: > feed_ingredients.id]
+  percentage decimal
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table feed_deliveries {
+  id integer [primary key]
+  feed_ingredient_id integer [ref: > feed_ingredients.id]
+  quantity decimal
+  delivery_date date
+  supplier varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table feed_consumptions {
+  id integer [primary key]
+  pen_id integer [ref: > pens.id]
+  feed_ingredient_id integer [ref: > feed_ingredients.id]
+  quantity decimal
+  consumption_date date
+  created_at timestamp
+  updated_at timestamp
+}
