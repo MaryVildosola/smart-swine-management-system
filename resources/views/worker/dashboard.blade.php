@@ -1,4 +1,4 @@
-@extends('layouts.worker')
+﻿@extends('layouts.worker')
 
 @section('content')
 <style>
@@ -30,7 +30,7 @@
     body.light-theme .text-slate-400,
     body.light-theme .text-slate-300 { color: #64748b !important; }
 
-    /* Dark Mode styles (default — no class needed) */
+    /* Dark Mode styles (default ΓÇö no class needed) */
     .worker-dash { background: linear-gradient(to bottom right, #0a180e, #0d2214, #0a180e); }
 
     .dash-card, .bg-white\/80 {
@@ -89,7 +89,7 @@
                     <i class='bx bxs-error-circle text-2xl'></i>
                 </div>
                 <div class="flex-1">
-                    <p class="text-slate-900 font-black text-sm">CRITICAL — Pig #{{ $alert->tag }}, {{ $alert->pen->name ?? 'Unknown Pen' }}</p>
+                    <p class="text-slate-900 font-black text-sm">CRITICAL ΓÇö Pig #{{ $alert->tag }}, {{ $alert->pen->name ?? 'Unknown Pen' }}</p>
                     <p class="text-slate-500 text-xs font-medium">{{ $alert->remarks ?? 'Unusual health metrics detected. Immediate check-up required.' }}</p>
                 </div>
                 <i class='bx bx-chevron-right text-slate-300 text-2xl'></i>
@@ -206,7 +206,7 @@
                 </div>
                 <div class="flex-1">
                     <div class="flex justify-between items-start mb-0.5">
-                        <p class="text-slate-900 font-black text-base tracking-tight">{{ $activity->pig->tag }} — {{ $activity->action }}</p>
+                        <p class="text-slate-900 font-black text-base tracking-tight">{{ $activity->pig->tag }} ΓÇö {{ $activity->action }}</p>
                         <span class="text-slate-300 text-[10px] font-black">{{ $activity->created_at->diffForHumans() }}</span>
                     </div>
                     <p class="text-slate-500 text-xs font-medium">{{ $activity->details ?? 'Activity recorded by ' . $activity->user->name }}</p>
@@ -328,7 +328,7 @@
                 </div>
 
                 <div>
-                    <p class="text-base font-black text-slate-900 mb-4">Physical Inspection — Tap to confirm</p>
+                    <p class="text-base font-black text-slate-900 mb-4">Physical Inspection ΓÇö Tap to confirm</p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="physicalChecklist"></div>
                 </div>
 
@@ -343,14 +343,14 @@
                 <div>
                     <p class="text-base font-black text-slate-900 mb-3">Observed Symptom</p>
                     <select id="symptom" class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-5 px-5 text-slate-900 text-base focus:outline-none focus:border-green-500 transition font-bold">
-                        <option value="Healthy">Healthy — No Issues</option>
+                        <option value="Healthy">Healthy ΓÇö No Issues</option>
                         <option value="Coughing">Coughing / Respiratory Problem</option>
                         <option value="Lethargic">Lethargic / Not Eating</option>
                         <option value="Diarrhea">Diarrhea / Loose Stool</option>
                         <option value="Lameness">Lameness / Limping</option>
                         <option value="Skin">Skin Wound / Rash</option>
                         <option value="Fever">Suspected Fever</option>
-                        <option value="Other">Other — See Notes Below</option>
+                        <option value="Other">Other ΓÇö See Notes Below</option>
                     </select>
                 </div>
 
@@ -437,8 +437,8 @@
         }
 
         const physicalCheckItems = [
-            'Snout — No discharge','Eyes — Clear, bright','Ears — No redness',
-            'Legs — Walking normally','Skin — No wounds/rashes','Breathing — Normal','Water — Drinking adequately',
+            'Snout ΓÇö No discharge','Eyes ΓÇö Clear, bright','Ears ΓÇö No redness',
+            'Legs ΓÇö Walking normally','Skin ΓÇö No wounds/rashes','Breathing ΓÇö Normal','Water ΓÇö Drinking adequately',
         ];
 
         function openHealthModal(pigId) {
