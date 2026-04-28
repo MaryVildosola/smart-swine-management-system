@@ -6,13 +6,17 @@
 
         <div class="form-card">
             <h2>Login</h2>
+            <p class="register-subtitle">Access Your Farm Dashboard</p>
+
             <form id="login-form" method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="input-group">
-                    <input id="email" type="email" name="email" placeholder="Email" required autofocus>
+                    <label class="field-label">Email Address</label>
+                    <input id="email" type="email" name="email" placeholder="you@example.com" required autofocus>
                 </div>
                 <div class="input-group">
-                    <input id="password" type="password" name="password" placeholder="Password" required>
+                    <label class="field-label">Password</label>
+                    <input id="password" type="password" name="password" placeholder="••••••••" required>
                 </div>
                 <button type="submit" id="submit-btn" class="btn-login">Sign In</button>
 
