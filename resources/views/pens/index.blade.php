@@ -389,6 +389,31 @@
             transform: scale(1.1) !important;
             color: #ffffff !important;
         }
+
+        .modal-scroll-area {
+            max-height: 65vh;
+            overflow-y: auto;
+            padding-right: 12px;
+            margin-right: -12px;
+        }
+
+        .modal-scroll-area::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-scroll-area::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .modal-scroll-area::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .modal-scroll-area::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
 
     <div class="report-container">
@@ -416,7 +441,14 @@
                                 <div class="pen-icon-circle"><i class='bx bx-grid-alt'></i></div>
                                 <div style="display: flex; flex-direction: column;">
                                     <span class="pen-name-text">{{ $pen->name }}</span>
-                                    <span class="pen-section-label">{{ $pen->section ?: 'Batch Unassigned' }}</span>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span class="pen-section-label">{{ $pen->section ?: 'Batch Unassigned' }}</span>
+                                        @if($pen->assignedPersonnel)
+                                            <span style="font-size: 0.6rem; color: #22c55e; font-weight: 700; background: #f0fdf4; padding: 1px 6px; border-radius: 4px;">
+                                                <i class='bx bx-user' style="font-size: 0.65rem;"></i> {{ $pen->assignedPersonnel->name }}
+                                            </span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                             <div style="display: flex; align-items: center;">
@@ -486,6 +518,15 @@
                                 </h2>
                                 <p style="color: #64748b; font-weight: 500; margin: 4px 0 0;" id="side-pen-section">
                                     {{ $firstPen->section ?: 'Unassigned' }}</p>
+                                <div id="side-pen-assignment" style="margin-top: 6px;">
+                                    @if($firstPen->assignedPersonnel)
+                                        <span style="font-size: 0.7rem; color: #22c55e; font-weight: 800; background: #f0fdf4; padding: 4px 10px; border-radius: 8px; display: inline-flex; align-items: center; gap: 4px;">
+                                            <i class='bx bx-user-check'></i> {{ $firstPen->assignedPersonnel->name }}
+                                        </span>
+                                    @else
+                                        <span style="font-size: 0.7rem; color: #94a3b8; font-weight: 700;">No Personnel Assigned</span>
+                                    @endif
+                                </div>
                             </div>
                             <div style="display: flex; gap: 8px;">
                                 <button id="side-edit-btn" onclick="editPen({{ $firstPen->id }})" class="btn-action-edit"
@@ -568,53 +609,64 @@
             <h2 style="font-weight: 900; margin-bottom: 4px;">Create New Pen</h2>
             <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 28px;">Ear tags are auto-generated from the pen
                 name and pig count.</p>
-            <form id="add-pen-form">
-                @csrf
-                <div class="form-group">
-                    <label class="form-label">Pen Identifier / Name</label>
-                    <input id="pen-name-input" name="name" class="form-input" placeholder="e.g. Pen Alpha-1" required
-                        autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Section / Classification</label>
-                    <input name="section" class="form-input" placeholder="e.g. Nursery, Fattening">
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="modal-scroll-area">
+                <form id="add-pen-form">
+                    @csrf
                     <div class="form-group">
-                        <label class="form-label">Initial Pig Count</label>
-                        <input id="pen-pig-count-input" name="pig_count" type="number" min="0" max="200"
-                            class="form-input" placeholder="0">
+                        <label class="form-label">Pen Identifier / Name</label>
+                        <input id="pen-name-input" name="name" class="form-input" placeholder="e.g. Pen Alpha-1" required
+                            autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Batch Investment (₱)</label>
-                        <input name="batch_cost" class="form-input" placeholder="0.00">
-                    </div>
-                </div>
-                <!-- Live Ear Tag Preview -->
-                <div id="pen-tag-preview"
-                    style="display:none; background: #f0fdf4; border: 1.5px solid #dcfce7; border-radius: 16px; padding: 16px; margin-bottom: 20px;">
-                    <div
-                        style="font-size: 0.65rem; font-weight: 900; color: #16a34a; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;">
-                        <i class='bx bx-purchase-tag-alt'></i> Auto-Generated Ear Tags Preview
-                    </div>
-                    <div id="pen-tag-badges" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
-                    <p id="pen-tag-overflow" style="font-size: 0.7rem; color: #64748b; margin: 8px 0 0; display:none;">
-                    </p>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="form-group">
-                        <label class="form-label">Avg Start Weight (kg)</label>
-                        <input name="avg_weight" class="form-input" placeholder="0.00">
+                        <label class="form-label">Section / Classification</label>
+                        <input name="section" class="form-input" placeholder="e.g. Nursery, Fattening">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Target Weight (kg)</label>
-                        <input name="target_weight" class="form-input" placeholder="0.00">
+                        <label class="form-label">Assigned Personnel</label>
+                        <select name="assigned_to" class="form-input">
+                            <option value="">-- No Personnel Assigned --</option>
+                            @foreach ($workers as $worker)
+                                <option value="{{ $worker->id }}">{{ $worker->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                </div>
-                <button type="submit" id="pen-submit-btn"
-                    style="width: 100%; background: var(--accent-green); color: white; border: none; padding: 16px; border-radius: 16px; font-weight: 800; margin-top: 10px; cursor: pointer;">Register
-                    Pen</button>
-            </form>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Initial Pig Count</label>
+                            <input id="pen-pig-count-input" name="pig_count" type="number" min="0" max="200"
+                                class="form-input" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Batch Investment (₱)</label>
+                            <input name="batch_cost" class="form-input" placeholder="0.00">
+                        </div>
+                    </div>
+                    <!-- Live Ear Tag Preview -->
+                    <div id="pen-tag-preview"
+                        style="display:none; background: #f0fdf4; border: 1.5px solid #dcfce7; border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+                        <div
+                            style="font-size: 0.65rem; font-weight: 900; color: #16a34a; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;">
+                            <i class='bx bx-purchase-tag-alt'></i> Auto-Generated Ear Tags Preview
+                        </div>
+                        <div id="pen-tag-badges" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+                        <p id="pen-tag-overflow" style="font-size: 0.7rem; color: #64748b; margin: 8px 0 0; display:none;">
+                        </p>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Avg Start Weight (kg)</label>
+                            <input name="avg_weight" class="form-input" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Target Weight (kg)</label>
+                            <input name="target_weight" class="form-input" placeholder="0.00">
+                        </div>
+                    </div>
+                    <button type="submit" id="pen-submit-btn"
+                        style="width: 100%; background: var(--accent-green); color: white; border: none; padding: 16px; border-radius: 16px; font-weight: 800; margin-top: 10px; cursor: pointer;">Register
+                        Pen</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -624,40 +676,51 @@
             <i class='bx bx-x modal-close' onclick="closeModal('editPenModal')"></i>
             <h2 style="font-weight: 900; margin-bottom: 4px;">Edit Pen</h2>
             <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 28px;">Update pen details and financial parameters.</p>
-            <form id="edit-pen-form">
-                @csrf
-                @method('PUT')
-                <input type="hidden" id="edit-pen-id" name="id">
-                <div class="form-group">
-                    <label class="form-label">Pen Identifier / Name</label>
-                    <input id="edit-pen-name" name="name" class="form-input" required autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Section / Classification</label>
-                    <input id="edit-pen-section" name="section" class="form-input">
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="modal-scroll-area">
+                <form id="edit-pen-form">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="edit-pen-id" name="id">
                     <div class="form-group">
-                        <label class="form-label">Batch Investment (₱)</label>
-                        <input id="edit-pen-batch-cost" name="batch_cost" class="form-input" placeholder="0.00">
+                        <label class="form-label">Pen Identifier / Name</label>
+                        <input id="edit-pen-name" name="name" class="form-input" required autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Daily Feed Cost (Avg)</label>
-                        <input id="edit-pen-feed-cons" name="feed_cons" class="form-input" placeholder="0.00">
-                    </div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="form-group">
-                        <label class="form-label">Avg Start Weight (kg)</label>
-                        <input id="edit-pen-avg-weight" name="avg_weight" class="form-input" placeholder="0.00">
+                        <label class="form-label">Section / Classification</label>
+                        <input id="edit-pen-section" name="section" class="form-input">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Target Weight (kg)</label>
-                        <input id="edit-pen-target-weight" name="target_weight" class="form-input" placeholder="0.00">
+                        <label class="form-label">Assigned Personnel</label>
+                        <select id="edit-pen-assigned-to" name="assigned_to" class="form-input">
+                            <option value="">-- No Personnel Assigned --</option>
+                            @foreach ($workers as $worker)
+                                <option value="{{ $worker->id }}">{{ $worker->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                </div>
-                <button type="submit" id="edit-pen-submit-btn" style="width: 100%; background: var(--accent-green); color: white; border: none; padding: 16px; border-radius: 16px; font-weight: 800; margin-top: 10px; cursor: pointer;">Save Changes</button>
-            </form>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Batch Investment (₱)</label>
+                            <input id="edit-pen-batch-cost" name="batch_cost" class="form-input" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Daily Feed Cost (Avg)</label>
+                            <input id="edit-pen-feed-cons" name="feed_cons" class="form-input" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Avg Start Weight (kg)</label>
+                            <input id="edit-pen-avg-weight" name="avg_weight" class="form-input" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Target Weight (kg)</label>
+                            <input id="edit-pen-target-weight" name="target_weight" class="form-input" placeholder="0.00">
+                        </div>
+                    </div>
+                    <button type="submit" id="edit-pen-submit-btn" style="width: 100%; background: var(--accent-green); color: white; border: none; padding: 16px; border-radius: 16px; font-weight: 800; margin-top: 10px; cursor: pointer;">Save Changes</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -790,6 +853,16 @@
                 document.getElementById('side-pen-id').innerText = '#' + data.id;
                 document.getElementById('side-pen-section').innerText = data.section || 'Unassigned';
 
+                var assignmentEl = document.getElementById('side-pen-assignment');
+                if (data.assigned_personnel) {
+                    assignmentEl.innerHTML = `
+                        <span style="font-size: 0.7rem; color: #22c55e; font-weight: 800; background: #f0fdf4; padding: 4px 10px; border-radius: 8px; display: inline-flex; align-items: center; gap: 4px;">
+                            <i class='bx bx-user-check'></i> ${data.assigned_personnel.name}
+                        </span>`;
+                } else {
+                    assignmentEl.innerHTML = `<span style="font-size: 0.7rem; color: #94a3b8; font-weight: 700;">No Personnel Assigned</span>`;
+                }
+
                 var rev = parseFloat(data.revenue || 0);
                 var inc = parseFloat(data.income || 0);
                 document.getElementById('side-revenue').innerText = '\u20B1' + rev.toLocaleString(undefined, {
@@ -902,6 +975,7 @@
                 document.getElementById('edit-pen-feed-cons').value = pen.feed_cons || '';
                 document.getElementById('edit-pen-avg-weight').value = pen.avg_weight || '';
                 document.getElementById('edit-pen-target-weight').value = pen.target_weight || '';
+                document.getElementById('edit-pen-assigned-to').value = pen.assigned_to || '';
                 
                 window.openModal('editPenModal');
             },
@@ -1182,34 +1256,51 @@
             document.getElementById('assign-task-form').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 var btn = document.getElementById('task-submit-btn');
+                var originalText = btn.innerText;
+                
                 btn.disabled = true;
                 btn.innerText = 'Assigning...';
 
                 var formData = Object.fromEntries(new FormData(e.target));
+                // Enhanced title logic: If description is short, prepend to title for better visibility
                 formData.title = 'Monitor ' + document.getElementById('task-pig-tag-display').innerText;
 
-                var res = await fetch('{{ route('admin.tasks.store') }}', {
-                    method: 'POST',
-                    body: JSON.stringify(formData),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                });
-
-                var data = await res.json();
-                if (res.ok) {
-                    closeModal('assignTaskModal');
-                    Swal.fire({
-                        title: 'Task Assigned!',
-                        text: 'The monitoring task has been created.',
-                        icon: 'success',
-                        confirmButtonColor: '#22c55e'
+                try {
+                    var res = await fetch('{{ route('admin.tasks.store') }}', {
+                        method: 'POST',
+                        body: JSON.stringify(formData),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
                     });
-                } else {
+
+                    var data = await res.json();
+                    if (res.ok) {
+                        window.closeModal('assignTaskModal');
+                        Swal.fire({
+                            title: 'Task Assigned!',
+                            text: 'The monitoring task has been successfully recorded and will now appear on the Task Assignment board and Worker views.',
+                            icon: 'success',
+                            confirmButtonColor: '#22c55e'
+                        }).then(() => {
+                            location.reload(); 
+                        });
+                    } else {
+                        throw new Error(data.message || 'Server returned an error.');
+                    }
+                } catch (err) {
+                    console.error('Task Assignment Error:', err);
+                    Swal.fire({
+                        title: 'Assignment Failed',
+                        text: err.message || 'Could not connect to the server. Please try again.',
+                        icon: 'error',
+                        confirmButtonColor: '#ef4444'
+                    });
+                } finally {
                     btn.disabled = false;
-                    btn.innerText = 'Assign Task';
-                    Swal.fire('Error', data.message || 'Something went wrong.', 'error');
+                    btn.innerText = originalText;
                 }
             });
 
