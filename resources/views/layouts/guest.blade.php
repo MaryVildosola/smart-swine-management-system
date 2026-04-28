@@ -5,39 +5,272 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>PorciTrack</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --green-main:   #2e7d32;
+            --green-dark:   #1b5e20;
+            --green-light:  #4caf50;
+            --green-soft:   #66bb6a;
+            --green-pale:   #c8e6c9;
+            --green-bg:     #f1f8f1;
+            --green-accent: #e8f5e9;
+            --text-dark:    #1a2e1a;
+            --text-mid:     #3d5c3d;
+            --text-muted:   #6b8f6b;
+            --white:        #ffffff;
+            --border:       #d4e8d4;
+            --card-bg:      #ffffff;
+            --shadow:       rgba(46,125,50,0.10);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
+            background: linear-gradient(160deg, #ffffff 0%, #f1f8f1 50%, #e8f5e9 100%);
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Decorative radial blobs matching welcome page */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -120px; right: -120px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(76,175,80,0.12) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -80px; left: -80px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(46,125,50,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── AUTH CONTAINER ── */
+        .auth-container {
+            display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(ellipse at 30% 40%, #4caf50 0%, #2e7d32 35%, #1a3a1a 65%, #0d1f0d 100%);
-            padding: 20px;
+            gap: 40px;
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+            position: relative;
+            z-index: 1;
+            animation: fadeUp 0.6s ease both;
         }
-        .auth-container { display: flex; align-items: center; justify-content: center; gap: 40px; width: 100%; max-width: 900px; }
-        .logo-card { width: 320px; height: 320px; background: linear-gradient(145deg, #1a2e1a 0%, #0d1a0d 100%); border-radius: 40px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
-        .logo-card img { width: 240px; height: 240px; object-fit: contain; }
-        .form-card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding: 40px; width: 100%; max-width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .form-card h2 { font-size: 2rem; color: #fff; text-align: center; margin-bottom: 30px; }
-        .input-group { position: relative; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.3); }
-        .input-group input { width: 100%; background: transparent; border: none; color: #fff; padding: 10px 5px; outline: none; font-size: 1rem; }
-        .btn-login { width: 100%; padding: 14px; background: #2e7d32; color: #fff; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        .form-links { display: flex; justify-content: space-between; margin-top: 20px; }
-        .form-links a { color: rgba(255,255,255,0.6); font-size: 0.8rem; text-decoration: none; }
-        .login-divider { display: flex; align-items: center; gap: 15px; margin: 20px 0 15px; }
-        .login-divider div { height: 1px; flex: 1; background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent); }
-        .login-divider span { font-size: 9px; color: rgba(255,255,255,0.2); }
-        .google-login-btn {
-            width: 100%; padding: 12px; background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-weight: 600; font-size: 0.85rem;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+
+        /* ── LOGO CARD ── */
+        .logo-card {
+            width: 320px;
+            height: 320px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 12px 40px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--green-main), var(--green-soft));
+        }
+        .logo-card img {
+            width: 220px;
+            height: 220px;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 24px rgba(46,125,50,0.15));
+        }
+
+        /* ── FORM CARD ── */
+        .form-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 12px 40px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--green-main), var(--green-soft));
+        }
+        .form-card h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* ── INPUTS ── */
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-group input {
+            width: 100%;
+            background: var(--green-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-dark);
+            padding: 12px 16px;
+            outline: none;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
             transition: all 0.3s ease;
         }
-        .google-login-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
-        @media (max-width: 768px) { .auth-container { flex-direction: column; } }
+        .input-group input::placeholder {
+            color: var(--text-muted);
+        }
+        .input-group input:focus {
+            border-color: var(--green-main);
+            box-shadow: 0 0 0 3px rgba(46,125,50,0.12);
+            background: var(--white);
+        }
+
+        /* ── BUTTONS ── */
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
+            color: var(--white);
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 6px 24px rgba(46,125,50,0.3);
+            transition: all 0.25s ease;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(46,125,50,0.4);
+        }
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
+            color: var(--white);
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(46,125,50,0.3);
+            transition: all 0.25s ease;
+        }
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(46,125,50,0.4);
+        }
+
+        /* ── LINKS ── */
+        .form-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .form-links a {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .form-links a:hover {
+            color: var(--green-main);
+        }
+
+        /* ── DIVIDER ── */
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 22px 0 16px;
+        }
+        .login-divider div {
+            height: 1px;
+            flex: 1;
+            background: var(--border);
+        }
+        .login-divider span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── GOOGLE BUTTON ── */
+        .google-login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--white);
+            color: var(--text-mid);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        .google-login-btn:hover {
+            background: var(--green-accent);
+            border-color: var(--green-soft);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .auth-container { flex-direction: column; gap: 24px; }
+            .logo-card { width: 200px; height: 200px; border-radius: 24px; }
+            .logo-card img { width: 140px; height: 140px; }
+            .form-card { max-width: 100%; padding: 30px; }
+        }
     </style>
 </head>
 <body>
