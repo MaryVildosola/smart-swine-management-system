@@ -80,15 +80,15 @@
             </li>
 
             <!-- Analysis Dropdown -->
-            <li class="slide has-sub {{ request()->routeIs('subject.*') || request()->routeIs('admin.reports*') ? 'open active' : '' }}">
+            <li class="slide has-sub {{ request()->routeIs('admin.analytics') || request()->routeIs('admin.reports*') ? 'open active' : '' }}">
                 <a href="javascript:void(0);" class="side-menu__item">
                     <svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="currentColor"/></svg>
                     <span class="side-menu__label">Reports</span>
                     <i class="fe fe-chevron-right side-menu__angle"></i>
                 </a>
                 <ul class="slide-menu child1">
-                    <li class="slide {{ request()->routeIs('subject.*') ? 'active' : '' }}">
-                        <a href="#" class="side-menu__item">Live Analytics</a>
+                    <li class="slide {{ request()->routeIs('admin.analytics') ? 'active' : '' }}">
+                        <a href="{{ route('admin.analytics') }}" class="side-menu__item">Live Analytics</a>
                     </li>
                     <li class="slide {{ request()->routeIs('admin.reports*') ? 'active' : '' }}">
                         <a href="{{ route('admin.reports') }}" class="side-menu__item">Weekly Reports</a>
