@@ -134,6 +134,76 @@ body.light-theme .glass-panel {
         body.light-theme .bg-white\/10 { background-color: #f1f5f9 !important; }
         body.light-theme .hover\:bg-white\/10:hover,
         body.light-theme .hover\:bg-\[\#141e36\]:hover { background-color: #e2e8f0 !important; }
+        /* Sidebar background */
+        #workerSidebar {
+            background-color: #05120a !important; /* Dark Greenish */
+        }
+
+        /* --- GLOBAL WORKER DASHBOARD STYLES (Glassmorphism & Theme) --- */
+        
+        /* Dark Mode is the DEFAULT */
+        .worker-dash { 
+            background: linear-gradient(to bottom right, #0a180e, #0d2214, #0a180e) !important; 
+            min-height: 100vh;
+        }
+
+        .dash-card, .glass-panel, .backdrop-blur-xl {
+            background: rgba(255,255,255,0.08) !important;
+            border-color: rgba(255,255,255,0.12) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4) !important;
+        }
+        
+        .dash-inner {
+            background: rgba(0,0,0,0.25) !important;
+            border-color: rgba(255,255,255,0.04) !important;
+            box-shadow: inset 0 4px 15px rgba(0,0,0,0.2) !important;
+        }
+
+        .text-slate-900, .text-slate-800, .text-slate-700 { color: #ffffff !important; }
+        .text-slate-500, .text-slate-400, .text-slate-300 { color: rgba(255,255,255,0.5) !important; }
+        
+        /* Light Mode Overrides */
+        body.light-theme .worker-dash { background: #f1f5f9 !important; }
+        body.light-theme .dash-card, body.light-theme .glass-panel, body.light-theme .backdrop-blur-xl {
+            background: rgba(255,255,255,0.95) !important;
+            border-color: rgba(0,0,0,0.08) !important;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06) !important;
+            backdrop-filter: none;
+        }
+        body.light-theme .text-slate-900, body.light-theme .text-slate-800 { color: #0f172a !important; }
+        body.light-theme .text-slate-500, body.light-theme .text-slate-400 { color: #64748b !important; }
+        body.light-theme .dash-inner {
+            background: #f8fafc !important;
+            border-color: rgba(0,0,0,0.05) !important;
+        }
+
+        /* Sidebar Specific Contrast Fixes */
+        #workerSidebar span, 
+        #workerSidebar h2, 
+        #workerSidebar h4, 
+        #workerSidebar p,
+        #workerSidebar i {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        #workerSidebar .text-[#1e293b],
+        #workerSidebar .text-slate-900,
+        #workerSidebar .text-slate-800,
+        #workerSidebar .text-slate-600 {
+            color: #ffffff !important;
+        }
+
+        #workerSidebar .group:hover span,
+        #workerSidebar .group:hover i {
+            color: #22c55e !important; /* Green on hover */
+        }
+
+        #workerSidebar .bg-white\/15 span,
+        #workerSidebar .bg-white\/15 i {
+            color: #ffffff !important;
+        }
     </style>
 </head>
 
@@ -163,10 +233,10 @@ body.light-theme .glass-panel {
                     <i class='bx bx-sun text-xl global-theme-icon'></i>
                 </button>
                 <div id="mobileSyncStatus"
-                    class="flex items-center gap-1.5 bg-white/10 px-2.5 py-1.5 rounded-lg border border-white/10 cursor-pointer"
-                    onclick="if(typeof syncData === 'function'){ syncData(); }">
-                    <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
-                    <span class="text-white text-[9px] font-bold uppercase tracking-widest leading-none">Synced</span>
+                    class="flex items-center gap-1.5 bg-white/10 px-2.5 py-1.5 rounded-lg border border-white/10 cursor-pointer transition-all"
+                    onclick="syncQueue()">
+                    <div id="mobileSyncDot" class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                    <span id="mobileSyncLabel" class="text-white text-[9px] font-bold uppercase tracking-widest leading-none">Synced</span>
                 </div>
                 <button
                     onclick="if(typeof openNotificationsPanel === 'function'){ openNotificationsPanel(); } else { window.location.href='/worker/dashboard'; }"
@@ -187,7 +257,7 @@ body.light-theme .glass-panel {
 
         <!-- Sidebar Navigation -->
         <aside id="workerSidebar"
-            class="fixed inset-y-0 left-0 z-[100] w-72 bg-[#0b1120] backdrop-blur-2xl border-r border-white/5 flex flex-col shrink-0 transform -translate-x-full transition-all duration-300 ease-in-out md:relative md:translate-x-0 shadow-2xl">
+            class="fixed inset-y-0 left-0 z-[100] w-72 backdrop-blur-2xl border-r border-white/5 flex flex-col shrink-0 transform -translate-x-full transition-all duration-300 ease-in-out md:relative md:translate-x-0 shadow-2xl" style="background-color: #05120a;">
             <div class="p-5 border-b border-white/10">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl overflow-hidden shadow-lg border border-white/10 shrink-0">
@@ -199,44 +269,44 @@ body.light-theme .glass-panel {
                     </div>
                     <div class="min-w-0">
                         <h2 class="font-extrabold text-white text-base tracking-tight leading-tight">PorciTrack</h2>
-                        <p class="text-[11px] text-white/50 truncate">{{ Auth::user()->name }}</p>
+                        <p class="text-[11px] text-white/50 truncate font-bold uppercase tracking-widest">{{ Auth::user()->name }}</p>
                     </div>
                 </div>
             </div>
 
             <nav class="flex-1 px-4 py-8 space-y-1 overflow-y-auto custom-scrollbar">
                 <a href="{{ route('worker.dashboard') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('worker.dashboard') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white/70 hover:bg-white/10 hover:text-white' }} font-medium transition">
-                    <i class='bx bx-home text-lg'></i>
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('worker.dashboard') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white hover:bg-white/10' }} font-bold transition">
+                    <i class='bx bx-home text-lg text-green-400'></i>
                     <span>Dashboard</span>
                 </a>
 
                 <!-- Farm Operations Dropdown -->
                 <div>
                     <button id="farmOpsToggle" onclick="toggleDropdown('farmOpsDropdown', 'farmOpsIcon')"
-                        class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:bg-white/10 hover:text-white font-medium transition group">
+                        class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-white hover:bg-white/10 font-bold transition group">
                         <div class="flex items-center gap-3">
-                            <i class='bx bx-landscape text-lg'></i>
+                            <i class='bx bx-landscape text-lg text-green-400'></i>
                             <span>Farm Operations</span>
                         </div>
-                        <i id="farmOpsIcon" class='bx bx-chevron-down transition-transform duration-300'></i>
+                        <i id="farmOpsIcon" class='bx bx-chevron-down text-white/50 transition-transform duration-300'></i>
                     </button>
 
                     <div id="farmOpsDropdown"
                         class="hidden pl-4 mt-1 space-y-1 overflow-hidden transition-all duration-300">
                         <a href="{{ route('worker.tasks') }}"
-                            class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('worker.tasks') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white/60 hover:bg-white/10 hover:text-white' }} font-medium transition text-sm">
-                            <i class='bx bx-task text-lg'></i>
+                            class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('worker.tasks') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white/80 hover:bg-white/10' }} font-bold transition text-sm">
+                            <i class='bx bx-task text-lg text-green-400/80'></i>
                             <span>Tasks</span>
                         </a>
                         <a href="{{ route('worker.reports') }}"
-                            class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('worker.reports') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white/60 hover:bg-white/10 hover:text-white' }} font-medium transition text-sm">
-                            <i class='bx bx-book-content text-lg'></i>
+                            class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('worker.reports') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white/80 hover:bg-white/10' }} font-bold transition text-sm">
+                            <i class='bx bx-book-content text-lg text-green-400/80'></i>
                             <span>Report</span>
                         </a>
                         <a href="{{ route('worker.swineDetails') }}"
-                            class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('worker.swineDetails') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white/60 hover:bg-white/10 hover:text-white' }} font-medium transition text-sm">
-                            <i class='bx bx-pig text-lg'></i>
+                            class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('worker.swineDetails') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white/80 hover:bg-white/10' }} font-bold transition text-sm">
+                            <i class='bx bx-pig text-lg text-green-400/80'></i>
                             <span>Swine Details</span>
                         </a>
                         <a href="{{ route('worker.feed-formulas') }}"
@@ -269,8 +339,8 @@ function toggleDropdown(dropdownId, iconId) {
                 </div>
 
                 <a href="{{ route('worker.settings') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('worker.settings') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white/70 hover:bg-white/10 hover:text-white' }} font-medium transition">
-                    <i class='bx bx-cog text-lg'></i>
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('worker.settings') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white hover:bg-white/10' }} font-bold transition">
+                    <i class='bx bx-cog text-lg text-green-400'></i>
                     <span>Settings</span>
                 </a>
 
@@ -278,8 +348,8 @@ function toggleDropdown(dropdownId, iconId) {
                     <p class="text-[10px] uppercase font-bold text-white/30 tracking-widest">Quick Actions</p>
                 </div>
                 <a href="#" onclick="triggerManualEntry(event)"
-                    class="flex items-center gap-3 px-4 py-3 rounded-xl bg-green-500/15 text-green-300 border border-green-500/30 hover:bg-green-500/25 font-medium transition shadow-sm">
-                    <i class='bx bx-edit text-lg text-green-400'></i>
+                    class="flex items-center gap-3 px-4 py-4 rounded-2xl bg-green-500/10 text-green-400 border border-green-500/30 hover:bg-green-500/20 font-black transition shadow-lg text-xs uppercase tracking-widest group">
+                    <i class='bx bx-edit text-xl group-hover:scale-110 transition-transform'></i>
                     <span>Manual ID Entry</span>
                 </a>
             </nav>
@@ -298,7 +368,7 @@ function toggleDropdown(dropdownId, iconId) {
                 <form method="POST" action="{{ route('logout') }}" id="workerLogoutForm">
                     @csrf
                     <button type="button" onclick="confirmWorkerLogout()"
-                        class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 hover:text-red-300 transition-all duration-200 font-semibold text-sm">
+                        class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 hover:text-red-300 transition-all duration-200 font-black text-xs uppercase tracking-widest">
                         <i class='bx bx-log-out text-lg'></i>
                         <span>Log Out</span>
                     </button>
@@ -321,11 +391,11 @@ function toggleDropdown(dropdownId, iconId) {
                 <!-- Sync Status -->
                 <div id="globalSyncStatus"
                     class="flex items-center gap-2 md:gap-3 bg-[#0b1120] px-3 py-1.5 md:px-4 md:py-2 rounded-2xl border border-white/10 cursor-pointer hover:bg-[#141e36] transition shadow-lg"
-                    onclick="if(typeof syncData === 'function'){ syncData(); }">
-                    <div
+                    onclick="syncQueue()">
+                    <div id="globalSyncDot"
                         class="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-green-400 shadow-[0_0_10px_rgba(34,197,94,0.6)] animate-pulse">
                     </div>
-                    <span
+                    <span id="globalSyncLabel"
                         class="text-white text-[9px] md:text-[10px] font-bold uppercase tracking-widest leading-none">Synced</span>
                 </div>
 
@@ -584,27 +654,114 @@ function toggleDropdown(dropdownId, iconId) {
             });
         }
 
-        window.syncData = function() {
-            Swal.fire({
-                title: 'Syncing Data...',
-                text: 'Connecting to main server...',
-                icon: 'info',
-                timer: 1500,
-                showConfirmButton: false,
-                background: document.body.classList.contains('light-theme') ? '#ffffff' : '#0b1120',
-                color: document.body.classList.contains('light-theme') ? '#000000' : '#ffffff',
-            }).then(() => {
-                Swal.fire({
-                    title: 'Synced!',
-                    text: 'All offline data has been updated.',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false,
-                    background: document.body.classList.contains('light-theme') ? '#ffffff' : '#0b1120',
-                    color: document.body.classList.contains('light-theme') ? '#000000' : '#ffffff',
-                });
-            });
+        // ═══════════════════════════════════════════════
+        // GLOBAL OFFLINE QUEUE SYSTEM
+        // ═══════════════════════════════════════════════
+        const QUEUE_KEY = 'porcitrack_offline_queue';
+        function getQueue() { try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); } catch { return []; } }
+        function saveQueue(q) { localStorage.setItem(QUEUE_KEY, JSON.stringify(q)); updateGlobalSyncUI(); }
+        function enqueue(url, payload, label) {
+            const q = getQueue();
+            q.push({ url, payload, label, savedAt: new Date().toISOString(), id: Date.now() });
+            saveQueue(q);
         }
+
+        function updateGlobalSyncUI() {
+            const q = getQueue();
+            const hasPending = q.length > 0;
+            const online = navigator.onLine;
+
+            const updateBadge = (dotId, labelId, statusId) => {
+                const dot = document.getElementById(dotId);
+                const label = document.getElementById(labelId);
+                const status = document.getElementById(statusId);
+                if(!dot || !label) return;
+
+                if (!online) {
+                    dot.className = "w-1.5 h-1.5 rounded-full bg-slate-500";
+                    label.textContent = "Offline";
+                } else if (hasPending) {
+                    dot.className = "w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce";
+                    label.textContent = `Pending (${q.length})`;
+                } else {
+                    dot.className = "w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse";
+                    label.textContent = "Synced";
+                }
+            };
+
+            updateBadge('mobileSyncDot', 'mobileSyncLabel', 'mobileSyncStatus');
+            updateBadge('globalSyncDot', 'globalSyncLabel', 'globalSyncStatus');
+            
+            // If the specific page has its own UI (like the banner in swineDetails), call it
+            if (typeof updateOfflineUI === 'function') updateOfflineUI();
+        }
+
+        async function syncQueue() {
+            if (!navigator.onLine) {
+                Swal.fire({ icon: 'warning', title: 'Offline', text: 'You are currently offline. Connect to the internet to sync your data.', background: document.body.classList.contains('light-theme') ? '#ffffff' : '#0b1120', color: document.body.classList.contains('light-theme') ? '#000000' : '#ffffff' });
+                return;
+            }
+            
+            const q = getQueue();
+            if (q.length === 0) {
+                Swal.fire({ icon: 'success', title: 'Up to Date', text: 'No pending data to sync.', timer: 1500, showConfirmButton: false, background: document.body.classList.contains('light-theme') ? '#ffffff' : '#0b1120', color: document.body.classList.contains('light-theme') ? '#000000' : '#ffffff' });
+                return;
+            }
+
+            Swal.fire({ title: 'Syncing...', text: `Uploading ${q.length} item(s)...`, allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+
+            const remaining = [];
+            let count = 0;
+            for (const item of q) {
+                try {
+                    const res = await fetch(item.url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
+                        body: JSON.stringify(item.payload)
+                    });
+                    if (!res.ok) throw new Error('Server error');
+                    count++;
+                } catch {
+                    remaining.push(item);
+                }
+            }
+            
+            saveQueue(remaining);
+            updateGlobalSyncUI();
+            
+            if (remaining.length === 0) {
+                Swal.fire({ icon: 'success', title: 'Synced!', text: `Successfully uploaded ${count} item(s) to the admin server.`, background: document.body.classList.contains('light-theme') ? '#ffffff' : '#0b1120', color: document.body.classList.contains('light-theme') ? '#000000' : '#ffffff' });
+            } else {
+                Swal.fire({ icon: 'warning', title: 'Partial Sync', text: `Uploaded ${count} item(s). ${remaining.length} items failed and will be retried later.`, background: document.body.classList.contains('light-theme') ? '#ffffff' : '#0b1120', color: document.body.classList.contains('light-theme') ? '#000000' : '#ffffff' });
+            }
+        }
+
+        async function offlineSafeFetch(url, payload, label) {
+            if (!navigator.onLine) {
+                enqueue(url, payload, label);
+                return { success: true, offline: true };
+            }
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Server error');
+                return data;
+            } catch {
+                enqueue(url, payload, label);
+                return { success: true, offline: true };
+            }
+        }
+
+        window.addEventListener('online', updateGlobalSyncUI);
+        window.addEventListener('offline', updateGlobalSyncUI);
+        document.addEventListener('DOMContentLoaded', updateGlobalSyncUI);
+        setInterval(updateGlobalSyncUI, 30000); // Check UI every 30s 
+        setInterval(() => { if(navigator.onLine && getQueue().length > 0) syncQueue(); }, 60000); // Auto-sync every 60s 
+
 
         function confirmWorkerLogout() {
             const isLight = document.body.classList.contains('light-theme');
