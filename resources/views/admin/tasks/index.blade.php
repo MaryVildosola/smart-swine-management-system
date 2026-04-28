@@ -9,8 +9,8 @@
     }
 
     .task-wrap { 
-        padding: 40px; 
-        max-width: 1400px; 
+        padding: 24px 32px; 
+        max-width: 1550px; 
         margin: 0 auto; 
     }
 
@@ -18,30 +18,30 @@
         background: #ffffff; 
         border: 1px solid var(--border-color); 
         border-radius: 28px; 
-        padding: 32px; 
+        padding: 24px; 
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
     }
 
     .task-grid { 
         display: grid; 
-        grid-template-columns: 1fr 420px; 
-        gap: 32px; 
+        grid-template-columns: 1fr 380px; 
+        gap: 24px; 
         align-items: start;
     }
 
     .compact-table th { 
-        font-size: 0.7rem; 
+        font-size: 0.65rem; 
         font-weight: 900; 
         color: #94a3b8; 
         text-transform: uppercase; 
         letter-spacing: 0.1em;
-        padding: 16px; 
+        padding: 12px 16px; 
         border-bottom: 2px solid #f1f5f9; 
     }
 
     .compact-table td { 
-        font-size: 0.85rem; 
-        padding: 20px 16px; 
+        font-size: 0.8rem; 
+        padding: 14px 16px; 
         border-bottom: 1px solid #f8fafc; 
         vertical-align: middle;
     }
@@ -176,8 +176,8 @@
 <div class="task-wrap">
     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px;">
         <div>
-            <h1 style="font-size: 2.2rem; font-weight: 900; color: var(--deep-slate); margin: 0; letter-spacing: -0.04em;">Task Assignment</h1>
-            <p style="font-size: 1rem; color: #64748b; font-weight: 500; margin-top: 6px;">Deploy worker protocols and monitor farm operations.</p>
+            <h1 style="font-size: 1.8rem; font-weight: 900; color: var(--deep-slate); margin: 0; letter-spacing: -0.04em;">Task Assignment</h1>
+            <p style="font-size: 0.9rem; color: #64748b; font-weight: 500; margin-top: 4px;">Deploy worker protocols and monitor farm operations.</p>
         </div>
         <div style="display: flex; gap: 12px;">
             <div style="background: #fff; padding: 12px 24px; border-radius: 20px; border: 1px solid #e2e8f0; text-align: center;">
@@ -208,8 +208,10 @@
                         <tr>
                             <th>Due Date</th>
                             <th>Operation Details</th>
+                            <th>Priority</th>
                             <th>Personnel</th>
-                            <th>Target Scope</th>
+                            <th>Scope</th>
+                            <th>Progress</th>
                             <th>Status</th>
                             <th style="text-align: right;">Action</th>
                         </tr>
@@ -226,6 +228,17 @@
                                     <div style="font-size: 0.75rem; color: #64748b; line-height: 1.4;">{{ Str::limit($task->description, 45) }}</div>
                                 </td>
                                 <td>
+                                    @php
+                                        $priority = strtolower($task->priority ?? 'medium');
+                                        $pColor = match($priority) {
+                                            'high', 'urgent' => '#ef4444',
+                                            'medium' => '#f59e0b',
+                                            default => '#3b82f6'
+                                        };
+                                    @endphp
+                                    <span style="color: {{ $pColor }}; font-size: 0.65rem; font-weight: 900; text-transform: uppercase;">{{ $task->priority ?? 'Medium' }}</span>
+                                </td>
+                                <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
                                         <div style="width: 32px; height: 32px; background: #f1f5f9; color: var(--deep-slate); border-radius: 10px; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; font-weight: 900; border: 1.5px solid #e2e8f0;">
                                             {{ strtoupper(substr($task->assignee->name, 0, 1)) }}
@@ -235,23 +248,39 @@
                                 </td>
                                 <td>
                                     @if($task->pig_id)
-                                        <span class="target-badge target-pig"><i class='bx bxs-component'></i> Pig: {{ $task->pig->tag }}</span>
+                                        <span class="target-badge target-pig">Pig: {{ $task->pig->tag }}</span>
                                     @elseif($task->pen_id)
-                                        <span class="target-badge target-pen"><i class='bx bx-grid-alt'></i> Pen: {{ $task->pen->name }}</span>
+                                        <span class="target-badge target-pen">Pen: {{ $task->pen->name }}</span>
                                     @else
-                                        <span class="target-badge target-general">General Site</span>
+                                        <span class="target-badge target-general">General</span>
                                     @endif
+                                </td>
+                                <td>
+                                    <div style="width: 60px;">
+                                        <div style="height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0;">
+                                            <div style="width: {{ $task->progress ?? 0 }}%; height: 100%; background: #22c55e;"></div>
+                                        </div>
+                                        <div style="font-size: 0.6rem; font-weight: 900; color: #64748b; margin-top: 4px;">{{ $task->progress ?? 0 }}%</div>
+                                    </div>
                                 </td>
                                 <td>
                                     <span class="badge badge-{{ $task->status }}">{{ $task->status }}</span>
                                 </td>
                                 <td style="text-align: right;">
-                                    <form action="{{ route('admin.tasks.destroy', $task) }}" method="POST" onsubmit="return confirm('Archive this task?')">
-                                        @csrf @method('DELETE')
-                                        <button style="border: none; background: #fef2f2; color: #ef4444; width: 36px; height: 36px; border-radius: 10px; cursor: pointer; transition: all 0.2s;" class="hover:scale-110">
-                                            <i class="bx bx-trash" style="font-size: 1.1rem;"></i>
-                                        </button>
-                                    </form>
+                                    <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                        @if($task->status === 'completed' && $task->findings)
+                                            <button onclick="viewFindings({{ json_encode($task->findings) }}, '{{ addslashes($task->title) }}')" 
+                                                    style="border: none; background: #f0fdf4; color: #16a34a; width: 36px; height: 36px; border-radius: 10px; cursor: pointer; transition: all 0.2s;" title="View Findings">
+                                                <i class="bx bx-file-find" style="font-size: 1.1rem;"></i>
+                                            </button>
+                                        @endif
+                                        <form action="{{ route('admin.tasks.destroy', $task) }}" method="POST" onsubmit="return confirm('Archive this task?')">
+                                            @csrf @method('DELETE')
+                                            <button style="border: none; background: #fef2f2; color: #ef4444; width: 36px; height: 36px; border-radius: 10px; cursor: pointer; transition: all 0.2s;" class="hover:scale-110">
+                                                <i class="bx bx-trash" style="font-size: 1.1rem;"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -309,9 +338,20 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Deployment Deadline</label>
-                    <input type="date" name="due_date" class="form-input" value="{{ now()->format('Y-m-d') }}" required>
+                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div>
+                        <label class="form-label">Deployment Deadline</label>
+                        <input type="date" name="due_date" class="form-input" value="{{ now()->format('Y-m-d') }}" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Task Priority</label>
+                        <select name="priority" class="form-input" required>
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+                            <option value="Urgent">Urgent</option>
+                        </select>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-save">Deploy Task</button>
@@ -402,6 +442,38 @@
             suggestionBox.style.display = 'none';
         }
     });
+
+    function viewFindings(findings, title) {
+        let findingsHtml = '<div style="text-align: left; margin-top: 10px;">';
+        if (findings && findings.length > 0) {
+            findings.forEach(item => {
+                findingsHtml += `
+                    <div style="margin-bottom: 16px; padding: 12px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                            <i class='bx bx-check-circle' style="color: #22c55e;"></i>
+                            <span style="font-size: 0.7rem; font-weight: 900; color: #64748b; text-transform: uppercase;">${item.text}</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: #1e293b; margin: 0; font-weight: 600; line-height: 1.4;">${item.finding || 'No finding recorded.'}</p>
+                    </div>
+                `;
+            });
+        } else {
+            findingsHtml += '<p style="color: #94a3b8; font-style: italic; text-align: center;">No detailed findings were recorded for this task.</p>';
+        }
+        findingsHtml += '</div>';
+
+        Swal.fire({
+            title: title,
+            html: findingsHtml,
+            icon: 'info',
+            confirmButtonText: 'Close',
+            confirmButtonColor: '#0f172a',
+            width: '450px',
+            customClass: {
+                popup: 'rounded-[28px]'
+            }
+        });
+    }
 </script>
 @endpush
 
