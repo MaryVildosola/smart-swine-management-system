@@ -132,6 +132,16 @@ body.light-theme #careAlertModal .bg-slate-900\/90 {
             </div>
         </div>
     </div>
+    
+    @if($errors->any())
+    <div class="flex items-center gap-4 p-5 rounded-2xl bg-red-500/15 border border-red-500/30 mb-8">
+        <i class='bx bxs-error-circle text-3xl text-red-400 shrink-0'></i>
+        <div>
+            <p class="text-white font-bold text-base">Submission Error</p>
+            <p class="text-white/50 text-sm">Please ensure all required fields are filled correctly (e.g. notes must be at least 5 characters).</p>
+        </div>
+    </div>
+    @endif
 
     @if(session('success'))
     <div class="flex items-center gap-4 p-5 rounded-2xl bg-green-500/15 border border-green-500/30 mb-8">
@@ -459,10 +469,10 @@ body.light-theme #careAlertModal .bg-slate-900\/90 {
         <h3 class="text-base font-black text-white mb-5">Report Details</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-                <label class="block text-xs font-black text-white/40 uppercase tracking-widest mb-2">Total Feed Consumed This Week (kg)</label>
+                <label class="block text-xs font-black text-white/40 uppercase tracking-widest mb-2">Total Feed Consumed This Week (Auto-calculated)</label>
                 <div class="relative">
-                    <input type="number" id="reportFeedKg" placeholder="0"
-                        class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-5 pr-14 text-white text-2xl font-black focus:outline-none focus:border-green-500/50 transition">
+                    <input type="number" id="reportFeedKg" value="{{ $analytics['feed_consumed_this_week'] }}" readonly
+                        class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-5 pr-14 text-white/60 text-2xl font-black focus:outline-none cursor-not-allowed transition">
                     <span class="absolute right-5 top-1/2 -translate-y-1/2 text-white/30 font-bold">kg</span>
                 </div>
             </div>
@@ -821,7 +831,12 @@ body.light-theme #careAlertModal .bg-slate-900\/90 {
         const notes = document.getElementById('reportNotes').value.trim();
 
         if (!feed) {
-            Swal.fire({ title: 'Missing Feed Data', text: 'Please enter the total feed consumed this week.', icon: 'warning', background: '#070e08', color: '#fff', confirmButtonColor: '#22c55e' });
+            Swal.fire({ title: 'Missing Feed Data', text: 'Please enter the total feed consumed this week.', icon: 'warning', ...getSwalConfig() });
+            return;
+        }
+
+        if (notes.length < 5) {
+            Swal.fire({ title: 'Short Notes', text: 'Please provide at least 5 characters in Operational Notes.', icon: 'warning', ...getSwalConfig() });
             return;
         }
 
@@ -832,6 +847,7 @@ body.light-theme #careAlertModal .bg-slate-900\/90 {
         const latestPerPig = getLatestPerPig(allLogs);
         const sickPigs     = latestPerPig.filter(l => l.symptom !== 'Healthy' || l.feed === 'Poor/None');
         const healthyPigs  = latestPerPig.filter(l => l.symptom === 'Healthy' && l.feed !== 'Poor/None');
+        const uniquePigsChecked = latestPerPig.length;
         const weekStart = '{{ \Carbon\Carbon::parse($thisWeek)->format("M d") }}';
         const weekEnd   = '{{ \Carbon\Carbon::parse($thisWeek)->endOfWeek()->format("M d, Y") }}';
 

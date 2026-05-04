@@ -436,7 +436,7 @@
             <div class="pen-list-wrapper" id="pens-list-container">
                 @forelse($pens as $pen)
                     <div class="pen-accordion {{ $loop->first ? 'active-row' : '' }}" data-id="{{ $pen->id }}">
-                        <div class="pen-header-row" onclick='handlePenClick(this, {!! json_encode($pen) !!})'>
+                        <div class="pen-header-row" data-pen="{{ json_encode($pen) }}" onclick='handlePenClick(this, JSON.parse(this.dataset.pen))'>
                             <div class="pen-identity">
                                 <div class="pen-icon-circle"><i class='bx bx-grid-alt'></i></div>
                                 <div style="display: flex; flex-direction: column;">
@@ -593,7 +593,7 @@
                             <p style="text-align: center; font-size: 0.65rem; font-weight: 800; color: #94a3b8; margin: 0;"
                                 id="side-progress-text">{{ $firstPen->progress ?: 0 }}% of market target</p>
                         </div>
-                        <button onclick="previewReport()" class="btn-full-report"
+                        <button type="button" onclick="previewReport()" class="btn-full-report"
                             style="width: 100%; background: var(--deep-slate); color: white; border: none; padding: 18px; border-radius: 20px; font-weight: 800; font-size: 0.9rem; margin-top: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 10px 20px rgba(15, 23, 42, 0.1);"><i
                                 class='bx bx-file-find' style="font-size: 1.2rem;"></i> Generate & View Report</button>
                     @endif
@@ -873,19 +873,27 @@
             <div id="report-content"
                 style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 32px; max-height: 500px; overflow-y: auto;">
             </div>
-            <div style="display: flex; gap: 16px; margin-top: 24px;"><button onclick="closeModal('reportPreviewModal')"
-                    style="flex: 1; padding: 14px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #fff; font-weight: 700; cursor: pointer;">Cancel</button><button
-                    onclick="printReportContent()"
-                    style="flex: 2; padding: 14px; border-radius: 14px; background: var(--deep-slate); color: #fff; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;"><i
-                        class='bx bx-printer'></i> Confirm & Print</button></div>
+            <div style="display: flex; gap: 16px; margin-top: 24px;">
+                <button onclick="closeModal('reportPreviewModal')"
+                    style="flex: 1; padding: 14px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #fff; font-weight: 700; cursor: pointer;">Cancel</button>
+                <button onclick="downloadReportPDF()"
+                    style="flex: 2; padding: 14px; border-radius: 14px; background: #22c55e; color: #fff; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class='bx bxs-file-pdf'></i> Download PDF
+                </button>
+                <button onclick="printReportContent()"
+                    style="flex: 1; padding: 14px; border-radius: 14px; background: var(--deep-slate); color: #fff; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class='bx bx-printer'></i> Print
+                </button>
+            </div>
         </div>
     </div>
 
+    @push('scripts')
     <script>
         // Use a single global object to avoid pollution and ease debugging
         window.PT_APP = {
-            workers: {!! json_encode($workers) !!},
-            currentPen: {!! json_encode($pens->first()) !!},
+            workers: @json($workers),
+            currentPen: @json($pens->first()),
 
             handlePenClick: function(element, data) {
                 document.querySelectorAll('.pen-accordion').forEach(function(r) {
@@ -1039,6 +1047,163 @@
                         location.reload();
                     });
                 });
+            },
+
+            previewReport: function() {
+                const data = this.currentPen;
+                if (!data) {
+                    Swal.fire('No Pen Selected', 'Please click on a pen from the list first.', 'info');
+                    return;
+                }
+
+                const healthy = data.pigs ? data.pigs.filter(p => p.health_status === 'Healthy').length : 0;
+                const sick = data.pigs ? data.pigs.filter(p => p.health_status === 'Sick').length : 0;
+                const revenue = parseFloat(data.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2 });
+                const incVal = parseFloat(data.income || 0);
+                const income = incVal.toLocaleString(undefined, { minimumFractionDigits: 2 });
+                const incomeColor = incVal >= 0 ? '#16a34a' : '#ef4444';
+
+                const html = `
+                    <div id="report-printable-area" style="font-family: 'Inter', sans-serif; color: #0f172a; padding: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 30px;">
+                            <div>
+                                <h1 style="font-size: 1.75rem; font-weight: 900; margin: 0; color: #0f172a; letter-spacing: -0.05em;">PEN BATCH REPORT</h1>
+                                <p style="color: #64748b; font-size: 0.8rem; font-weight: 700; margin: 4px 0 0; text-transform: uppercase; letter-spacing: 0.05em;">PorciTrack Farm Intelligence System</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <p style="font-size: 0.65rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin: 0;">Report Generated</p>
+                                <p style="font-size: 0.95rem; font-weight: 700; margin: 2px 0 0;">${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 30px; margin-bottom: 35px;">
+                            <div>
+                                <h3 style="font-size: 0.65rem; font-weight: 900; color: #94a3b8; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.1em;">Location Identifier</h3>
+                                <p style="font-size: 1.4rem; font-weight: 900; margin: 0; color: #0f172a;">${data.name}</p>
+                                <div style="display: flex; gap: 15px; margin-top: 8px;">
+                                    <p style="color: #64748b; font-size: 0.85rem; margin: 0;"><strong>Section:</strong> ${data.section || 'Unassigned'}</p>
+                                    <p style="color: #64748b; font-size: 0.85rem; margin: 0;"><strong>Assigned:</strong> ${data.assigned_personnel ? data.assigned_personnel.name : 'Unassigned'}</p>
+                                </div>
+                            </div>
+                            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 20px;">
+                                <h3 style="font-size: 0.65rem; font-weight: 900; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.05em;">Health Summary</h3>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
+                                    <span style="color: #64748b;">Total Population</span> <span style="font-weight: 800;">${data.pigs ? data.pigs.length : 0}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
+                                    <span style="color: #64748b;">Healthy Animals</span> <span style="font-weight: 800; color: #16a34a;">${healthy}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                    <span style="color: #64748b;">Sick / Alert</span> <span style="font-weight: 800; color: #ef4444;">${sick}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 style="font-size: 0.65rem; font-weight: 900; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.1em;">Economic Metrics</h3>
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 35px;">
+                            <div style="background: #fff; padding: 15px; border-radius: 16px; border: 1.5px solid #f1f5f9; text-align: center;">
+                                <p style="font-size: 0.55rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 5px;">Revenue</p>
+                                <p style="font-size: 1rem; font-weight: 900; margin: 0; color: #0f172a;">₱${revenue}</p>
+                            </div>
+                            <div style="background: #fff; padding: 15px; border-radius: 16px; border: 1.5px solid #f1f5f9; text-align: center;">
+                                <p style="font-size: 0.55rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 5px;">Income</p>
+                                <p style="font-size: 1rem; font-weight: 900; margin: 0; color: ${incomeColor};">₱${income}</p>
+                            </div>
+                            <div style="background: #fff; padding: 15px; border-radius: 16px; border: 1.5px solid #f1f5f9; text-align: center;">
+                                <p style="font-size: 0.55rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 5px;">Avg Weight</p>
+                                <p style="font-size: 1rem; font-weight: 900; margin: 0; color: #0f172a;">${data.avg_weight || 0} kg</p>
+                            </div>
+                            <div style="background: #fff; padding: 15px; border-radius: 16px; border: 1.5px solid #f1f5f9; text-align: center;">
+                                <p style="font-size: 0.55rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 5px;">Progress</p>
+                                <p style="font-size: 1rem; font-weight: 900; margin: 0; color: #22c55e;">${data.progress || 0}%</p>
+                            </div>
+                        </div>
+
+                        <h3 style="font-size: 0.65rem; font-weight: 900; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.1em;">Animal Audit Log</h3>
+                        <div style="overflow: hidden; border-radius: 16px; border: 1.5px solid #f1f5f9;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                                <thead>
+                                    <tr style="background: #f8fafc; text-align: left; border-bottom: 1.5px solid #f1f5f9;">
+                                        <th style="padding: 12px 15px; font-weight: 800; color: #64748b; text-transform: uppercase; font-size: 0.6rem;">Animal Tag</th>
+                                        <th style="padding: 12px 15px; font-weight: 800; color: #64748b; text-transform: uppercase; font-size: 0.6rem;">Status</th>
+                                        <th style="padding: 12px 15px; font-weight: 800; color: #64748b; text-transform: uppercase; font-size: 0.6rem;">Breed</th>
+                                        <th style="padding: 12px 15px; font-weight: 800; color: #64748b; text-transform: uppercase; font-size: 0.6rem; text-align: right;">Current Weight</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${(data.pigs || []).length > 0 ? data.pigs.map(p => `
+                                        <tr style="border-bottom: 1px solid #f1f5f9;">
+                                            <td style="padding: 12px 15px; font-weight: 800; color: #0f172a;">#${p.tag}</td>
+                                            <td style="padding: 12px 15px;">
+                                                <span style="display: inline-block; padding: 2px 8px; border-radius: 6px; background: ${p.health_status === 'Sick' ? '#fef2f2' : '#f0fdf4'}; color: ${p.health_status === 'Sick' ? '#ef4444' : '#16a34a'}; font-weight: 800; font-size: 0.65rem;">
+                                                    ${p.health_status}
+                                                </span>
+                                            </td>
+                                            <td style="padding: 12px 15px; color: #64748b;">${p.breed || 'Standard'}</td>
+                                            <td style="padding: 12px 15px; text-align: right; font-weight: 700; color: #475569;">${p.weight || 0} kg</td>
+                                        </tr>
+                                    `).join('') : '<tr><td colspan="4" style="padding: 20px; text-align: center; color: #94a3b8; font-style: italic;">No animals registered in this pen.</td></tr>'}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('report-content').innerHTML = html;
+                window.openModal('reportPreviewModal');
+            },
+
+            printReportContent: function() {
+                const content = document.getElementById('report-content').innerHTML;
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html` + `>
+                        <head` + `>
+                            <title>Report - ${this.currentPen.name}</title>
+                            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet">
+                            <style>
+                                body { font-family: 'Inter', sans-serif; padding: 40px; }
+                                @media print {
+                                    body { padding: 0; }
+                                    #report-printable-area { padding: 0; }
+                                }
+                            </style>
+                        </head` + `>
+                        <body` + `>
+                            ${content}
+                            <script` + `>
+                                window.onload = function() {
+                                    window.print();
+                                    window.onafterprint = function() { window.close(); };
+                                }
+                            </script` + `>
+                        </body` + `>
+                    </html` + `>
+                `);
+                printWindow.document.close();
+            },
+
+            downloadReportPDF: function() {
+                const element = document.getElementById('report-printable-area');
+                const penName = this.currentPen.name;
+                const date = new Date().toISOString().split('T')[0];
+                
+                const opt = {
+                    margin: 0.5,
+                    filename: `Report_${penName}_${date}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+
+                if (typeof html2pdf === 'undefined') {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+                    script.onload = () => html2pdf().set(opt).from(element).save();
+                    document.head.appendChild(script);
+                } else {
+                    html2pdf().set(opt).from(element).save();
+                }
             }
         };
 
@@ -1049,6 +1214,9 @@
         window.quickAssignTask = window.PT_APP.quickAssignTask.bind(window.PT_APP);
         window.editPen = window.PT_APP.editPen.bind(window.PT_APP);
         window.deletePen = window.PT_APP.deletePen.bind(window.PT_APP);
+        window.previewReport = window.PT_APP.previewReport.bind(window.PT_APP);
+        window.printReportContent = window.PT_APP.printReportContent.bind(window.PT_APP);
+        window.downloadReportPDF = window.PT_APP.downloadReportPDF.bind(window.PT_APP);
 
         window.openModal = function(id) {
             document.getElementById(id).style.display = 'flex';
@@ -1484,4 +1652,5 @@
             }
         });
     </script>
+    @endpush
 @endsection

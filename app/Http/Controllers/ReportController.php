@@ -95,7 +95,17 @@ class ReportController extends Controller
     public function show($id)
     {
         $report = WeeklyReport::with('user')->findOrFail($id);
-        return view('admin.reports.show', compact('report'));
+        
+        // Fetch tasks for that specific week and worker
+        $weekStart = Carbon::parse($report->week_start_date);
+        $weekEnd = (clone $weekStart)->endOfWeek();
+        
+        $tasks = Task::where('assigned_to', $report->user_id)
+            ->whereBetween('created_at', [$weekStart, $weekEnd])
+            ->latest('updated_at')
+            ->get();
+
+        return view('admin.reports.show', compact('report', 'tasks'));
     }
 
     // Worker View: Show report submission form
@@ -126,11 +136,14 @@ class ReportController extends Controller
         $tasksDone = (clone $tasksThisWeek)->where('status', 'completed')->count();
         $tasksPending = (clone $tasksThisWeek)->where('status', 'pending')->count();
 
+        $feedConsumedThisWeek = FeedConsumption::whereBetween('consumption_date', [$thisWeekStart, Carbon::now()->endOfWeek()])->sum('quantity');
+
         $analytics = [
             'total_pigs' => $totalPigs,
             'sick_pigs' => $sickPigs,
             'avg_weight' => round($avgWeight, 1),
             'feed_stock' => round($availableStock, 1),
+            'feed_consumed_this_week' => round($feedConsumedThisWeek, 1),
             'tasks_done' => $tasksDone,
             'tasks_pending' => $tasksPending,
             'weekly_progress' => [65, 78, 72, 85, 80, 90, 88] // Keep mock for chart for now unless we have historical data
@@ -167,7 +180,7 @@ class ReportController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'details' => 'required|string|min:10',
+            'details' => 'required|string|min:5',
             'total_pigs' => 'required|integer',
             'sick_pigs' => 'required|integer',
             'avg_weight' => 'required|numeric',

@@ -16,7 +16,11 @@ use App\Http\Controllers\HealthController;
 use App\Http\Controllers\AnalyticsController;
 
 // --- PUBLIC & REDIRECTS ---
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
+    if ($request->user()) {
+        $url = $request->user()->role === 'admin' ? '/admin/dashboard' : '/worker/dashboard';
+        return redirect($url);
+    }
     return view('landing');
 })->name('landing');
 
@@ -167,6 +171,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
 
 // --- WORKER ZONE ---
 Route::middleware(['auth', 'verified', 'role:farm_worker'])->group(function () {
+    Route::get('/worker', function () {
+        return redirect()->route('worker.dashboard');
+    });
         Route::get('/worker/dashboard', [ReportController::class, 'dashboard'])->name('worker.dashboard');
 
         Route::get('/worker/tasks', [TaskController::class, 'workerIndex'])->name('worker.tasks');
