@@ -88,14 +88,14 @@ select optgroup {
             <p class="farm-subtitle">Track and manage feed stock levels across the farm</p>
         </div>
         <div style="display: flex; align-items: center; gap: 12px;">
-            <button onclick="document.getElementById('addStockModal').style.display='flex'" class="btn-add-stock">
-                <i class="bx bx-plus-circle" style="font-size: 1.2rem;"></i> Add New Stocks
-            </button>
             <div class="filter-tabs">
                 <a href="?period=all" class="filter-btn {{ $period == 'all' ? 'active' : '' }}"><i class="bx bx-grid-alt"></i> ALL</a>
                 <a href="?period=week" class="filter-btn {{ $period == 'week' ? 'active' : '' }}"><i class="bx bx-calendar-event"></i> LAST 7 DAYS</a>
                 <a href="?period=month" class="filter-btn {{ $period == 'month' ? 'active' : '' }}"><i class="bx bx-calendar"></i> LAST 30 DAYS</a>
             </div>
+            <button onclick="document.getElementById('addStockModal').style.display='flex'" class="btn-add-stock">
+                <i class="bx bx-plus-circle" style="font-size: 1.2rem;"></i> Add New Stocks
+            </button>
         </div>
     </div>
 
