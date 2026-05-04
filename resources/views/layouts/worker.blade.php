@@ -19,6 +19,9 @@
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -115,8 +118,10 @@ body.light-theme .glass-panel {
     );
 }
         
-        /* Text Colors */
-        body.light-theme .text-white { color: #0f172a !important; }
+        /* Text Colors - Relaxed to avoid breaking high-contrast banners like success messages */
+        body.light-theme .text-white:not(.bg-green-600 *):not(.bg-red-600 *):not(.bg-amber-600 *) { 
+            color: #0f172a !important; 
+        }
         body.light-theme .text-white\/30,
         body.light-theme .text-white\/40,
         body.light-theme .text-white\/50,
@@ -124,6 +129,14 @@ body.light-theme .glass-panel {
         body.light-theme .text-white\/70,
         body.light-theme .text-white\/80 { color: #64748b !important; }
         
+        /* High-contrast Input fix for worker portal */
+        body.light-theme input:not([type="checkbox"]):not([type="radio"]), 
+        body.light-theme select, 
+        body.light-theme textarea {
+            color: #0f172a !important;
+            font-weight: 600 !important;
+        }
+
         /* Borders */
         body.light-theme .border-white\/5,
         body.light-theme .border-white\/10,
@@ -143,8 +156,7 @@ body.light-theme .glass-panel {
         
         /* Dark Mode is the DEFAULT */
         .worker-dash { 
-            background: linear-gradient(to bottom right, #0a180e, #0d2214, #0a180e) !important; 
-            min-height: 100vh;
+            background: transparent !important; 
         }
 
         .dash-card, .glass-panel, .backdrop-blur-xl {
@@ -161,8 +173,19 @@ body.light-theme .glass-panel {
             box-shadow: inset 0 4px 15px rgba(0,0,0,0.2) !important;
         }
 
-        .text-slate-900, .text-slate-800, .text-slate-700 { color: #ffffff !important; }
-        .text-slate-500, .text-slate-400, .text-slate-300 { color: rgba(255,255,255,0.5) !important; }
+        .worker-dash .text-slate-900, .worker-dash .text-slate-800, .worker-dash .text-slate-700 { color: #ffffff !important; }
+        .worker-dash .text-slate-500, .worker-dash .text-slate-400, .worker-dash .text-slate-300 { color: rgba(255,255,255,0.5) !important; }
+
+        /* Ensure SweetAlert modals in Light Mode have dark text */
+        body.light-theme .swal2-container, 
+        body.light-theme .swal2-popup { color: #0f172a !important; }
+        body.light-theme .swal2-container .text-slate-900, 
+        body.light-theme .swal2-container .text-slate-800 { color: #0f172a !important; }
+        body.light-theme .swal2-container .text-slate-500, 
+        body.light-theme .swal2-container .text-slate-400 { color: #64748b !important; }
+
+        /* Ensure SweetAlert is always on top of the record modal (z-1100) */
+        .swal2-container { z-index: 2000 !important; }
         
         /* Light Mode Overrides */
         body.light-theme .worker-dash { background: #f1f5f9 !important; }
@@ -179,30 +202,123 @@ body.light-theme .glass-panel {
             border-color: rgba(0,0,0,0.05) !important;
         }
 
+        /* Main Content Background (Theme Aware) */
+        .main-content-bg {
+            background: linear-gradient(to bottom right, #0a180e, #0d2214, #0a180e) !important;
+            min-height: 100vh;
+        }
+        body.light-theme .main-content-bg {
+            background: #f1f5f9 !important;
+        }
+
         /* Sidebar Specific Contrast Fixes */
-        #workerSidebar span, 
-        #workerSidebar h2, 
-        #workerSidebar h4, 
-        #workerSidebar p,
-        #workerSidebar i {
-            color: rgba(255, 255, 255, 0.8) !important;
+        #workerSidebar a, 
+        #workerSidebar a *,
+        #workerSidebar button#farmOpsToggle,
+        #workerSidebar button#farmOpsToggle *,
+        #workerSidebar h2 {
+            color: #f1f5f9 !important; /* Force bright white-gray */
+            fill: #f1f5f9 !important;
+            opacity: 1 !important;
+            transition: all 0.2s ease !important;
         }
         
-        #workerSidebar .text-[#1e293b],
-        #workerSidebar .text-slate-900,
-        #workerSidebar .text-slate-800,
-        #workerSidebar .text-slate-600 {
-            color: #ffffff !important;
+        #workerSidebar a {
+            font-weight: 600 !important;
+            margin-bottom: 2px;
         }
 
-        #workerSidebar .group:hover span,
-        #workerSidebar .group:hover i {
-            color: #22c55e !important; /* Green on hover */
+        #workerSidebar a:hover, #workerSidebar button#farmOpsToggle:hover {
+            background: #22c55e !important; /* Solid vibrant green */
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.25) !important;
+        }
+        
+        #workerSidebar a:hover *, #workerSidebar button#farmOpsToggle:hover * {
+            color: #ffffff !important;
+            fill: #ffffff !important;
         }
 
-        #workerSidebar .bg-white\/15 span,
-        #workerSidebar .bg-white\/15 i {
+        #workerSidebar a.active {
+            background: #166534 !important; /* Deep forest green */
             color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+
+        #workerSidebar a.active * {
+            color: #ffffff !important;
+            font-weight: 800 !important;
+        }
+
+        /* Medical Alerts HUD */
+        .alerts-corner-hud {
+            position: fixed;
+            top: 85px;
+            right: 20px;
+            width: 380px;
+            z-index: 90; /* Lower than modals (100+) */
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .alert-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-left: 5px solid #ef4444;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.2), 0 8px 10px -6px rgba(220, 38, 38, 0.1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            gap: 12px;
+            animation: slide-in-right 0.5s ease-out;
+            pointer-events: auto !important;
+            border: 1px solid rgba(239, 68, 68, 0.1);
+            border-left: 5px solid #ef4444;
+            color: #0f172a; /* Ensure dark text in light background card */
+        }
+
+        .alert-card-icon {
+            width: 40px;
+            height: 40px;
+            background: #fee2e2;
+            color: #ef4444;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            animation: pulse-red-icon 2s infinite;
+        }
+
+        @keyframes pulse-red-icon {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); background: #fecaca; }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes slide-in-right {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .alert-card button {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .alert-card button:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
         }
     </style>
 </head>
@@ -222,7 +338,7 @@ body.light-theme .glass-panel {
             <div class="flex items-center gap-2">
                 <div
                     class="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center shadow-lg border border-white/10">
-                    <i class='bx bx-pig text-white text-sm'></i>
+                    <i class='bx bx-layer text-white text-sm'></i>
                 </div>
                 <h2 class="font-bold text-white text-sm tracking-tight hidden sm:block">Porcitrack</h2>
             </div>
@@ -236,7 +352,7 @@ body.light-theme .glass-panel {
                     class="flex items-center gap-1.5 bg-white/10 px-2.5 py-1.5 rounded-lg border border-white/10 cursor-pointer transition-all"
                     onclick="syncQueue()">
                     <div id="mobileSyncDot" class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
-                    <span id="mobileSyncLabel" class="text-white text-[9px] font-bold uppercase tracking-widest leading-none">Synced</span>
+                    <span id="mobileSyncLabel" class="text-white text-[9px] font-bold uppercase tracking-widest leading-none">Online</span>
                 </div>
                 <button
                     onclick="if(typeof openNotificationsPanel === 'function'){ openNotificationsPanel(); } else { window.location.href='/worker/dashboard'; }"
@@ -268,8 +384,8 @@ body.light-theme .glass-panel {
                         @endif
                     </div>
                     <div class="min-w-0">
-                        <h2 class="font-extrabold text-white text-base tracking-tight leading-tight">PorciTrack</h2>
-                        <p class="text-[11px] text-white/50 truncate font-bold uppercase tracking-widest">{{ Auth::user()->name }}</p>
+                        <h2 class="font-extrabold text-white text-base tracking-tight leading-tight">{{ Auth::user()->name }}</h2>
+                        <p class="text-[11px] text-white/50 truncate font-bold uppercase tracking-widest">Worker</p>
                     </div>
                 </div>
             </div>
@@ -306,18 +422,13 @@ body.light-theme .glass-panel {
                         </a>
                         <a href="{{ route('worker.swineDetails') }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('worker.swineDetails') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white/80 hover:bg-white/10' }} font-bold transition text-sm">
-                            <i class='bx bx-pig text-lg text-green-400/80'></i>
+                            <i class='bx bx-detail text-lg text-green-400/80'></i>
                             <span>Swine Details</span>
                         </a>
                         <a href="{{ route('worker.feed-formulas') }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('worker.feed-formulas') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white/60 hover:bg-white/10 hover:text-white' }} font-medium transition text-sm">
                             <i class='bx bx-bowl-hot text-lg'></i>
                             <span>Feed Formulas</span>
-                        </a>
-                        <a href="{{ route('admin.qr.index') }}"
-                            class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('admin.qr.index') ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 'text-white/60 hover:bg-white/10 hover:text-white' }} font-medium transition text-sm">
-                            <i class='bx bx-qr-scan text-lg'></i>
-                            <span>QR Labels</span>
                         </a>
                     </div>
                     <script>
@@ -344,27 +455,9 @@ function toggleDropdown(dropdownId, iconId) {
                     <span>Settings</span>
                 </a>
 
-                <div class="px-4 mt-6 mb-2">
-                    <p class="text-[10px] uppercase font-bold text-white/30 tracking-widest">Quick Actions</p>
-                </div>
-                <a href="#" onclick="triggerManualEntry(event)"
-                    class="flex items-center gap-3 px-4 py-4 rounded-2xl bg-green-500/10 text-green-400 border border-green-500/30 hover:bg-green-500/20 font-black transition shadow-lg text-xs uppercase tracking-widest group">
-                    <i class='bx bx-edit text-xl group-hover:scale-110 transition-transform'></i>
-                    <span>Manual ID Entry</span>
-                </a>
             </nav>
 
             <div class="p-4 border-t border-white/10 space-y-3">
-                <div class="flex items-center gap-3 px-3 py-2">
-                    <div class="w-9 h-9 rounded-full overflow-hidden border border-white/20 shadow-inner bg-white/10 shrink-0">
-                        <img src="{{ auth()->user()->photo ? asset('storage/' . auth()->user()->photo) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=166534&color=fff&size=80&bold=true' }}"
-                            alt="User" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-semibold text-white truncate">{{ auth()->user()->name ?? 'User' }}</p>
-                        <p class="text-[10px] text-white/40 uppercase tracking-widest">Worker</p>
-                    </div>
-                </div>
                 <form method="POST" action="{{ route('logout') }}" id="workerLogoutForm">
                     @csrf
                     <button type="button" onclick="confirmWorkerLogout()"
@@ -383,7 +476,7 @@ function toggleDropdown(dropdownId, iconId) {
         </aside>
 
         <!-- Main Content Area -->
-        <main class="flex-1 overflow-y-auto overflow-x-hidden pt-16 md:pt-0 relative">
+        <main class="flex-1 overflow-y-auto overflow-x-hidden pt-16 md:pt-0 relative main-content-bg">
 
             <!-- Global Floating Icons (Right Side - Green as requested) -->
             <div
@@ -396,7 +489,7 @@ function toggleDropdown(dropdownId, iconId) {
                         class="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-green-400 shadow-[0_0_10px_rgba(34,197,94,0.6)] animate-pulse">
                     </div>
                     <span id="globalSyncLabel"
-                        class="text-white text-[9px] md:text-[10px] font-bold uppercase tracking-widest leading-none">Synced</span>
+                        class="text-white text-[9px] md:text-[10px] font-bold uppercase tracking-widest leading-none">Online</span>
                 </div>
 
                 <!-- Notifications Bell -->
@@ -423,49 +516,47 @@ function toggleDropdown(dropdownId, iconId) {
     <div id="notificationsBackdrop" class="fixed inset-0 z-[190] hidden bg-black/50 backdrop-blur-sm"
         onclick="closeNotificationsPanel()"></div>
     <div id="notificationsPanel"
-        class="fixed top-0 right-0 bottom-0 z-[200] w-full max-w-sm bg-[#0b1120] border-l border-white/10 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
-        <div class="p-6 border-b border-white/10 flex justify-between items-center shrink-0">
+        class="fixed top-0 right-0 bottom-0 z-[200] w-full max-w-sm bg-white border-l border-slate-200 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-6 border-b border-slate-100 flex justify-between items-center shrink-0">
             <div>
-                <h2 class="text-2xl font-black text-white">Alerts</h2>
-                <p class="text-white/40 text-xs font-semibold mt-0.5">All farm notifications</p>
+                <h2 class="text-2xl font-black text-slate-900">Alerts</h2>
+                <p class="text-slate-400 text-xs font-semibold mt-0.5">All farm notifications</p>
             </div>
             <button onclick="closeNotificationsPanel()"
-                class="w-12 h-12 rounded-2xl bg-white/5 text-white flex items-center justify-center hover:bg-white/10 transition">
+                class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition">
                 <i class='bx bx-x text-2xl'></i>
             </button>
         </div>
 
         <!-- Filter Tabs -->
-        <div class="flex gap-2 px-6 py-4 border-b border-white/5 shrink-0">
+        <div class="flex gap-2 px-6 py-4 border-b border-slate-100 shrink-0">
             <button onclick="filterPanel('all', this)"
-                class="panel-filter-btn flex-1 py-2 rounded-xl bg-green-500/20 text-green-300 border border-green-500/30 text-xs font-black uppercase">All</button>
+                class="panel-filter-btn flex-1 py-2 rounded-xl bg-green-100 text-green-700 border border-green-200 text-xs font-black uppercase">All</button>
             <button onclick="filterPanel('critical', this)"
-                class="panel-filter-btn flex-1 py-2 rounded-xl bg-white/5 text-white/50 border border-white/10 text-xs font-black uppercase">Critical</button>
+                class="panel-filter-btn flex-1 py-2 rounded-xl bg-slate-100 text-slate-500 border border-slate-200 text-xs font-black uppercase">Critical</button>
             <button onclick="filterPanel('health', this)"
-                class="panel-filter-btn flex-1 py-2 rounded-xl bg-white/5 text-white/50 border border-white/10 text-xs font-black uppercase">Health</button>
+                class="panel-filter-btn flex-1 py-2 rounded-xl bg-slate-100 text-slate-500 border border-slate-200 text-xs font-black uppercase">Health</button>
             <button onclick="filterPanel('general', this)"
-                class="panel-filter-btn flex-1 py-2 rounded-xl bg-white/5 text-white/50 border border-white/10 text-xs font-black uppercase">General</button>
+                class="panel-filter-btn flex-1 py-2 rounded-xl bg-slate-100 text-slate-500 border border-slate-200 text-xs font-black uppercase">General</button>
         </div>
 
         <!-- Alert Items -->
         <div class="flex-1 overflow-y-auto p-4 space-y-3" id="alertPanelList">
             <!-- Critical -->
             <div class="alert-item" data-type="critical">
-                <div class="p-4 rounded-2xl bg-red-500/10 border border-red-500/30">
+                <div class="p-4 rounded-2xl bg-red-50 border border-red-200">
                     <div class="flex gap-3 items-start">
-                        <div class="w-10 h-10 rounded-xl bg-red-500/25 flex items-center justify-center shrink-0">
-                            <i class='bx bx-heart-broken text-red-400 text-lg'></i>
+                        <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center shrink-0">
+                            <i class='bx bx-heart-broken text-red-600 text-lg'></i>
                         </div>
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
-                                <p class="text-red-300 font-black text-sm">Pig #42 — Health Crisis</p>
-                                <span class="text-white/30 text-[10px]">2 min ago</span>
+                                <p class="text-red-700 font-black text-sm">Pig #42 &mdash; Health Crisis</p>
+                                <span class="text-slate-400 text-[10px]">2 min ago</span>
                             </div>
-                            <p class="text-white/60 text-xs mt-1 leading-snug">Rapid breathing and lethargy in Pen 3.
-                                Vet required.</p>
+                            <p class="text-slate-600 text-xs mt-1 leading-snug">Rapid breathing and lethargy in Pen 3. Vet required.</p>
                             <div class="flex gap-2 mt-3">
-                                <span
-                                    class="px-2 py-0.5 bg-red-500/20 text-red-300 rounded-md text-[9px] font-black border border-red-500/30 uppercase">Critical</span>
+                                <span class="px-2 py-0.5 bg-red-100 text-red-700 rounded-md text-[9px] font-black border border-red-200 uppercase">Critical</span>
                             </div>
                         </div>
                     </div>
@@ -473,21 +564,19 @@ function toggleDropdown(dropdownId, iconId) {
             </div>
             <!-- Health -->
             <div class="alert-item" data-type="health">
-                <div class="p-4 rounded-2xl bg-yellow-500/10 border border-yellow-500/20">
+                <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200">
                     <div class="flex gap-3 items-start">
-                        <div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center shrink-0">
-                            <i class='bx bx-error-alt text-yellow-400 text-lg'></i>
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
+                            <i class='bx bx-error-alt text-amber-600 text-lg'></i>
                         </div>
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
-                                <p class="text-yellow-300 font-black text-sm">Pig #17 — Check Needed</p>
-                                <span class="text-white/30 text-[10px]">1 hr ago</span>
+                                <p class="text-amber-700 font-black text-sm">Pig #17 &mdash; Check Needed</p>
+                                <span class="text-slate-400 text-[10px]">1 hr ago</span>
                             </div>
-                            <p class="text-white/60 text-xs mt-1 leading-snug">Due for routine health monitoring. Last
-                                check was 4 days ago.</p>
+                            <p class="text-slate-600 text-xs mt-1 leading-snug">Due for routine health monitoring. Last check was 4 days ago.</p>
                             <div class="flex gap-2 mt-3">
-                                <span
-                                    class="px-2 py-0.5 bg-yellow-500/15 text-yellow-300 rounded-md text-[9px] font-black border border-yellow-500/20 uppercase">Health</span>
+                                <span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-md text-[9px] font-black border border-amber-200 uppercase">Health</span>
                             </div>
                         </div>
                     </div>
@@ -526,33 +615,53 @@ function toggleDropdown(dropdownId, iconId) {
             if (e) e.preventDefault();
             closeSidebar();
 
+            const isLight = document.body.classList.contains('light-theme');
+
             Swal.fire({
                 title: 'Manual ID Entry',
-                input: 'text',
-                inputPlaceholder: 'e.g. PEN-1 or PIG-123',
-                html: '<p class="text-xs text-slate-500 mb-4 px-2">Type the Pen ID or animal Tag ID directly instead of scanning the QR.</p>',
-                background: '#ffffff',
-                color: '#1e293b',
-                confirmButtonText: 'Record Log',
+                html: `
+                    <p class="text-xs text-slate-500 mb-5 px-2 leading-relaxed">Type the <strong>Pig Ear Tag</strong> (e.g. <code>A2-001</code>) or <strong>Pen Number</strong> (e.g. <code>1</code>) to load the full assessment form.</p>
+                    <input id="swal-manual-id-input" type="text"
+                        class="swal2-input uppercase tracking-widest font-bold text-center text-lg"
+                        placeholder="e.g. A2-001 or 1"
+                        autocomplete="off"
+                        style="width:100%;border-radius:12px;font-size:1.1rem;">
+                `,
+                background: isLight ? '#ffffff' : '#0b1120',
+                color: isLight ? '#1e293b' : '#ffffff',
+                confirmButtonText: 'Open Form',
                 confirmButtonColor: '#22c55e',
                 showCancelButton: true,
                 cancelButtonColor: '#94a3b8',
-                customClass: {
-                    input: 'bg-slate-50 border border-slate-200 text-slate-800 rounded-xl text-center uppercase tracking-widest text-lg font-bold'
+                focusConfirm: false,
+                didOpen: () => {
+                    // Focus the input and allow Enter to confirm
+                    const inp = document.getElementById('swal-manual-id-input');
+                    if (inp) {
+                        inp.focus();
+                        inp.addEventListener('keydown', (ev) => {
+                            if (ev.key === 'Enter') { ev.preventDefault(); Swal.clickConfirm(); }
+                        });
+                    }
                 },
-                inputValidator: (value) => {
-                    if (!value) return 'You need to enter an ID!'
+                preConfirm: () => {
+                    const val = document.getElementById('swal-manual-id-input')?.value?.trim();
+                    if (!val) {
+                        Swal.showValidationMessage('Please enter an ID first.');
+                        return false;
+                    }
+                    return val.toUpperCase();
                 }
             }).then((result) => {
                 if (result.isConfirmed && result.value) {
-                    const tagId = result.value.toUpperCase().trim();
-                    // If we are on dashboard where qr scanner logic sits
-                    if (typeof window.onScanSuccess === 'function') {
-                        window.onScanSuccess(tagId, null);
+                    const tagId = result.value;
+
+                    // If on Dashboard — open form inline
+                    if (typeof onScanSuccess === 'function') {
+                        onScanSuccess(tagId);
                     } else {
-                        // Redirect to dashboard with query param so it can be handled
-                        window.location.href = "{{ route('worker.dashboard') }}?manual_scan=" + encodeURIComponent(
-                            tagId);
+                        // On another page — redirect to dashboard and auto-open there
+                        window.location.href = "{{ route('worker.dashboard') }}?manual_scan=" + encodeURIComponent(tagId);
                     }
                 }
             });
@@ -607,37 +716,42 @@ function toggleDropdown(dropdownId, iconId) {
         
         // --- Global Theme Engine ---
         function toggleWorkerTheme() {
-            let currentTheme = localStorage.getItem('porcitrack-worker-theme');
-            if(!currentTheme) {
-                currentTheme = 'dark'; // Default to dark
-            }
-            let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            const currentTheme = localStorage.getItem('porcitrack-worker-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            console.log("Switching theme to:", newTheme);
             localStorage.setItem('porcitrack-worker-theme', newTheme);
             applyPageTheme(newTheme);
         }
         
         function applyPageTheme(theme) {
-            // Updated Icon Logic: Dark Mode = Moon, Light Mode = Sun
-            document.querySelectorAll('.global-theme-icon').forEach(icon => {
-                icon.className = theme === 'dark' ? 'bx bx-moon text-xl md:text-xl global-theme-icon' : 'bx bx-sun text-xl md:text-xl global-theme-icon';
-            });
-
-            // Toggle custom light-theme class on body
+            // 1. Update Body Class
             if (theme === 'light') {
                 document.body.classList.add('light-theme');
             } else {
                 document.body.classList.remove('light-theme');
             }
 
-            // Update settings toggle switch
+            // 2. Update Icons (Sun for Light, Moon for Dark)
+            document.querySelectorAll('.global-theme-icon').forEach(icon => {
+                icon.className = theme === 'dark' ? 'bx bx-moon text-xl md:text-xl global-theme-icon' : 'bx bx-sun text-xl md:text-xl global-theme-icon';
+            });
+
+            // 3. Sync Settings Toggle Switch (if on settings page)
             const themeToggle = document.getElementById('themeToggleSwitch');
             if(themeToggle) {
                 themeToggle.checked = (theme === 'dark');
             }
+
+            // 4. Sync Hidden Input for Form Submission (if on settings page)
+            const themeInput = document.getElementById('themeInput');
+            if (themeInput) {
+                themeInput.value = theme;
+            }
         }
         
         document.addEventListener('DOMContentLoaded', () => {
-            let current = localStorage.getItem('porcitrack-worker-theme') || 'dark';
+            const current = localStorage.getItem('porcitrack-worker-theme') || 'dark';
             applyPageTheme(current);
         });
 
@@ -685,7 +799,7 @@ function toggleDropdown(dropdownId, iconId) {
                     label.textContent = `Pending (${q.length})`;
                 } else {
                     dot.className = "w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse";
-                    label.textContent = "Synced";
+                    label.textContent = "Online";
                 }
             };
 
@@ -737,22 +851,48 @@ function toggleDropdown(dropdownId, iconId) {
         }
 
         async function offlineSafeFetch(url, payload, label) {
+            console.log(`[Fetch] Sending to ${url}:`, payload);
             if (!navigator.onLine) {
+                console.warn("[Fetch] Offline mode: Queueing request.");
                 enqueue(url, payload, label);
                 return { success: true, offline: true };
             }
             try {
                 const res = await fetch(url, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json', 
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}', 
+                        'Accept': 'application/json' 
+                    },
                     body: JSON.stringify(payload)
                 });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.message || 'Server error');
+                
+                let data;
+                const contentType = res.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    data = await res.json();
+                } else {
+                    const text = await res.text();
+                    console.error("[Fetch] Non-JSON response:", text);
+                    throw new Error("Server returned an invalid response. Please check your connection.");
+                }
+
+                if (!res.ok) {
+                    console.error("[Fetch] Error response:", data);
+                    throw new Error(data.message || data.error || `Server Error (${res.status})`);
+                }
+                
+                console.log("[Fetch] Success:", data);
                 return data;
-            } catch {
-                enqueue(url, payload, label);
-                return { success: true, offline: true };
+            } catch (err) {
+                console.error("[Fetch] Exception:", err);
+                // If it's a network error (failed to fetch), we queue it
+                if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
+                    enqueue(url, payload, label);
+                    return { success: true, offline: true };
+                }
+                throw err; // Re-throw validation or server errors
             }
         }
 
@@ -787,6 +927,33 @@ function toggleDropdown(dropdownId, iconId) {
                 }
             });
         }
+        function handleNotifClick(pigId, penId, penName = '', event = null, activityId = null) {
+            console.log("Worker Alert clicked for Pig ID:", pigId, "Activity ID:", activityId);
+
+            // Remove the card immediately if it exists (for floating toast alerts)
+            const target = event?.target || window.event?.target;
+            if (target) {
+                const card = target.closest('.alert-card');
+                if (card) {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateX(50px)';
+                    setTimeout(() => card.remove(), 400);
+                }
+            }
+
+            if (window.location.pathname.includes('/worker/swine-details')) {
+                if (typeof window.gotoPig === 'function') {
+                    window.gotoPig(pigId, activityId);
+                } else if (typeof showFloatingCard === 'function') {
+                    showFloatingCard(pigId, penName, activityId);
+                }
+            } else {
+                sessionStorage.setItem('pending_pig_modal', pigId);
+                sessionStorage.setItem('pending_pen_name', penName);
+                if (activityId) sessionStorage.setItem('pending_activity_id', activityId);
+                window.location.href = "{{ route('worker.swineDetails') }}";
+            }
+        }
     </script>
 
     <!-- PWA Registration -->
@@ -814,6 +981,26 @@ function toggleDarkMode() {
 }
 </script>
 
+    <!-- GLOBAL PIG RECORD MODAL -->
+    <div id="pigModalOverlay" class="fixed inset-0 z-[1100] hidden items-start justify-center p-4 md:p-8 overflow-y-auto">
+        <div onclick="hidePigModal()" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md"></div>
+
+        <div id="modalLoader" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[110] hidden flex flex-col items-center justify-center gap-6 animate-fade-in pointer-events-none">
+            <div class="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin shadow-[0_0_50px_rgba(34,197,94,0.3)]"></div>
+            <p class="text-[10px] font-black text-white uppercase tracking-[0.5em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">Loading...</p>
+        </div>
+
+        <div id="pigModalContent" class="relative z-10 w-full max-w-5xl my-8 animate-fade-in shadow-[0_50px_100px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden">
+            {{-- Injected via JS --}}
+        </div>
+    </div>
+
+    <script>
+        function hidePigModal() {
+            document.getElementById('pigModalOverlay').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+    </script>
 </body>
 
 </html>
