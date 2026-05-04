@@ -29,9 +29,10 @@ class PenController extends Controller
             $pen->income = $pen->revenue - $investment;
         }
         
+        $allPigs = \App\Models\Pig::with('pen')->whereNotIn('status', ['Sold', 'Disposed'])->orderBy('tag')->get();
         $workers = \App\Models\User::where('role', 'farm_worker')->get();
         
-        return view('pens.index', compact('pens', 'workers'));
+        return view('pens.index', compact('pens', 'workers', 'allPigs'));
     }
 
     /**
