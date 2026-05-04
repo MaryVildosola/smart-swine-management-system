@@ -61,17 +61,16 @@
             <div class="panel-subtitle">Generate a tag for a pig with a unique QR payload.</div>
 
             <div class="form-row">
-                <label for="pig_tag">Pig Tag Code</label>
-                <input id="pig_tag" type="text" placeholder="Enter pig tag or ID" value="PIG-001">
-            </div>
-            <div class="form-row">
-                <label for="pig_pen_id">Assigned Pen</label>
-                <select id="pig_pen_id">
-                    @foreach($pens as $pen)
-                        <option value="{{ $pen->id }}">{{ $pen->name }}</option>
+                <label for="pig_tag_select">Select Animal</label>
+                <select id="pig_tag_select">
+                    @foreach($pigs as $pig)
+                        <option value="{{ $pig->tag }}" data-pen="{{ $pig->pen->name }}" data-pen-id="{{ $pig->pen_id }}">
+                            {{ $pig->tag }} ({{ $pig->pen->name }})
+                        </option>
                     @endforeach
                 </select>
             </div>
+
             <button type="button" class="btn-primary" id="generate-pig">Generate Pig Tag</button>
         </section>
 
@@ -150,13 +149,25 @@
     });
 
     document.getElementById('generate-pig').addEventListener('click', () => {
-        const tagValue = pigTag.value.trim() || 'NEW-PIG';
-        if (!pigPenSelect.value) {
-            Swal.fire('Error', 'Please assign the pig to a pen', 'error');
+        const pigSelect = document.getElementById('pig_tag_select');
+        const selectedOption = pigSelect.options[pigSelect.selectedIndex];
+        
+        if (!selectedOption) {
+            Swal.fire('Error', 'Please select an animal first', 'error');
             return;
         }
-        const penName = pigPenSelect.options[pigPenSelect.selectedIndex].text;
-        const payload = JSON.stringify({ type: 'pig', tag: tagValue, pen_id: pigPenSelect.value, pen_name: penName });
+
+        const tagValue = selectedOption.value;
+        const penName = selectedOption.getAttribute('data-pen');
+        const penId = selectedOption.getAttribute('data-pen-id');
+        
+        const payload = JSON.stringify({ 
+            type: 'pig', 
+            tag: tagValue, 
+            pen_id: penId, 
+            pen_name: penName 
+        });
+        
         updatePreview('Pig Tag', `${tagValue} — ${penName}`, payload);
     });
 
