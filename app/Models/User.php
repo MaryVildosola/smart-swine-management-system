@@ -18,6 +18,7 @@ class User extends Authenticatable
         'status',
         'photo',
         'role',
+        'region',
         'email_verified_at',
     ];
 
