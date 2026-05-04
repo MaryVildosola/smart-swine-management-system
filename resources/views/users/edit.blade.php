@@ -100,6 +100,14 @@
                                 </select>
                             </div>
 
+                            {{-- Region --}}
+                            <div class="xl:col-span-6 col-span-12 mb-4">
+                                <label class="form-label">Farm Region</label>
+                                <input type="text" name="region" class="form-control"
+                                    value="{{ old('region', $user->region) }}" placeholder="e.g. Batangas, Philippines">
+                                <small class="text-textmuted">Used for AI disease scout localization.</small>
+                            </div>
+
                             {{-- Photo --}}
                             <div class="xl:col-span-12 col-span-12 mb-4">
                                 <label class="form-label">Profile Photo</label>
