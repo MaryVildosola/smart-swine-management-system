@@ -107,6 +107,12 @@
                     <li class="slide {{ request()->routeIs('users.*') ? 'active' : '' }}">
                         <a href="{{ route('users.index') }}" class="side-menu__item">User Management</a>
                     </li>
+                    <li class="slide {{ request()->routeIs('admin.settings.index') ? 'active' : '' }}">
+                        <a href="{{ route('admin.settings.index') }}" class="side-menu__item">System Settings</a>
+                    </li>
+                    <li class="slide {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                        <a href="{{ route('profile.edit') }}" class="side-menu__item">My Profile</a>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -116,7 +122,7 @@
     <div class="sidebar-logout">
         <form method="POST" action="{{ route('logout') }}">
     @csrf
-    <button type="submit" class="logout-link" style="background: none; border: none; color: inherit; cursor: pointer;">
+    <button type="submit" class="sidebar-logout-btn">
         <i class="bx bx-log-out"></i> Logout
     </button>
 </form>
@@ -194,7 +200,7 @@
     }
 
     .sidebar-profile-role {
-        color: rgba(255, 255, 255, 0.45);
+        color: rgba(255, 255, 255, 0.6); /* Increased contrast */
         font-size: 0.72rem;
         margin: 0;
     }
@@ -207,7 +213,8 @@
     
     .slide-menu.child1 .side-menu__item {
         font-size: 0.8rem !important;
-        opacity: 0.7;
+        opacity: 0.85; /* Increased opacity */
+        color: #cbd5e1 !important;
     }
     
     .slide-menu.child1 .side-menu__item:hover {
