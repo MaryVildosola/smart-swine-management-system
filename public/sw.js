@@ -1,4 +1,4 @@
-const CACHE_NAME = 'porcitrack-cache-v3';
+const CACHE_NAME = 'porcitrack-cache-v4';
 const STATIC_ASSETS = [
     '/',
     '/login',
@@ -44,6 +44,24 @@ self.addEventListener('fetch', event => {
     // Only handle GET requests for now
     if (event.request.method !== 'GET') return;
 
+    // For worker portal routes, use Network-First to ensure fresh data (status changes, etc)
+    if (event.request.url.includes('/worker/')) {
+        event.respondWith(
+            fetch(event.request)
+                .then(networkResponse => {
+                    if (networkResponse && networkResponse.status === 200) {
+                        const responseClone = networkResponse.clone();
+                        caches.open(CACHE_NAME).then(cache => {
+                            cache.put(event.request, responseClone);
+                        });
+                    }
+                    return networkResponse;
+                })
+                .catch(() => caches.match(event.request))
+        );
+        return;
+    }
+
     event.respondWith(
         caches.match(event.request).then(cachedResponse => {
             const fetchPromise = fetch(event.request).then(networkResponse => {
@@ -57,7 +75,6 @@ self.addEventListener('fetch', event => {
                 return networkResponse;
             }).catch(() => {
                 // If offline and not in cache, you could return an offline page
-                // return caches.match('/offline');
             });
 
             return cachedResponse || fetchPromise;
