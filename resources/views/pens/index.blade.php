@@ -612,10 +612,20 @@
             <div class="modal-scroll-area">
                 <form id="add-pen-form">
                     @csrf
-                    <div class="form-group">
-                        <label class="form-label">Pen Identifier / Name</label>
-                        <input id="pen-name-input" name="name" class="form-input" placeholder="e.g. Pen Alpha-1" required
-                            autocomplete="off">
+                    <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Pen Identifier / Name</label>
+                            <input id="pen-name-input" name="name" class="form-input" placeholder="e.g. Pen Alpha-1" required
+                                autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Auto-Generated Code</label>
+                            <div style="position: relative;">
+                                <input id="pen-code-input" class="form-input" readonly
+                                    style="background: #f8fafc; font-weight: 900; color: #16a34a; letter-spacing: 0.1em; cursor: not-allowed; text-align: center;">
+                                <i class='bx bx-lock-alt' style="position:absolute; right:15px; top:50%; transform:translateY(-50%); color: #cbd5e1; font-size: 0.9rem;"></i>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Section / Classification</label>
@@ -729,48 +739,83 @@
         <div class="custom-modal">
             <i class='bx bx-x modal-close' onclick="closeModal('addPigModal')"></i>
             <h2 style="font-weight: 900; margin-bottom: 4px;">Register Individual Animal</h2>
-            <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 28px;">Adding to <span id="add-pig-pen-name"
+            <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 20px;">Target Pen: <span id="add-pig-pen-name"
                     style="font-weight: 800; color: var(--deep-slate);"></span></p>
+
+            <!-- Registration Mode Toggle -->
+            <div style="display: flex; gap: 8px; margin-bottom: 24px; padding: 6px; background: #f1f5f9; border-radius: 14px;">
+                <button type="button" onclick="window.setRegistrationMode('new')" id="reg-mode-new" 
+                    style="flex: 1; padding: 10px; border-radius: 10px; border: none; background: #ffffff; color: #1e293b; font-weight: 800; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                    <i class='bx bx-plus-circle'></i> New Registration
+                </button>
+                <button type="button" onclick="window.setRegistrationMode('transfer')" id="reg-mode-transfer" 
+                    style="flex: 1; padding: 10px; border-radius: 10px; border: none; background: transparent; color: #64748b; font-weight: 700; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;">
+                    <i class='bx bx-transfer'></i> Transfer Existing
+                </button>
+            </div>
+
             <form id="add-pig-form">
                 @csrf
                 <input type="hidden" name="pen_id" id="add-pig-pen-id">
                 <input type="hidden" name="status" value="Active">
-                <div class="form-group">
-                    <label class="form-label" style="display:flex; align-items:center; justify-content:space-between;">
-                        <span>Ear Tag / Identifier</span>
-                        <span id="pig-tag-auto-badge"
-                            style="font-size: 0.6rem; background: #f0fdf4; color: #16a34a; border: 1px solid #dcfce7; padding: 2px 8px; border-radius: 20px; font-weight: 800;">Auto</span>
-                    </label>
-                    <div style="position: relative;">
-                        <input id="pig-tag-input" name="tag" class="form-input" placeholder="Loading auto-tag..."
-                            autocomplete="off" style="padding-left: 44px;">
-                        <i class='bx bx-purchase-tag-alt'
-                            style="position:absolute; left:15px; top:50%; transform:translateY(-50%); color: #94a3b8; font-size: 1.1rem;"></i>
+                <input type="hidden" id="reg-mode-input" value="new">
+
+                <!-- NEW REGISTRATION FIELDS -->
+                <div id="new-pig-fields">
+                    <div class="form-group">
+                        <label class="form-label" style="display:flex; align-items:center; justify-content:space-between;">
+                            <span>Ear Tag / Identifier</span>
+                            <span id="pig-tag-auto-badge"
+                                style="font-size: 0.6rem; background: #f0fdf4; color: #16a34a; border: 1px solid #dcfce7; padding: 2px 8px; border-radius: 20px; font-weight: 800;">Auto</span>
+                        </label>
+                        <div style="position: relative;">
+                            <input id="pig-tag-input" name="tag" class="form-input" placeholder="Loading auto-tag..."
+                                readonly style="padding-left: 44px; background: #f8fafc; cursor: not-allowed;">
+                            <i class='bx bx-purchase-tag-alt'
+                                style="position:absolute; left:15px; top:50%; transform:translateY(-50%); color: #94a3b8; font-size: 1.1rem;"></i>
+                        </div>
+                        <p style="font-size: 0.7rem; color: #16a34a; font-weight: 700; margin-top: 6px;">
+                            <i class='bx bx-check-shield'></i> System-protected identifier (auto-generated)
+                        </p>
                     </div>
-                    <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 6px;">Auto-filled from pen sequence. You can
-                        override this manually.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Initial Weight (kg)</label>
+                            <input name="weight" type="number" step="0.01" class="form-input" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Health Status</label>
+                            <select name="health_status" class="form-input">
+                                <option value="Healthy">Healthy</option>
+                                <option value="Warning">Observation</option>
+                                <option value="Sick">Sick</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Breed / Variant</label>
+                        <input name="breed" class="form-input" placeholder="e.g. Large White">
+                    </div>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+
+                <!-- TRANSFER FIELDS -->
+                <div id="transfer-pig-fields" style="display: none;">
                     <div class="form-group">
-                        <label class="form-label">Initial Weight (kg)</label>
-                        <input name="weight" type="number" step="0.01" class="form-input" placeholder="0.00">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Health Status</label>
-                        <select name="health_status" class="form-input">
-                            <option value="Healthy">Healthy</option>
-                            <option value="Warning">Observation</option>
-                            <option value="Sick">Sick</option>
+                        <label class="form-label">Select Pig to Transfer</label>
+                        <select id="transfer-pig-id" name="transfer_pig_id" class="form-input">
+                            <option value="">-- Choose Animal --</option>
+                            @foreach($allPigs as $p)
+                                <option value="{{ $p->id }}" data-pen-id="{{ $p->pen_id }}">#{{ $p->tag }} (Current: {{ $p->pen->name ?? 'Unassigned' }})</option>
+                            @endforeach
                         </select>
+                        <p style="font-size: 0.7rem; color: #64748b; margin-top: 8px;">Moving an animal will update its location and record the movement in its history.</p>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Breed / Variant</label>
-                    <input name="breed" class="form-input" placeholder="e.g. Large White">
-                </div>
-                <button type="submit"
-                    style="width: 100%; background: var(--accent-green); color: white; border: none; padding: 16px; border-radius: 16px; font-weight: 800; margin-top: 10px; cursor: pointer;">Add
-                    Animal to Pen</button>
+
+                <button type="submit" id="add-pig-submit-btn"
+                    style="width: 100%; background: var(--accent-green); color: white; border: none; padding: 16px; border-radius: 16px; font-weight: 800; margin-top: 10px; cursor: pointer;">
+                    Confirm & Add Animal
+                </button>
             </form>
         </div>
     </div>
@@ -1041,18 +1086,6 @@
                     tagInput.placeholder = 'Enter manually';
                 });
 
-            // When user types their own tag, mark as manual
-            tagInput.oninput = function() {
-                if (tagInput.value && tagInput.value !== tagInput.getAttribute('data-auto')) {
-                    badge.innerText = 'Manual';
-                    badge.style.background = '#fef9c3';
-                    badge.style.color = '#a16207';
-                } else {
-                    badge.innerText = 'Auto-Generated';
-                    badge.style.background = '#f0fdf4';
-                    badge.style.color = '#16a34a';
-                }
-            };
         };
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -1071,12 +1104,19 @@
             function updateTagPreview() {
                 var name = penNameInput ? penNameInput.value : '';
                 var count = parseInt((penCountInput ? penCountInput.value : '') || 0);
+                
+                // Auto-generate Pen Code
+                var prefix = buildPrefix(name);
+                var penCodeInput = document.getElementById('pen-code-input');
+                if (penCodeInput) {
+                    penCodeInput.value = name ? prefix : '';
+                }
+
                 if (!name || count <= 0) {
                     tagPreviewBox.style.display = 'none';
                     return;
                 }
                 tagPreviewBox.style.display = 'block';
-                var prefix = buildPrefix(name);
                 var show = Math.min(count, BADGE_MAX);
                 var html = '';
                 for (var i = 1; i <= show; i++) {
@@ -1132,19 +1172,47 @@
             // --- PIG FORM SUBMIT ---
             document.getElementById('add-pig-form').addEventListener('submit', async function(e) {
                 e.preventDefault();
-                var res = await fetch('{{ route('admin.pigs.store') }}', {
-                    method: 'POST',
-                    body: JSON.stringify(Object.fromEntries(new FormData(e.target))),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                var mode = document.getElementById('reg-mode-input').value;
+                var btn = document.getElementById('add-pig-submit-btn');
+                var penId = document.getElementById('add-pig-pen-id').value;
+                
+                btn.disabled = true;
+                btn.innerText = mode === 'transfer' ? 'Transferring...' : 'Registering...';
+
+                if (mode === 'transfer') {
+                    var pigId = document.getElementById('transfer-pig-id').value;
+                    if (!pigId) {
+                        Swal.fire('Notice', 'Please select an animal to transfer.', 'info');
+                        btn.disabled = false;
+                        btn.innerText = 'Confirm & Add Animal';
+                        return;
                     }
-                });
-                var data = await res.json();
+
+                    var res = await fetch(`/admin/pigs/${pigId}/move-pen`, {
+                        method: 'POST',
+                        body: JSON.stringify({ pen_id: penId }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+                    var data = await res.json();
+                } else {
+                    var res = await fetch('{{ route('admin.pigs.store') }}', {
+                        method: 'POST',
+                        body: JSON.stringify(Object.fromEntries(new FormData(e.target))),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+                    var data = await res.json();
+                }
+
                 if (data.success) {
                     closeModal('addPigModal');
                     Swal.fire({
-                        title: 'Pig Added!',
+                        title: mode === 'transfer' ? 'Animal Transferred!' : 'Pig Registered!',
                         text: data.message,
                         icon: 'success',
                         confirmButtonColor: '#22c55e'
@@ -1152,9 +1220,50 @@
                         location.reload();
                     });
                 } else {
-                    Swal.fire('Error', data.message || 'Could not save pig.', 'error');
+                    btn.disabled = false;
+                    btn.innerText = 'Confirm & Add Animal';
+                    Swal.fire('Error', data.message || 'Could not save record.', 'error');
                 }
             });
+
+            window.setRegistrationMode = function(mode) {
+                document.getElementById('reg-mode-input').value = mode;
+                var newFields = document.getElementById('new-pig-fields');
+                var transFields = document.getElementById('transfer-pig-fields');
+                var newBtn = document.getElementById('reg-mode-new');
+                var transBtn = document.getElementById('reg-mode-transfer');
+
+                if (mode === 'new') {
+                    newFields.style.display = 'block';
+                    transFields.style.display = 'none';
+                    newBtn.style.background = '#ffffff';
+                    newBtn.style.color = '#1e293b';
+                    newBtn.style.boxShadow = '0 4px 6px rgba(0,0,0,0.05)';
+                    transBtn.style.background = 'transparent';
+                    transBtn.style.color = '#64748b';
+                    transBtn.style.boxShadow = 'none';
+                } else {
+                    newFields.style.display = 'none';
+                    transFields.style.display = 'block';
+                    transBtn.style.background = '#ffffff';
+                    transBtn.style.color = '#1e293b';
+                    transBtn.style.boxShadow = '0 4px 6px rgba(0,0,0,0.05)';
+                    newBtn.style.background = 'transparent';
+                    newBtn.style.color = '#64748b';
+                    newBtn.style.boxShadow = 'none';
+                    
+                    // Filter out pigs already in THIS pen from the dropdown
+                    var currentPenId = document.getElementById('add-pig-pen-id').value;
+                    var select = document.getElementById('transfer-pig-id');
+                    Array.from(select.options).forEach(opt => {
+                        if (opt.value && opt.getAttribute('data-pen-id') === currentPenId) {
+                            opt.style.display = 'none';
+                        } else {
+                            opt.style.display = 'block';
+                        }
+                    });
+                }
+            };
 
             // --- ADMIN PIG EDITING LOGIC (GLOBAL) ---
             window.togglePigEdit = function() {
@@ -1337,6 +1446,42 @@
                     Swal.fire('Error', data.message || 'Something went wrong.', 'error');
                 }
             });
+        });
+
+        // Global function to expand a pen and show a specific pig modal (for notifications)
+        window.expandPenAndShowPig = function(penId, pigId) {
+            console.log("Auto-opening Pen:", penId, "and Pig:", pigId);
+            const penRow = document.querySelector(`.pen-accordion[data-id="${penId}"]`);
+            if (penRow) {
+                // 1. Select the pen (populates sidebar)
+                const header = penRow.querySelector('.pen-header-row');
+                if (header) header.click();
+                
+                // 2. Expand accordion if needed
+                if (!penRow.classList.contains('expanded')) {
+                    window.PT_APP.toggleAccordion(null, penId);
+                }
+
+                // 3. Open the pig details
+                setTimeout(() => {
+                    window.PT_APP.viewPig(pigId);
+                }, 400);
+            }
+        };
+
+        // Auto-open modal if redirected from an alert (Admin side)
+        document.addEventListener('DOMContentLoaded', function() {
+            const pendingPigId = sessionStorage.getItem('pending_pig_modal');
+            const pendingPenId = sessionStorage.getItem('pending_pen_id');
+
+            if (pendingPigId) {
+                // Clear the storage immediately
+                sessionStorage.removeItem('pending_pig_modal');
+                sessionStorage.removeItem('pending_pen_id');
+                
+                // Use the global function we just defined
+                window.expandPenAndShowPig(parseInt(pendingPenId), parseInt(pendingPigId));
+            }
         });
     </script>
 @endsection
