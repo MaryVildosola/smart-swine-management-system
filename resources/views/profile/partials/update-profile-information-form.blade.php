@@ -47,6 +47,13 @@
             @endif
         </div>
 
+        <div>
+            <x-input-label for="region" :value="__('Farm Region')" />
+            <x-text-input id="region" name="region" type="text" class="mt-1 block w-full" :value="old('region', $user->region)" placeholder="e.g. Batangas, Philippines" />
+            <x-input-error class="mt-2" :messages="$errors->get('region')" />
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Specify your region to improve the accuracy of the AI Disease Scout.</p>
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
