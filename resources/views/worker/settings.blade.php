@@ -43,9 +43,9 @@
             {{-- Success/Alert Messages --}}
             @if(session('success'))
     <div id="successAlert"
-         class="mb-8 p-4 bg-green-500/20 border border-green-500/30 rounded-2xl text-green-300 text-sm flex items-center gap-3">
+         class="mb-8 p-4 bg-green-600 border border-green-500 rounded-2xl text-white text-sm flex items-center gap-3 shadow-lg shadow-green-900/20">
         <i class='bx bx-check-circle text-xl'></i>
-        {{ session('success') }}
+        <span class="font-bold">{{ session('success') }}</span>
     </div>
 @endif
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -100,6 +100,14 @@
                                 <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}"
                                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-green-500/50 transition">
                                 @error('name') <p class="text-red-400 text-[10px] mt-1">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-white/50 uppercase tracking-widest mb-2">Farm Region</label>
+                                <input type="text" name="region" value="{{ old('region', auth()->user()->region) }}"
+                                       placeholder="e.g. Batangas, Philippines"
+                                       class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-green-500/50 transition">
+                                <p class="text-[10px] text-white/30 mt-1 italic">* Used by the Smart Engine for regional disease monitoring</p>
                             </div>
 
                             <div>
@@ -194,17 +202,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Sync the toggle switch to match current theme on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const theme = localStorage.getItem('porcitrack-worker-theme') || 'dark';
-    const toggle = document.getElementById('themeToggleSwitch');
-
-    if (toggle) toggle.checked = (theme === 'dark');
-
-    // ✅ sync hidden input
-    const input = document.getElementById('themeInput');
-    if (input) input.value = theme;
-});
+// Theme syncing is now handled by applyPageTheme() in layouts/worker.blade.php
+// which runs on DOMContentLoaded and whenever the toggle is clicked.
 
 document.getElementById('photoInput').addEventListener('change', function (event) {
     const file = event.target.files[0];
@@ -245,35 +244,24 @@ document.addEventListener('DOMContentLoaded', function () {
             showCancelButton: true,
             confirmButtonText: 'Submit Request',
             confirmButtonColor: '#22c55e',
-            background: '#1a3a1a',
-            color: '#ffffff',
+            background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a3a1a',
+            color: document.body.classList.contains('light-theme') ? '#1e293b' : '#ffffff',
         }).then((result) => {
             if (result.isConfirmed && result.value) {
                 Swal.fire({
                     title: 'Request Sent!',
                     text: 'Your request to change ' + field + ' has been submitted.',
                     icon: 'success',
-                    background: '#1a3a1a',
-                    color: '#ffffff',
+                    background: document.body.classList.contains('light-theme') ? '#ffffff' : '#1a3a1a',
+                    color: document.body.classList.contains('light-theme') ? '#1e293b' : '#ffffff',
                     confirmButtonColor: '#22c55e'
                 });
             }
         });
     }
 
-    function toggleWorkerTheme() {
-    const toggle = document.getElementById('themeToggleSwitch');
-    const theme = toggle.checked ? 'dark' : 'light';
-
-    // Save locally (UI)
-    localStorage.setItem('porcitrack-worker-theme', theme);
-
-    // ✅ SEND TO BACKEND
-    document.getElementById('themeInput').value = theme;
-
-    // Apply instantly
-    document.body.classList.toggle('light-theme', theme === 'light');
-}
+// toggleWorkerTheme() is now handled globally in layouts/worker.blade.php
+// which also updates the #themeInput hidden field automatically.
 </script>
 
 <style>
