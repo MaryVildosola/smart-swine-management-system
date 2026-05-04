@@ -84,6 +84,7 @@ class ProfileController extends Controller
             'birthdate' => ['nullable', 'date'],
             'role'      => ['required', 'string', 'in:admin,farm_worker'],
             'photo'     => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+            'region'    => ['nullable', 'string', 'max:255'],
         ]);
 
         $photoPath = null;
@@ -108,6 +109,7 @@ class ProfileController extends Controller
             'birthdate' => $validated['birthdate'] ?? null,
             'role' => $validated['role'],
             'status' => $validated['status'] ?? 1,
+            'region' => $validated['region'] ?? null,
             'email_verified_at' => now(),
             'photo' => $photoPath,
         ]);
@@ -144,6 +146,7 @@ class ProfileController extends Controller
             'role'      => ['required', 'string', 'in:admin,farm_worker'],
             'status'    => ['required', 'boolean'],
             'photo'     => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+            'region'    => ['nullable', 'string', 'max:255'],
         ]);
 
         $user->name     = $validated['name'];
@@ -151,6 +154,7 @@ class ProfileController extends Controller
         $user->birthdate = $validated['birthdate'] ?? null;
         $user->role     = $validated['role'];
         $user->status   = $validated['status'];
+        $user->region   = $validated['region'] ?? null;
 
         // Update password only if provided
         if (!empty($validated['password'])) {
@@ -200,6 +204,7 @@ class ProfileController extends Controller
         $user->email    = $validated['email'];
         $user->birthdate = $validated['birthdate'] ?? null;
         $user->status   = $validated['status'];
+        $user->region   = $request->region; // Add this line
 
         if (!empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
@@ -269,6 +274,7 @@ public function updateWorkerSettings(Request $request): RedirectResponse
         'password'  => ['nullable', 'string', 'min:8', 'confirmed'],
         'photo'     => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
         'theme'     => ['nullable', 'in:light,dark'],
+        'region'    => ['nullable', 'string', 'max:255'],
     ]);
 
     // Update name
@@ -304,6 +310,11 @@ public function updateWorkerSettings(Request $request): RedirectResponse
     // Update theme if exists
     if ($request->filled('theme')) {
         $user->theme = $validated['theme'];
+    }
+
+    // Update region if exists
+    if ($request->has('region')) {
+        $user->region = $validated['region'];
     }
 
     $user->save();
