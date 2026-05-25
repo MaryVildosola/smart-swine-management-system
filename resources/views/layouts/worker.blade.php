@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Farm Worker App</title>
 
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('assets/images/pig-logo.png') }}" type="image/png">
+
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0b1120">

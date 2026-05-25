@@ -8,6 +8,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title> PorciTrack - Farm Admin </title>
 
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('assets/images/pig-logo.png') }}" type="image/png">
+
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#2e7d32">
