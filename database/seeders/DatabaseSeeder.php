@@ -15,11 +15,35 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 1. Create Default Admin
+        User::firstOrCreate(
+            ['email' => 'admin@porcitrack.com'],
+            [
+                'name' => 'System Administrator',
+                'password' => \Illuminate\Support\Facades\Hash::make('admin123'),
+                'role' => 'admin',
+                'status' => true,
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // 2. Create Default Worker
+        User::firstOrCreate(
+            ['email' => 'worker@porcitrack.com'],
+            [
+                'name' => 'Juan Dela Cruz',
+                'password' => \Illuminate\Support\Facades\Hash::make('password123'),
+                'role' => 'farm_worker',
+                'status' => true,
+            ]
+        );
+
+        // 3. Run Mock Data Seeders
+        $this->call([
+            FarmMockDataSeeder::class,
+            FeedIngredientSeeder::class,
+            PenSeeder::class,
         ]);
+
+        \Illuminate\Support\Facades\Log::info('Database seeding completed successfully.');
     }
 }

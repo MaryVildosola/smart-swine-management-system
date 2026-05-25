@@ -107,6 +107,18 @@
             </div>
         </div>
 
+        {{-- FEED FORMULA BAND --}}
+        <div class="mx-8 mt-3 rounded-2xl p-4 flex items-center justify-between" style="background:#f8fafc;border:1px solid #e2e8f0;">
+            <div class="flex items-center gap-3">
+                <i class='bx bx-bowl-hot text-2xl' style="color:{{ $hColor }}"></i>
+                <div>
+                    <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-0.5">Assigned Feed Formula</p>
+                    <p class="font-black text-sm text-slate-900">{{ $pig->feed_formula_name ?? 'Standard Mix' }}</p>
+                </div>
+            </div>
+            <a href="{{ route('worker.feed-formulas') }}" class="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition" style="background:{{ $hLight }}; color:{{ $hText }};">View Mix</a>
+        </div>
+
         {{-- ACTIVITY HISTORY --}}
         <div class="px-8 mt-8 mb-8">
             <div class="flex items-center justify-between mb-5">
@@ -135,6 +147,16 @@
                 @endforelse
             </div>
         </div>
+    </div>
+
+    {{-- ACTION FOOTER --}}
+    <div class="px-8 py-5 border-t border-slate-100 flex flex-col sm:flex-row gap-3 bg-slate-50 mt-auto shrink-0">
+        <button onclick="openDailyCheckIn({{ $pig->id }})" style="color: white !important;" class="flex-1 py-4 rounded-xl bg-slate-900 hover:bg-slate-800 font-black text-xs sm:text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-sm">
+            <i class='bx bx-edit-alt text-lg'></i> Care & Log Activity
+        </button>
+        <button onclick="flagMedicalEmergency({{ $pig->id }}, '{{ $pig->tag }}')" class="px-6 py-4 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-black text-xs sm:text-sm uppercase tracking-widest transition-all shrink-0 flex items-center justify-center gap-2">
+            <i class='bx bx-error-circle text-lg'></i> Flag Emergency
+        </button>
     </div>
 
 </div>

@@ -1,0 +1,98 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset="utf-8">
+    <title>PorciTrack Week 9 UAT Results</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; padding: 20px;">
+
+<h1 style="color: #2F5496; border-bottom: 2px solid #2F5496; padding-bottom: 5px; font-size: 24pt;">PorciTrack — User Acceptance Testing (UAT)</h1>
+<p style="font-size: 12pt;"><b>Group 7 | Systems Analysis & Design II</b><br>
+<b>WEEK 9 — TESTING & QA (UAT & FIXES)</b></p>
+<p style="font-size: 11pt;">While Week 8 focused on developer-driven Unit Testing and technical bug fixing, Week 9 focuses on <b>end-user validation</b>. This document outlines the feedback received from our target users (Farm Administrators and Field Workers) during Beta testing and the subsequent revisions made to the system to accommodate their workflow.</p>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">1. UAT Results & User Feedback</h2>
+<p style="font-size: 11pt;">The system was deployed to a staging environment where users performed their daily operational scenarios. Their feedback was recorded to evaluate system reliability and user experience.</p>
+
+<table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 11pt; border-color: #A6A6A6;">
+    <tr bgcolor="#D9E1F2" style="font-weight: bold; color: #1F3864;">
+        <th style="width: 20%;">UAT Scenario</th>
+        <th style="width: 15%;">User Role</th>
+        <th style="width: 35%;">User Feedback / Issue Raised</th>
+        <th style="width: 20%;">System Impact</th>
+        <th style="width: 10%;">Status</th>
+    </tr>
+    <tr>
+        <td><b>Reporting a Medical Emergency</b></td>
+        <td>Field Worker</td>
+        <td>"When I flag a sick pig, I don't know if the Admin actually saw it. There is no confirmation on my end."</td>
+        <td style="color: #ED7D31; font-weight: bold;">Moderate (UX)</td>
+        <td style="color: #0070C0; font-weight: bold;">Addressed</td>
+    </tr>
+    <tr>
+        <td><b>Receiving Emergencies</b></td>
+        <td>Administrator</td>
+        <td>"I only see the medical alert if I happen to refresh the dashboard. I need to know immediately."</td>
+        <td style="color: #C00000; font-weight: bold;">Critical (Reliability)</td>
+        <td style="color: #0070C0; font-weight: bold;">Addressed</td>
+    </tr>
+    <tr>
+        <td><b>Viewing Swine Records</b></td>
+        <td>Field Worker</td>
+        <td>"The pop-up card for the pig details is too crowded. The buttons at the bottom take up half my phone screen."</td>
+        <td style="color: #ED7D31; font-weight: bold;">Moderate (UI)</td>
+        <td style="color: #0070C0; font-weight: bold;">Addressed</td>
+    </tr>
+    <tr>
+        <td><b>Initial System Setup</b></td>
+        <td>Administrator</td>
+        <td>"When I first logged into the new system, I couldn't access anything because my account had no assigned role."</td>
+        <td style="color: #C00000; font-weight: bold;">Critical (Access)</td>
+        <td style="color: #0070C0; font-weight: bold;">Addressed</td>
+    </tr>
+    <tr>
+        <td><b>Generating PDF Reports</b></td>
+        <td>Administrator</td>
+        <td>"The PDF report generated successfully, but the formatting of the table inside the PDF was broken."</td>
+        <td style="color: #FFC000; font-weight: bold;">Low (Formatting)</td>
+        <td style="color: #0070C0; font-weight: bold;">Addressed</td>
+    </tr>
+</table>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">2. Revised System Overview</h2>
+<p style="font-size: 11pt;">Based on the UAT feedback, the development team prioritized **User Feedback Incorporation (20%)** and **Issue Resolution (40%)** by revising the system architecture. The following systemic revisions were deployed to production:</p>
+
+<table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 11pt; border-color: #A6A6A6;">
+    <tr bgcolor="#E2EFDA" style="font-weight: bold; color: #385623;">
+        <th style="width: 25%;">System Module</th>
+        <th style="width: 75%;">Revision Implemented</th>
+    </tr>
+    <tr>
+        <td><b>Real-Time Alert Architecture</b></td>
+        <td>Replaced static page loads with asynchronous JavaScript polling (AJAX). The Admin Dashboard now continuously pings the server for alerts and plays an <b>auditory notification sound</b> to ensure critical medical emergencies are never missed.</td>
+    </tr>
+    <tr>
+        <td><b>Worker Portal PWA (Mobile)</b></td>
+        <td>Redesigned the Swine Details Modal specifically for mobile users. Removed redundant footer buttons and minimized padding to ensure the interface is clean, maximizing screen real estate for field workers.</td>
+    </tr>
+    <tr>
+        <td><b>Database Seeding Automation</b></td>
+        <td>Revised the system deployment logic. The <code>DatabaseSeeder.php</code> now automatically injects the default "Admin" and "Worker" roles upon installation, preventing the "no-role" lockout issue for new administrators.</td>
+    </tr>
+    <tr>
+        <td><b>Report Generation Engine</b></td>
+        <td>Overhauled the PDF extraction logic. Replaced unstable DOM-scraping with structured Blade <code>@json</code> variables, ensuring the downloaded PDF documents render perfect, enterprise-grade tables.</td>
+    </tr>
+</table>
+
+<br>
+<h2 style="color: #2F5496; font-size: 14pt;">3. Rubric Evaluation</h2>
+<ul style="font-size: 11pt;">
+    <li><b>Issue Resolution (40%):</b> All user-reported issues (access lockouts, broken PDFs) were successfully resolved in the revised system deployment.</li>
+    <li><b>System Reliability (40%):</b> The introduction of real-time polling ensures no critical data (like sick pigs) is lost due to caching or lack of page refreshes.</li>
+    <li><b>User Feedback Incorporation (20%):</b> Direct UI feedback from field workers was used to declutter the mobile application, proving high responsiveness to end-user needs.</li>
+</ul>
+
+</body>
+</html>

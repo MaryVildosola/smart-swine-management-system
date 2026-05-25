@@ -208,9 +208,8 @@ Route::middleware(['auth', 'verified', 'role:farm_worker'])->group(function () {
             $user = auth()->user();
             $thisWeek = \Carbon\Carbon::now()->startOfWeek();
 
-            // Get only pens assigned to this worker
-            $pens = \App\Models\Pen::where('assigned_to', $user->id)
-                ->with(['pigs' => function($q) {
+            // Get all pens (or remove where('assigned_to', ...) to allow workers to see all pens)
+            $pens = \App\Models\Pen::with(['pigs' => function($q) {
                     $q->whereNotIn('status', ['Sold', 'Disposed'])
                         ->with(['tasks' => function($tq) {
                             $tq->where('status', '!=', 'completed');
@@ -220,13 +219,21 @@ Route::middleware(['auth', 'verified', 'role:farm_worker'])->group(function () {
                         }]);
                 }])->get();
 
+            $feedFormulas = \App\Models\FeedFormula::orderByDesc('created_at')->get()->groupBy('life_stage');
+
             // Transform pigs for instant UI
-            $pens->each(function($pen) {
-                $pen->pigs->each(function($pig) use ($pen) {
+            $pens->each(function($pen) use ($feedFormulas) {
+                $pen->pigs->each(function($pig) use ($pen, $feedFormulas) {
                     $pig->last_check_human = $pig->activities->first() 
                         ? $pig->activities->first()->created_at->diffForHumans() 
                         : 'No Recent Check';
-                    $pig->feed_formula_name = 'Standard Mix'; // Fallback since relation is missing
+                        
+                    $stageKey = strtolower($pig->growth_stage);
+                    if ($stageKey === 'piglet') $stageKey = 'starter';
+                    
+                    $formula = $feedFormulas->has($stageKey) ? $feedFormulas->get($stageKey)->first() : null;
+                    $pig->feed_formula_name = $formula ? $formula->name : 'Standard Mix';
+                    
                     $pig->growth_stage_label = $pig->growth_stage;
                 });
             });

@@ -218,7 +218,7 @@
         <!-- Pens Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             @foreach($pens as $pen)
-                <div onclick="openPenPreview('{{ $pen['id'] }}','{{ addslashes($pen['name']) }}','{{ $pen['type'] }}',{{ $pen['count'] }},{{ $pen['sick'] }},{{ $pen['weight'] }},{{ $pen['progress'] }},'{{ $pen['color'] }}','{{ addslashes($pen['tag']) }}')" class="dash-card group backdrop-blur-2xl bg-white/80 rounded-[2.5rem] p-8 border border-slate-100 hover:border-green-500/50 hover:shadow-[0_15px_30px_rgba(0,0,0,0.1)] transition-all cursor-pointer relative overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.05)]">
+                <div onclick="openPenPreview('{{ $pen['id'] }}','{{ addslashes($pen['name']) }}','{{ $pen['type'] }}',{{ $pen['count'] ?? 0 }},{{ $pen['sick'] ?? 0 }},{{ $pen['weight'] ?? 0 }},{{ $pen['progress'] ?? 0 }},'{{ $pen['color'] }}','{{ addslashes($pen['tag']) }}')" class="dash-card group backdrop-blur-2xl bg-white/80 rounded-[2.5rem] p-8 border border-slate-100 hover:border-green-500/50 hover:shadow-[0_15px_30px_rgba(0,0,0,0.1)] transition-all cursor-pointer relative overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.05)]">
                     <div class="flex justify-between items-start mb-6">
                         <div>
                             <h3 class="text-2xl font-black text-slate-900 tracking-tighter">{{ $pen['name'] }}</h3>
@@ -245,10 +245,10 @@
                     <div>
                         <div class="flex justify-between items-center mb-2">
                             <p class="text-slate-400 text-[9px] font-black uppercase tracking-widest">Weight Target</p>
-                            <p class="text-slate-900 text-[9px] font-black">{{ $pen['progress'] }}%</p>
+                            <p class="text-slate-900 text-[9px] font-black">{{ $pen['progress'] ?? 0 }}%</p>
                         </div>
                         <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5">
-                            <div class="h-full bg-{{ $pen['color'] }}-500 rounded-full shadow-[0_0_10px_rgba(0,0,0,0.1)] transition-all duration-1000" style="width: {{ $pen['progress'] }}%"></div>
+                            <div class="h-full bg-{{ $pen['color'] }}-500 rounded-full shadow-[0_0_10px_rgba(0,0,0,0.1)] transition-all duration-1000" style="width: {{ $pen['progress'] ?? 0 }}%"></div>
                         </div>
                     </div>
                 </div>

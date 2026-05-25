@@ -25,6 +25,19 @@ erDiagram
 
 ## 📖 Data Dictionary
 
+### 0. `users` (System Accounts)
+Stores information for Administrators and Farm Workers.
+| Column | Type | Nullable | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | BIGINT (PK) | NO | Primary internal identifier. |
+| `name` | VARCHAR | NO | Full name of the user. |
+| `email` | VARCHAR | NO | Unique login email address. |
+| `role` | VARCHAR | NO | Access level: `admin` or `farm_worker`. |
+| `status` | BOOLEAN | NO | Account state (1 = Active, 0 = Disabled). |
+| `phone` | VARCHAR | YES | Contact number for worker coordination. |
+| `region` | VARCHAR | YES | Assigned geographical region for biosecurity. |
+| `birthdate` | DATE | YES | User's date of birth. |
+
 ### 1. `pigs` (Livestock Master Record)
 Maintains the real-time state of each animal on the farm.
 | Column | Type | Nullable | Description |

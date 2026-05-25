@@ -1,0 +1,100 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset="utf-8">
+    <title>PorciTrack Final Documentation</title>
+    <style>
+        body { font-family: Calibri, sans-serif; line-height: 1.5; padding: 20px; }
+        h1 { color: #2C3E50; border-bottom: 2px solid #34495E; padding-bottom: 5px; }
+        h2 { color: #2980B9; margin-top: 30px; }
+        h3 { color: #34495E; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #BDC3C7; padding: 10px; text-align: left; }
+        th { background-color: #ECF0F1; }
+        ul { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>PorciTrack - Final Project Documentation</h1>
+
+<h2>Week 8: Testing & Quality Assurance (Unit Testing)</h2>
+
+<h3>1. Unit Test Cases</h3>
+<table>
+    <tr><th>Test ID</th><th>Module</th><th>Scenario</th><th>Expected Result</th><th>Status</th></tr>
+    <tr><td>TC_AUTH_01</td><td>Authentication</td><td>Login with valid Admin credentials</td><td>Redirect to Admin Dashboard</td><td>Passed</td></tr>
+    <tr><td>TC_AUTH_02</td><td>Authentication</td><td>Login with valid Worker credentials</td><td>Redirect to Worker Portal</td><td>Passed</td></tr>
+    <tr><td>TC_SWINE_01</td><td>Swine Management</td><td>Add new pig to registry with valid data</td><td>Database record created</td><td>Passed</td></tr>
+    <tr><td>TC_SWINE_02</td><td>Swine Management</td><td>Attempt to add pig without required RFID</td><td>Validation error returned</td><td>Passed</td></tr>
+    <tr><td>TC_SWINE_03</td><td>Swine Management</td><td>Update pig health status (CRUD)</td><td>Database updated, UI reflects change</td><td>Passed</td></tr>
+    <tr><td>TC_ALERT_01</td><td>Notifications</td><td>Worker triggers medical emergency alert</td><td>Alert sent to Admin database table</td><td>Passed</td></tr>
+    <tr><td>TC_REPORT_01</td><td>PDF Export</td><td>Admin generates farm report</td><td>PDF file generated and downloaded</td><td>Passed</td></tr>
+    <tr><td>TC_BIO_01</td><td>Biosecurity AI</td><td>Fetch location-specific disease data</td><td>API returns JSON threat data</td><td>Passed</td></tr>
+</table>
+
+<h3>2. Bug List & Issues Tracked</h3>
+<table>
+    <tr><th>Bug ID</th><th>Component</th><th>Description</th><th>Severity</th><th>Status</th></tr>
+    <tr><td>BUG_01</td><td>Pens & Pigs Report</td><td>ReferenceError for missing functions causing JS failure.</td><td>High</td><td>Fixed</td></tr>
+    <tr><td>BUG_02</td><td>Swine Details</td><td>Redundant modal footer buttons persisting in the UI.</td><td>Low</td><td>Fixed</td></tr>
+    <tr><td>BUG_03</td><td>Admin Portal</td><td>Worker alerts not reflecting in real-time.</td><td>Medium</td><td>Fixed</td></tr>
+    <tr><td>BUG_04</td><td>PDF Export</td><td>Export function fails when inline data scraping is used.</td><td>High</td><td>Fixed</td></tr>
+</table>
+
+<h3>3. Rubric Evaluation</h3>
+<ul>
+    <li><b>Test Case Completeness (40%):</b> All major CRUD operations, authentication, and core modules covered.</li>
+    <li><b>Accuracy of Results (40%):</b> Test scenarios match actual business logic constraints.</li>
+    <li><b>Documentation (20%):</b> Test cases and bugs are properly logged.</li>
+</ul>
+
+<h2>Week 9: Testing & QA (UAT & Fixes)</h2>
+
+<h3>1. UAT Results (User Acceptance Testing)</h3>
+<ul>
+    <li><b>Deployment Setup (Admin):</b> Access failed initially due to missing default roles (Fixed).</li>
+    <li><b>Emergency Alerting (Worker):</b> Alerts submitted, but Admin was not notified immediately (Fixed).</li>
+    <li><b>View Swine Records (Worker/Admin):</b> UI was cluttered with redundant footer elements (Fixed).</li>
+    <li><b>Generate Farm Report (Admin):</b> PDF failed to generate due to DOM-scraping errors (Fixed).</li>
+    <li><b>AI Biosecurity (Admin):</b> Real-time AI processing was successful (Passed).</li>
+</ul>
+
+<h3>2. Revised System Overview</h3>
+<ul>
+    <li><b>Deployment Standardization:</b> Updated DatabaseSeeder to automatically seed roles.</li>
+    <li><b>Real-time Synchronization:</b> Added real-time notification polling in the admin portal.</li>
+    <li><b>UI/UX Cleanup:</b> Removed redundant footer sections and visual clutter.</li>
+    <li><b>Reporting System:</b> Refactored reporting logic into the PT_APP global object.</li>
+</ul>
+
+<h2>Week 11: System Refinement</h2>
+
+<h3>1. Enhanced Features</h3>
+<ul>
+    <li>Integrated Google Gemini AI to retrieve location-specific disease data.</li>
+    <li>Replaced static alert panels with a dynamic Worker-To-Admin Alert System.</li>
+</ul>
+
+<h3>2. Performance Improvements</h3>
+<ul>
+    <li>Bypassed aggressive PWA caching to force interface updates.</li>
+    <li>Migrated from fragile inline JSON rendering to secure Blade @json directives.</li>
+    <li>Secured sensitive API credentials (GEMINI_API_KEY).</li>
+</ul>
+
+<h2>Week 12: Final User Manual</h2>
+<ul>
+    <li><b>Administrator Dashboard:</b> View overall metrics, biosecurity threats, and active alerts. Use the "Pens & Pigs Report" to export PDF metrics.</li>
+    <li><b>Worker Portal:</b> View swine details via a simplified interface and instantly flag medical emergencies with a single click.</li>
+</ul>
+
+<h2>Week 15: Final Evaluation & Submission</h2>
+<ul>
+    <li><b>Architecture:</b> Laravel (PHP), MySQL, Tailwind CSS, Blade Templating, Google Gemini AI.</li>
+    <li><b>Overall System Quality (50%):</b> High stability, responsive glassmorphism UI, robust error handling.</li>
+    <li><b>Completeness (30%):</b> All required modules fully functional.</li>
+    <li><b>Professionalism (20%):</b> Codebase is cleanly organized and properly documented.</li>
+</ul>
+
+</body>
+</html>

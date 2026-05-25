@@ -29,9 +29,21 @@
     </div>
 
     <!-- PEN GRID -->
+    @if($pens->isEmpty())
+    <div class="dash-card flex flex-col items-center justify-center p-12 rounded-[2.5rem] bg-white/5 border border-white/10 text-center">
+        <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4 shadow-inner">
+            <i class='bx bx-hive text-4xl text-slate-400'></i>
+        </div>
+        <h3 class="text-xl font-black text-slate-800 dark:text-white mb-2">No Pens Found</h3>
+        <p class="text-slate-500 text-sm font-medium">There are currently no active pens available in the system.</p>
+    </div>
+    @else
     <div id="penGridView" class="animate-fade-in grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         @foreach($pens as $pen)
-        <div data-pigs='@json($pen->pigs)' onclick="enterPen({{ $pen->id }}, '{{ addslashes($pen->name) }}', JSON.parse(this.dataset.pigs))"
+        <script>
+            window['penData_{{ $pen->id }}'] = @json($pen->pigs);
+        </script>
+        <div onclick="enterPen({{ $pen->id }}, '{{ addslashes($pen->name) }}', window['penData_{{ $pen->id }}'])"
             class="dash-card glass-panel p-8 rounded-[2.5rem] hover:border-green-500/50 hover:shadow-xl transition-all cursor-pointer">
             
             <div class="w-16 h-16 rounded-3xl bg-green-600 text-white flex items-center justify-center mb-6 shadow-xl">
@@ -55,6 +67,7 @@
         </div>
         @endforeach
     </div>
+    @endif
 
     <!-- PIG LIST -->
     <div id="pigListView" class="hidden animate-fade-in space-y-8 pb-32">
@@ -190,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const penId = new URLSearchParams(window.location.search).get('pen');
     if (!penId) return;
     // Find the matching pen card and trigger it
-    const penCards = document.querySelectorAll('#penGridView [data-pigs]');
+    const penCards = document.querySelectorAll('#penGridView [onclick^="enterPen"]');
     penCards.forEach(card => {
         const onclick = card.getAttribute('onclick') || '';
         // Extract the pen id from the onclick attribute: enterPen(ID, ...)

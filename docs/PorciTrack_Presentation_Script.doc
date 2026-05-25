@@ -1,0 +1,91 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset="utf-8">
+    <title>PorciTrack Presentation Script</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; padding: 20px;">
+
+<h1 style="color: #2F5496; border-bottom: 2px solid #2F5496; padding-bottom: 5px; font-size: 24pt;">PorciTrack: Final System Defense Presentation</h1>
+<p style="font-size: 12pt;"><b>Format:</b> Google Meet Presentation<br>
+<b>Audience:</b> Professors / Panelists<br>
+<b>Time:</b> 10-15 Minutes</p>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Slide 1: Title Slide</h2>
+<p><b>Visual:</b> The PorciTrack Logo, Group 7 Names, and the title "PorciTrack: Enterprise-Grade Farm Management System".</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"Good morning/afternoon panel. We are Group 7, and we are proud to present PorciTrack—an advanced, dual-portal farm management system designed to digitize livestock registries, automate biosecurity risk assessments, and facilitate real-time communication between field workers and administrators."</i>
+</div>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Slide 2: The Problem</h2>
+<p><b>Visual:</b> Bullet points showing manual farming issues (Paper records, delayed medical reports, lack of disease awareness).</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"In traditional piggery operations, farms rely heavily on manual paper records. This leads to three major problems:<br>
+    1. Inaccurate tracking of feed inventory and pig health.<br>
+    2. Delayed reporting of medical emergencies. By the time an admin finds out a pig is sick, it might be too late.<br>
+    3. A complete lack of awareness regarding regional biosecurity threats, like Swine Flu outbreaks."</i>
+</div>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Slide 3: The Solution</h2>
+<p><b>Visual:</b> A side-by-side screenshot of the Admin Dashboard (desktop) and the Field Worker Portal (mobile).</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"Our solution is PorciTrack. We built a system with Role-Based Access Control that gives the Administrator a powerful bird's-eye view of the entire farm, while providing Farm Workers with a clean, offline-capable mobile web app to report data directly from the pens."</i>
+</div>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Slide 4: Key Feature - Livestock & Inventory</h2>
+<p><b>Visual:</b> Screenshots of the QR Code Generator and the Pens & Pigs Report.</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"First, we digitized the registry. Every pen and individual pig is tracked in the system. We even built a QR Code generator so physical tags can be printed. We also integrated a master inventory system to track feed deliveries and automatically calculate when stocks reach critical levels."</i>
+</div>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Slide 5: Key Innovation - Real-Time Alerts</h2>
+<p><b>Visual:</b> A GIF or screenshot showing the Worker flagging an emergency, and the Admin receiving the pop-up alert.</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"One of our most critical features is the Real-Time Alert Dispatcher. If a worker assesses a pig and marks it as 'Sick', the system instantly bypasses static page loads. It uses asynchronous polling to instantly trigger a visual pop-up and an auditory alarm on the Administrator's dashboard, ensuring immediate intervention."</i>
+</div>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Slide 6: Key Innovation - AI Biosecurity Engine</h2>
+<p><b>Visual:</b> Screenshot of the Biosecurity "Threat Alert" card showing the Risk Score.</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"To address regional threats, we integrated Google Gemini AI. Our system automatically fetches active disease data based on the farm's geographic location. It then calculates a dynamic Risk Score from 0 to 100 for every pen by combining the AI's regional threat data with the local sick pig count. If a pen hits a critical score, the system automatically recommends isolation."</i>
+</div>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Slide 7: Technical Architecture</h2>
+<p><b>Visual:</b> Logos of Laravel, MySQL, Tailwind CSS, and Gemini API.</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"Under the hood, PorciTrack is powered by Laravel 12 and PHP 8.4. Our frontend utilizes Blade templating paired with Tailwind CSS for a modern glassmorphism aesthetic. We bypassed aggressive caching to ensure data syncs instantly, and we utilized Blade JSON directives to ensure our PDF Farm Reports generate flawlessly without breaking."</i>
+</div>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Slide 8: Live System Demonstration (Screen Share)</h2>
+<p><b>Visual:</b> You will stop presenting slides and share your actual web browser.</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"We will now demonstrate the system live.<br>
+    <b>(Action 1):</b> Log in as an Admin. Show the dashboard metrics and the AI Threat Alert card.<br>
+    <b>(Action 2):</b> Log in as a Worker on a mobile-sized window. Show how to do a Daily Health Assessment and mark a pig as sick.<br>
+    <b>(Action 3):</b> Switch back to the Admin window so the panel can hear the alarm and see the real-time notification pop up.<br>
+    <b>(Action 4):</b> Go to the Pens & Pigs section and generate a PDF report to show the export capability."</i>
+</div>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Slide 9: Conclusion & QA</h2>
+<p><b>Visual:</b> "Thank You / Questions?"</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"Through rigorous Unit Testing and User Acceptance Testing with real farm scenarios, we have ensured PorciTrack is highly stable, user-friendly, and ready for production. Thank you for your time, we are now open to any questions."</i>
+</div>
+
+<br><hr><br>
+<h2 style="color: #C00000; font-size: 14pt;">Pro-Tips for Google Meet:</h2>
+<ul>
+    <li><b>Share Audio:</b> When you share your screen for the live demo, make sure you select the <b>"Share Tab"</b> option in Google Meet so the panel can actually hear the auditory alarm sound when the emergency alert goes off!</li>
+    <li><b>Mobile View:</b> During the demo, press <code>F12</code> on your keyboard, then <code>Ctrl+Shift+M</code> to put the browser into "Mobile View" when demonstrating the Worker Portal. It makes the UI look much more realistic for a worker in the field.</li>
+</ul>
+
+</body>
+</html>

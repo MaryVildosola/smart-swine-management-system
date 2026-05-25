@@ -1,0 +1,114 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset="utf-8">
+    <title>PorciTrack Bug List and Resolution Report</title>
+    <style>
+        body { font-family: Calibri, sans-serif; line-height: 1.5; padding: 20px; }
+        h1 { color: #2C3E50; border-bottom: 2px solid #34495E; padding-bottom: 5px; }
+        h2 { color: #2980B9; margin-top: 30px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #BDC3C7; padding: 10px; text-align: left; }
+        th { background-color: #ECF0F1; }
+        .critical { color: #C0392B; font-weight: bold; }
+        .high { color: #D35400; font-weight: bold; }
+        .medium { color: #F39C12; font-weight: bold; }
+        .low { color: #27AE60; font-weight: bold; }
+        .resolved { color: #2980B9; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h1>PorciTrack — Software Defect & Bug Resolution Tracker</h1>
+<p><b>Group 7 | Systems Analysis & Design II</b></p>
+<p><b>WEEK 8 — SOFTWARE TESTING: BUG LIST</b></p>
+<p>This document tracks the critical defects discovered during the integration and testing phases of the PorciTrack system. All listed bugs have been triaged, debugged, and successfully resolved prior to user acceptance testing (UAT).</p>
+
+<h2>Defect Tracking Log</h2>
+
+<table>
+    <tr>
+        <th>Bug ID</th>
+        <th>Module / Component</th>
+        <th>Defect Description</th>
+        <th>Severity</th>
+        <th>Root Cause</th>
+        <th>Resolution / Fix Applied</th>
+        <th>Status</th>
+    </tr>
+    <tr>
+        <td>BUG-001</td>
+        <td>Admin Login / Auth</td>
+        <td>New repository clones fail to authenticate users properly due to missing roles.</td>
+        <td class="critical">Critical</td>
+        <td>Database migrations did not automatically insert the necessary Admin and Farm Worker roles into the database.</td>
+        <td>Updated <code>DatabaseSeeder.php</code> to automatically seed critical system roles upon deployment.</td>
+        <td class="resolved">Fixed</td>
+    </tr>
+    <tr>
+        <td>BUG-002</td>
+        <td>Worker Alerts</td>
+        <td>When a worker flags a medical emergency, the Admin does not see the alert until the page is manually refreshed.</td>
+        <td class="high">High</td>
+        <td>Dashboard lacked asynchronous checking; relied on static PHP page loads.</td>
+        <td>Implemented real-time notification polling mechanism in the admin portal via JavaScript AJAX calls.</td>
+        <td class="resolved">Fixed</td>
+    </tr>
+    <tr>
+        <td>BUG-003</td>
+        <td>Pens & Pigs Report</td>
+        <td>Clicking "Generate Report" fails and causes a JavaScript <code>ReferenceError</code>.</td>
+        <td class="high">High</td>
+        <td>Missing global JS functions (<code>openModal</code> and <code>toggleAccordion</code>) caused script execution failure.</td>
+        <td>Refactored script loading order using Blade's <code>@push('scripts')</code> and properly scoped functions into the <code>PT_APP</code> object.</td>
+        <td class="resolved">Fixed</td>
+    </tr>
+    <tr>
+        <td>BUG-004</td>
+        <td>PDF Export</td>
+        <td>Farm report PDF generation crashed or output empty tables.</td>
+        <td class="high">High</td>
+        <td>Relied on fragile inline DOM scraping using <code>json_encode</code> directly in the HTML.</td>
+        <td>Replaced inline data passing with structured Blade <code>@json</code> directives to pass clean data directly to the PDF library.</td>
+        <td class="resolved">Fixed</td>
+    </tr>
+    <tr>
+        <td>BUG-005</td>
+        <td>Swine Details Modal</td>
+        <td>Redundant footer buttons and unnecessary UI boxes appeared when viewing pig records, causing screen clutter.</td>
+        <td class="low">Low</td>
+        <td>Leftover debugging code inside the <code>pigCard.blade.php</code> partial file.</td>
+        <td>Cleaned up the UI by removing the persistent footer section to maintain a minimalist glassmorphism aesthetic.</td>
+        <td class="resolved">Fixed</td>
+    </tr>
+    <tr>
+        <td>BUG-006</td>
+        <td>Worker Portal UI</td>
+        <td>Updates to the portal layout were not showing up for workers on mobile devices.</td>
+        <td class="medium">Medium</td>
+        <td>Aggressive caching by the Progressive Web App (PWA) service worker and local browser.</td>
+        <td>Forced PWA cache clearing and bypassed aggressive caching protocols to ensure UI updates push instantly.</td>
+        <td class="resolved">Fixed</td>
+    </tr>
+    <tr>
+        <td>BUG-007</td>
+        <td>Disease Risk Engine</td>
+        <td>Risk scores were occasionally calculating above 100% when multiple sick pigs and regional threats overlapped.</td>
+        <td class="medium">Medium</td>
+        <td>Algorithm allowed compounding addition without an upper limit ceiling.</td>
+        <td>Applied a mathematical cap <code>min(score, 100)</code> to ensure risk scores never exceed the logical 100% threshold.</td>
+        <td class="resolved">Fixed</td>
+    </tr>
+</table>
+
+<h2>Summary of Resolutions</h2>
+<ul>
+    <li><b>Total Bugs Logged:</b> 7</li>
+    <li><b>Critical / High Priority:</b> 4</li>
+    <li><b>Medium Priority:</b> 2</li>
+    <li><b>Low Priority:</b> 1</li>
+    <li><b>Unresolved Bugs:</b> 0</li>
+</ul>
+<p>The system is currently stable and all critical operational pathways are clear of known defects.</p>
+
+</body>
+</html>

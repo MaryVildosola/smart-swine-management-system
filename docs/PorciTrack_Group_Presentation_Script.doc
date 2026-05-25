@@ -1,0 +1,69 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset="utf-8">
+    <title>PorciTrack Group Presentation Script</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; padding: 20px;">
+
+<h1 style="color: #2F5496; border-bottom: 2px solid #2F5496; padding-bottom: 5px; font-size: 24pt;">PorciTrack: Live System Defense Script</h1>
+<p style="font-size: 12pt;"><b>Format:</b> Live Google Meet System Walkthrough<br>
+<b>Members:</b> You, Shyra, Kaye, Raven, and Ivan</p>
+
+<p style="background-color: #FFF2CC; padding: 10px; border-left: 4px solid #D6B656;"><b>Crucial Tip Before Starting:</b> Have your browser already open and logged into the system. Whoever is sharing their screen must choose <b>"Share a Tab"</b> in Google Meet so the panel can hear the alarm sounds during the demo.</p>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Part 1: Introduction & The Problem</h2>
+<p><b>Speaker: YOU</b><br>
+<b>On Screen:</b> Just your camera, or the PorciTrack Login Page.</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"Good morning panel. We are Group 7, and today we will be doing a live demonstration of our Capstone Project: <b>PorciTrack</b>.<br><br>
+    Farms today struggle with manual paper records, delayed medical reports, and a lack of biosecurity awareness. Our solution is a dual-portal web application that digitizes operations and provides real-time alerts. I will now pass the floor to Shyra to show you the Administrator's view."</i>
+</div>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Part 2: Admin Dashboard & Livestock Registry</h2>
+<p><b>Speaker: SHYRA</b><br>
+<b>On Screen:</b> Share the browser tab. Log into the <b>Admin Portal</b>.</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"Thank you. This is the Admin Dashboard. From here, the farm owner has a bird's-eye view of everything happening on the farm.<br><br>
+    *(Shyra clicks on Operations -> Pens & Pigs)*<br>
+    Here, we can see all active pens. When we register new pigs, the system automatically tracks them. To modernize tracking, we also built a QR Code generator.<br><br>
+    *(Shyra clicks on Operations -> QR Labels)*<br>
+    We can generate a printable QR tag for any pen or individual pig. This allows our field workers to scan and identify pigs instantly. Speaking of field workers, I will now pass it to Kaye to show you the Worker's perspective."</i>
+</div>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Part 3: Worker Portal & Emergency Flagging</h2>
+<p><b>Speaker: KAYE</b><br>
+<b>On Screen:</b> Switch tabs to the <b>Worker Portal</b>. Press <code>F12</code> and set the browser to <b>Mobile View</b> to show that it is a mobile app.</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"Thank you, Shyra. What you are seeing now is the Field Worker Portal. We designed this to be a Progressive Web App (PWA) so workers can use it on their smartphones right inside the pens.<br><br>
+    *(Kaye clicks on Swine Details and opens a pig's record)*<br>
+    A worker does their daily health assessment here. Let's simulate an emergency. I am going to mark this pig's symptom as 'Sick' and submit the assessment.<br><br>
+    *(Kaye submits the form)*<br>
+    The system has logged this, but more importantly, it instantly triggers an alert. Raven will now show you what happens on the Admin side."</i>
+</div>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Part 4: Real-Time Alerts & AI Biosecurity Engine</h2>
+<p><b>Speaker: RAVEN</b><br>
+<b>On Screen:</b> Switch back to the <b>Admin Portal</b> tab. The alarm sound should play and the pop-up should appear automatically on screen.</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"As you can hear and see on my screen, the Admin dashboard uses asynchronous JavaScript polling. We didn't even have to refresh the page—the alert popped up instantly because Kaye flagged a sick pig. I will click 'Acknowledge' to clear it.<br><br>
+    *(Raven clicks Acknowledge, then points to the Threat Alert card)*<br>
+    Because we now have a sick pig, our Biosecurity AI Engine kicks in. We integrated the Google Gemini API to fetch regional disease data. The system combines this external threat data with our local sick pig count to generate a dynamic Risk Score from 0 to 100. As you can see, our risk score just went up. I'll pass it to Ivan to conclude."</i>
+</div>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Part 5: Report Generation & Conclusion</h2>
+<p><b>Speaker: IVAN</b><br>
+<b>On Screen:</b> Go to <b>Pens & Pigs</b>, expand a pen, and click <b>"Generate & View Report"</b>. Then click <b>"Export PDF"</b>.</p>
+<div style="background-color: #F2F2F2; padding: 15px; border-left: 4px solid #2F5496; margin-top: 10px;">
+    <i>"Thank you, Raven. Finally, all of this data is compiled automatically for financial and health tracking. By clicking 'Generate Report', the system calculates our economic metrics and animal health logs. <br><br>
+    *(Ivan opens the downloaded PDF)*<br>
+    We can export this into a clean, enterprise-grade PDF using our Blade JSON data pipeline, ensuring the formatting is never broken.<br><br>
+    Through rigorous User Acceptance Testing, we have built a stable, modern, and highly responsive platform. Thank you for your time, panel. Group 7 is now open to your questions."</i>
+</div>
+
+</body>
+</html>

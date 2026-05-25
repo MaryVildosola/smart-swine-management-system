@@ -223,7 +223,7 @@
                                 <p class="text-[10px] font-bold text-red-400 uppercase tracking-widest mt-2">{{ $alert->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
-                        <a href="{{ route('admin.analytics') }}" class="px-4 py-2 rounded-lg bg-red-600 text-white text-[10px] font-black uppercase tracking-widest hover:bg-red-700 transition-colors">
+                        <a href="{{ route('pens.index') }}" onclick="sessionStorage.setItem('pending_pig_modal', '{{ $alert->pig->id }}'); sessionStorage.setItem('pending_pen_id', '{{ $alert->pig->pen_id }}');" class="px-4 py-2 rounded-lg bg-red-600 text-white text-[10px] font-black uppercase tracking-widest hover:bg-red-700 transition-colors">
                             Handle Now
                         </a>
                     </div>

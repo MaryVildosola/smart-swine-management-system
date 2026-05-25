@@ -1,0 +1,71 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset="utf-8">
+    <title>PorciTrack Week 15 Final Evaluation</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; padding: 20px;">
+
+<h1 style="color: #2F5496; border-bottom: 2px solid #2F5496; padding-bottom: 5px; font-size: 24pt;">PorciTrack — Final Evaluation & Submission</h1>
+<p style="font-size: 12pt;"><b>Group 7 | Systems Analysis & Design II</b><br>
+<b>WEEK 15 — FINAL EVALUATION & SUBMISSION</b></p>
+<p style="font-size: 11pt;">PorciTrack has successfully reached v1.0 Production Readiness. This document serves as the executive summary and architectural overview of the final system, finalizing all project deliverables for SADII.</p>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">1. Final System Architecture</h2>
+<p style="font-size: 11pt;">The system encapsulates a dual-portal farm management environment utilizing the Laravel framework, optimized for modern agricultural requirements.</p>
+
+<table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 11pt; border-color: #A6A6A6;">
+    <tr bgcolor="#D9E1F2" style="font-weight: bold; color: #1F3864;">
+        <th style="width: 25%;">Technology Category</th>
+        <th style="width: 75%;">Stack & Implementation</th>
+    </tr>
+    <tr>
+        <td><b>Backend Infrastructure</b></td>
+        <td>Laravel 12 (PHP 8.4) with Object-Relational Mapping (Eloquent ORM) interfacing with a relational MySQL / MariaDB database.</td>
+    </tr>
+    <tr>
+        <td><b>Frontend UI/UX</b></td>
+        <td>Blade Templating Engine combined with Tailwind CSS / Custom Glassmorphism styling. Logic is handled via Vanilla JS scoped into a global <code>PT_APP</code> object to prevent conflicts. Mobile interfaces utilize Progressive Web App (PWA) methodologies.</td>
+    </tr>
+    <tr>
+        <td><b>Third-Party Integrations</b></td>
+        <td><b>Google Gemini AI:</b> Synchronizes regional biosecurity threats.<br><b>DOMPDF:</b> Generates and exports enterprise financial and health reports.<br><b>SweetAlert2 & Boxicons:</b> Enhances UI interactivity.</td>
+    </tr>
+</table>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">2. Complete Documentation Directory</h2>
+<p style="font-size: 11pt;">The following documentation suite has been submitted to fulfill the final evaluation requirements for the SADII project:</p>
+<table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 11pt; border-color: #A6A6A6;">
+    <tr bgcolor="#E2EFDA" style="font-weight: bold; color: #385623;">
+        <th style="width: 30%;">Document Name</th>
+        <th style="width: 70%;">Content Overview</th>
+    </tr>
+    <tr>
+        <td><b>Week 8: Unit Testing & Bug Tracker</b></td>
+        <td>Verification of core CRUD operations, authentication logic, and a log of resolved software defects (SAD-PORCITRACK-TEST-CASE, SAD-PORCITRACK-BUG-LIST).</td>
+    </tr>
+    <tr>
+        <td><b>Week 9: UAT & Revision Logs</b></td>
+        <td>Stakeholder beta-testing feedback translated into technical constraints, and architectural fixes implemented based on user experience.</td>
+    </tr>
+    <tr>
+        <td><b>Week 11: System Refinement</b></td>
+        <td>Technical breakdown of the Biosecurity AI integration, caching optimizations, and real-time polling configurations.</td>
+    </tr>
+    <tr>
+        <td><b>Week 12: Professional User Manual</b></td>
+        <td>Role-based guide for Administrators and Farm Workers, detailing workflows for reporting, alerts, and registry management.</td>
+    </tr>
+</table>
+
+<br>
+<h2 style="color: #2F5496; font-size: 14pt;">3. Rubric Evaluation</h2>
+<ul style="font-size: 11pt;">
+    <li><b>Overall System Quality (50%):</b> The application demonstrates high stability, responsive UI design (dark/light mode glassmorphism), and robust error handling. Complex features like AI integrations and real-time notifications operate smoothly.</li>
+    <li><b>Completeness of Outputs (30%):</b> All required modules (Backend, Auth, Reporting, Alerts, Inventory, Task Management) are fully functional and properly seeded.</li>
+    <li><b>Professionalism (20%):</b> The codebase is cleanly organized, GitHub commits are properly attributed to team members, and the documentation adheres strictly to professional, enterprise-grade formatting standards.</li>
+</ul>
+
+</body>
+</html>

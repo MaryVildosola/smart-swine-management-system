@@ -1025,4 +1025,13 @@ body.light-theme #careAlertModal .bg-slate-900\/90 {
         });
     }
 </script>
+
+<form id="hiddenReportForm" action="{{ route('worker.reports.store') }}" method="POST" style="display: none;">
+    @csrf
+    <input type="hidden" name="total_pigs" value="{{ $analytics['total_pigs'] }}">
+    <input type="hidden" name="sick_pigs" value="{{ $analytics['sick_pigs'] }}">
+    <input type="hidden" name="avg_weight" value="{{ $analytics['avg_weight'] }}">
+    <input type="hidden" id="hiddenFeed" name="feed_consumed" value="">
+    <input type="hidden" id="hiddenNotes" name="details" value="">
+</form>
 @endsection

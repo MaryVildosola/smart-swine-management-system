@@ -1,0 +1,103 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset="utf-8">
+    <title>PorciTrack Bug List</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; padding: 20px;">
+
+<h1 style="color: #2F5496; border-bottom: 2px solid #2F5496; padding-bottom: 5px; font-size: 24pt;">PorciTrack — Software Defect & Bug Tracker</h1>
+<p style="font-size: 12pt;"><b>Group 7 | Systems Analysis & Design II</b><br>
+<b>WEEK 8 — SOFTWARE TESTING: BUG LIST</b></p>
+<p style="font-size: 11pt;">This document tracks the critical defects discovered during the integration and testing phases of the PorciTrack system. All listed bugs have been triaged, debugged, and successfully resolved prior to user acceptance testing (UAT).</p>
+
+<br>
+<h2 style="color: #2F5496; font-size: 16pt;">Defect Tracking Log</h2>
+
+<table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 11pt; border-color: #A6A6A6;">
+    <tr bgcolor="#D9E1F2" style="font-weight: bold; color: #1F3864;">
+        <th style="width: 8%;">Bug ID</th>
+        <th style="width: 15%;">Module</th>
+        <th style="width: 25%;">Defect Description</th>
+        <th style="width: 10%;">Severity</th>
+        <th style="width: 20%;">Root Cause</th>
+        <th style="width: 15%;">Fix Applied</th>
+        <th style="width: 7%;">Status</th>
+    </tr>
+    <tr>
+        <td><b>BUG-001</b></td>
+        <td>Admin Login / Auth</td>
+        <td>New repository clones fail to authenticate users properly due to missing roles.</td>
+        <td style="color: #C00000; font-weight: bold;">Critical</td>
+        <td>Database migrations did not automatically insert the Admin/Worker roles.</td>
+        <td>Updated <code>DatabaseSeeder.php</code> to automatically seed system roles.</td>
+        <td style="color: #0070C0; font-weight: bold;">Fixed</td>
+    </tr>
+    <tr>
+        <td><b>BUG-002</b></td>
+        <td>Worker Alerts</td>
+        <td>When a worker flags a medical emergency, the Admin does not see the alert until manual refresh.</td>
+        <td style="color: #ED7D31; font-weight: bold;">High</td>
+        <td>Dashboard lacked asynchronous checking.</td>
+        <td>Implemented real-time notification AJAX polling in the admin portal.</td>
+        <td style="color: #0070C0; font-weight: bold;">Fixed</td>
+    </tr>
+    <tr>
+        <td><b>BUG-003</b></td>
+        <td>Pens & Pigs Report</td>
+        <td>Clicking "Generate Report" fails and causes a JavaScript <code>ReferenceError</code>.</td>
+        <td style="color: #ED7D31; font-weight: bold;">High</td>
+        <td>Missing global JS functions caused script execution failure.</td>
+        <td>Properly scoped functions into the <code>PT_APP</code> object via Blade push scripts.</td>
+        <td style="color: #0070C0; font-weight: bold;">Fixed</td>
+    </tr>
+    <tr>
+        <td><b>BUG-004</b></td>
+        <td>PDF Export</td>
+        <td>Farm report PDF generation crashed or output empty tables.</td>
+        <td style="color: #ED7D31; font-weight: bold;">High</td>
+        <td>Relied on fragile inline DOM scraping.</td>
+        <td>Replaced inline data passing with structured Blade <code>@json</code> directives.</td>
+        <td style="color: #0070C0; font-weight: bold;">Fixed</td>
+    </tr>
+    <tr>
+        <td><b>BUG-005</b></td>
+        <td>Swine Details Modal</td>
+        <td>Redundant footer buttons and unnecessary UI boxes appeared, causing clutter.</td>
+        <td style="color: #548235; font-weight: bold;">Low</td>
+        <td>Leftover debugging code inside the partial file.</td>
+        <td>Removed the persistent footer section to maintain UI aesthetic.</td>
+        <td style="color: #0070C0; font-weight: bold;">Fixed</td>
+    </tr>
+    <tr>
+        <td><b>BUG-006</b></td>
+        <td>Worker Portal UI</td>
+        <td>Updates to the portal layout were not showing up for workers on mobile.</td>
+        <td style="color: #FFC000; font-weight: bold;">Medium</td>
+        <td>Aggressive caching by the PWA service worker.</td>
+        <td>Bypassed aggressive caching protocols to ensure UI updates push instantly.</td>
+        <td style="color: #0070C0; font-weight: bold;">Fixed</td>
+    </tr>
+    <tr>
+        <td><b>BUG-007</b></td>
+        <td>Disease Risk Engine</td>
+        <td>Risk scores were occasionally calculating above 100%.</td>
+        <td style="color: #FFC000; font-weight: bold;">Medium</td>
+        <td>Algorithm lacked an upper limit ceiling.</td>
+        <td>Applied a mathematical cap <code>min(score, 100)</code>.</td>
+        <td style="color: #0070C0; font-weight: bold;">Fixed</td>
+    </tr>
+</table>
+
+<br>
+<h2 style="color: #2F5496; font-size: 14pt;">Summary of Resolutions</h2>
+<ul style="font-size: 11pt;">
+    <li><b>Total Bugs Logged:</b> 7</li>
+    <li><b>Critical / High Priority:</b> 4</li>
+    <li><b>Medium Priority:</b> 2</li>
+    <li><b>Low Priority:</b> 1</li>
+    <li><b>Unresolved Bugs:</b> 0</li>
+</ul>
+<p style="font-size: 11pt;"><i>The system is currently stable and all critical operational pathways are clear of known defects.</i></p>
+
+</body>
+</html>
