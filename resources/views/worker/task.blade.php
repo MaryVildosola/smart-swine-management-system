@@ -210,15 +210,15 @@
 
     <!-- Create Task Modal -->
     <div id="taskModal" class="fixed inset-0 z-[200] hidden bg-slate-900/95 backdrop-blur-3xl flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white w-full max-w-lg rounded-[3rem] overflow-hidden shadow-2xl border border-slate-200 animate-fade-in my-auto">
-            <div class="p-8 pb-6 border-b border-slate-100 relative">
+        <div class="bg-white dark:bg-[#0b1120] w-full max-w-lg rounded-[3rem] overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10 animate-fade-in my-auto">
+            <div class="p-8 pb-6 border-b border-slate-100 dark:border-white/10 relative">
                 <div class="flex justify-between items-start mb-4">
-                    <div class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-bold border border-green-200 uppercase tracking-widest">New Entry</div>
-                    <button onclick="hideTaskModal()" class="w-12 h-12 rounded-2xl bg-slate-50 text-slate-400 flex items-center justify-center hover:bg-slate-100 transition">
+                    <div class="px-3 py-1 bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 rounded-full text-[10px] font-bold border border-green-200 dark:border-green-500/30 uppercase tracking-widest">New Entry</div>
+                    <button onclick="hideTaskModal()" class="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-white/5 text-slate-400 flex items-center justify-center hover:bg-slate-100 dark:hover:bg-white/10 transition">
                         <i class='bx bx-x text-3xl'></i>
                     </button>
                 </div>
-                <h2 class="text-3xl font-black text-slate-900 tracking-tight">Create New Task</h2>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Create New Task</h2>
                 <p class="text-slate-500 text-sm mt-2 leading-relaxed font-medium">Worker Log Entry</p>
             </div>
             <div class="p-8 pt-6 space-y-6">
@@ -227,14 +227,14 @@
                     <div class="relative">
                         <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"><i class='bx bx-task text-xl'></i></span>
                         <input type="text" id="taskTitle" placeholder="e.g. Regular Health Check" 
-                               class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-5 pl-14 pr-6 text-slate-900 focus:outline-none focus:border-green-500 transition font-medium text-base">
+                               class="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl py-5 pl-14 pr-6 text-slate-900 dark:text-white focus:outline-none focus:border-green-500 transition font-medium text-base">
                     </div>
                 </div>
                 <div>
                     <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Location / Pen</label>
                     <div class="relative">
                         <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"><i class='bx bx-map-pin text-xl'></i></span>
-                        <select id="taskPen" class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-5 pl-14 pr-6 text-slate-900 focus:outline-none focus:border-green-500 transition appearance-none font-medium text-base">
+                        <select id="taskPen" class="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl py-5 pl-14 pr-6 text-slate-900 dark:text-white focus:outline-none focus:border-green-500 transition appearance-none font-medium text-base">
                             <option value="Pen 1">Pen 1 (Piglets)</option>
                             <option value="Pen 5">Pen 5 (Fattening)</option>
                             <option value="Pen 12">Pen 12 (Breeding)</option>
@@ -249,16 +249,16 @@
 
     <!-- Task Detail & Checklist Modal (Floating Popup) -->
     <div id="taskDetailModal" class="fixed inset-0 z-[210] hidden items-center justify-center p-4 overflow-y-auto" style="background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);" onclick="if(event.target === this) hideTaskDetail();">
-        <div class="bg-white w-full max-w-md rounded-3xl overflow-hidden border border-slate-200 animate-fade-in my-auto" style="box-shadow: 0 25px 60px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.05);">
+        <div class="bg-white dark:bg-[#0b1120] w-full max-w-md rounded-3xl overflow-hidden border border-slate-200 dark:border-white/10 animate-fade-in my-auto" style="box-shadow: 0 25px 60px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.05);">
             <!-- Modal Header -->
-            <div class="p-6 pb-4 border-b border-slate-100 relative">
+            <div class="p-6 pb-4 border-b border-slate-100 dark:border-white/10 relative">
                 <div class="flex justify-between items-start mb-3">
-                    <div id="taskStatusBadge" class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-[10px] font-bold border border-amber-200 uppercase tracking-widest">Pending</div>
-                    <button onclick="hideTaskDetail()" class="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center hover:bg-slate-100 transition">
+                    <div id="taskStatusBadge" class="px-3 py-1 bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400 rounded-full text-[10px] font-bold border border-amber-200 dark:border-amber-500/30 uppercase tracking-widest">Pending</div>
+                    <button onclick="hideTaskDetail()" class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-white/5 text-slate-400 flex items-center justify-center hover:bg-slate-100 dark:hover:bg-white/10 transition">
                         <i class='bx bx-x text-2xl'></i>
                     </button>
                 </div>
-                <h2 id="detailTaskTitle" class="text-2xl font-black text-slate-900 tracking-tight">Feed Pen 1</h2>
+                <h2 id="detailTaskTitle" class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Feed Pen 1</h2>
                 <p id="detailTaskDesc" class="text-slate-500 text-sm mt-1 leading-relaxed font-medium">Morning feeding routine for the piglets in Pen 1. Ensure they get the starter mix.</p>
             </div>
 
@@ -270,7 +270,7 @@
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Completion Progress</label>
                         <span id="progressPercent" class="text-lg font-black text-green-600">0%</span>
                     </div>
-                    <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+                    <div class="w-full h-2.5 bg-slate-100 dark:bg-[#141e36] rounded-full overflow-hidden border border-slate-200 dark:border-white/10">
                         <div id="progressBar" class="h-full bg-green-500 transition-all duration-500 shadow-[0_0_10px_rgba(34,197,94,0.3)]" style="width: 0%"></div>
                     </div>
                 </div>
@@ -286,12 +286,12 @@
                 <!-- Action Buttons -->
                 <div class="pt-2 pb-1 flex flex-col gap-3">
                     <button id="completeTaskBtn" onclick="markTaskComplete()" disabled
-                            class="w-full bg-slate-100 text-slate-300 py-4 rounded-2xl font-black text-base border border-slate-200 transition-all duration-300 cursor-not-allowed">
+                            class="w-full flex items-center justify-center gap-2 bg-slate-100 dark:bg-white/5 text-slate-300 dark:text-slate-500 py-4 rounded-2xl font-black text-base border border-slate-200 dark:border-white/10 transition-all duration-300 cursor-not-allowed">
                         <i class='bx bx-check-circle text-xl'></i> Complete Task
                     </button>
                     
                     <button id="recordProgressBtn" onclick="recordProgress()"
-                            class="w-full py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all duration-300 border">
+                            class="w-full flex items-center justify-center gap-1.5 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-white dark:bg-[#141e36] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 transition-all duration-300">
                         <i class='bx bx-save text-lg'></i> Record Progress
                     </button>
 
@@ -305,21 +305,21 @@
 
     <!-- Task History View Modal -->
     <div id="taskHistoryModal" class="fixed inset-0 z-[220] hidden items-center justify-center p-4 overflow-y-auto" style="background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px);" onclick="if(event.target === this) hideTaskHistory();">
-        <div class="bg-white w-full max-w-md rounded-[2.5rem] overflow-hidden border border-slate-200 animate-fade-in my-auto shadow-2xl">
-            <div class="p-8 pb-4 border-b border-slate-100 relative bg-slate-50/50">
+        <div class="bg-white dark:bg-[#0b1120] w-full max-w-md rounded-[2.5rem] overflow-hidden border border-slate-200 dark:border-white/10 animate-fade-in my-auto shadow-2xl">
+            <div class="p-8 pb-4 border-b border-slate-100 dark:border-white/10 relative bg-slate-50/50 dark:bg-[#141e36]">
                 <div class="flex justify-between items-start mb-3">
-                    <div class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-bold border border-green-200 uppercase tracking-widest">Completed Task</div>
-                    <button onclick="hideTaskHistory()" class="w-10 h-10 rounded-xl bg-white text-slate-400 flex items-center justify-center hover:bg-slate-100 transition shadow-sm border border-slate-100">
+                    <div class="px-3 py-1 bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 rounded-full text-[10px] font-bold border border-green-200 dark:border-green-500/30 uppercase tracking-widest">Completed Task</div>
+                    <button onclick="hideTaskHistory()" class="w-10 h-10 rounded-xl bg-white dark:bg-white/5 text-slate-400 flex items-center justify-center hover:bg-slate-100 dark:hover:bg-white/10 transition shadow-sm border border-slate-100 dark:border-white/10">
                         <i class='bx bx-x text-2xl'></i>
                     </button>
                 </div>
-                <h2 id="historyTaskTitle" class="text-2xl font-black text-slate-900 tracking-tight">Task Name</h2>
+                <h2 id="historyTaskTitle" class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Task Name</h2>
                 <p id="historyTaskDate" class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mt-1">Completed 2 hours ago</p>
             </div>
             <div class="p-8 pt-6 space-y-6">
                 <div>
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 block">Description</label>
-                    <p id="historyTaskDesc" class="text-slate-600 text-sm leading-relaxed font-medium">No description provided.</p>
+                    <p id="historyTaskDesc" class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-medium">No description provided.</p>
                 </div>
                 <div>
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 block">Task Findings & Results</label>
@@ -378,20 +378,20 @@
             
             taskItems.forEach((item, index) => {
                 const div = document.createElement('div');
-                div.className = `p-4 rounded-2xl border transition-all ${item.completed ? 'bg-green-50/50 border-green-100' : 'bg-slate-50 border-slate-100'}`;
+                div.className = `p-4 rounded-2xl border transition-all ${item.completed ? 'bg-green-50/50 dark:bg-green-500/10 border-green-100 dark:border-green-500/20' : 'bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/10'}`;
                 
                 div.innerHTML = `
                     <div class="flex items-center gap-3 mb-3 cursor-pointer" onclick="toggleItem(${item.id})">
-                        <div class="w-6 h-6 rounded-lg flex items-center justify-center transition-all ${item.completed ? 'bg-green-500 text-white' : 'bg-white border border-slate-200'}">
+                        <div class="w-6 h-6 rounded-lg flex items-center justify-center transition-all ${item.completed ? 'bg-green-500 text-white' : 'bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10'}">
                             <i class='bx ${item.completed ? 'bx-check' : ''} text-lg'></i>
                         </div>
-                        <span class="text-sm font-bold ${item.completed ? 'text-green-800' : 'text-slate-600'}">${item.text}</span>
+                        <span class="text-sm font-bold ${item.completed ? 'text-green-800 dark:text-green-400' : 'text-slate-600 dark:text-slate-300'}">${item.text}</span>
                     </div>
                     <div class="pl-9">
                         <input type="text" placeholder="Add finding / observation..." 
                                onchange="updateFinding(${item.id}, this.value)"
                                value="${item.finding || ''}"
-                               class="w-full bg-white/50 border border-slate-200 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-green-500 transition font-medium">
+                               class="w-full bg-white/50 dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-green-500 transition font-medium text-slate-900 dark:text-white">
                     </div>
                 `;
                 container.appendChild(div);
@@ -426,10 +426,10 @@
 
             if (currentProgress === 100) {
                 completeBtn.disabled = false;
-                completeBtn.className = "w-full bg-green-600 text-white py-4 rounded-2xl font-black text-base shadow-[0_10px_30px_rgba(34,197,94,0.3)] transition-all duration-300";
+                completeBtn.className = "w-full flex items-center justify-center gap-2 bg-green-600 text-white py-4 rounded-2xl font-black text-base shadow-[0_10px_30px_rgba(34,197,94,0.3)] transition-all duration-300";
             } else {
                 completeBtn.disabled = true;
-                completeBtn.className = "w-full bg-slate-100 text-slate-300 py-4 rounded-2xl font-black text-base border border-slate-200 transition-all duration-300 cursor-not-allowed";
+                completeBtn.className = "w-full flex items-center justify-center gap-2 bg-slate-100 dark:bg-white/5 text-slate-300 dark:text-slate-500 py-4 rounded-2xl font-black text-base border border-slate-200 dark:border-white/10 transition-all duration-300 cursor-not-allowed";
             }
 
             if (isPriority) {
@@ -438,7 +438,7 @@
             } else {
                 warning.classList.add('hidden');
                 recordBtn.classList.remove('hidden');
-                recordBtn.className = "w-full py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-white text-slate-700 border-slate-200 hover:bg-slate-50";
+                recordBtn.className = "w-full flex items-center justify-center gap-1.5 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-white dark:bg-[#141e36] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 transition-all duration-300";
             }
         }
 
@@ -533,13 +533,13 @@
                 if (findings && findings.length > 0) {
                     findings.forEach(item => {
                         const div = document.createElement('div');
-                        div.className = 'p-4 rounded-2xl bg-slate-50 border border-slate-100';
+                        div.className = 'p-4 rounded-2xl bg-slate-50 dark:bg-[#141e36] border border-slate-100 dark:border-white/10';
                         div.innerHTML = `
                             <div class="flex items-center gap-2 mb-2">
                                 <i class='bx bx-check-circle text-green-500'></i>
-                                <span class="text-xs font-black text-slate-800 uppercase tracking-tighter">${item.text}</span>
+                                <span class="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-tighter">${item.text}</span>
                             </div>
-                            <p class="text-sm text-slate-600 italic font-medium">"${item.finding || 'No findings recorded.'}"</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 italic font-medium">"${item.finding || 'No findings recorded.'}"</p>
                         `;
                         findingsContainer.appendChild(div);
                     });

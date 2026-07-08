@@ -3,8 +3,6 @@
 <style>
 .qr-wrap {
     padding: 32px;
-    max-width: 1260px;
-    margin: 0 auto;
 }
 .page-title { font-size: 1.6rem; font-weight: 700; color: #111827; margin-bottom: 8px; }
 .page-subtitle { color: #6b7280; font-size: 0.95rem; margin-bottom: 24px; }

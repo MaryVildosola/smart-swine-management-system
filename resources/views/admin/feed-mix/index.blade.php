@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('contents')
 <style>
-.fm-wrap { padding: 32px; max-width: 1280px; margin: 0 auto; }
+.fm-wrap { padding: 32px; }
 .page-title { font-size: 1.6rem; font-weight: 700; color: #111827; margin-bottom: 6px; }
 .page-subtitle { color: #6b7280; font-size: 0.95rem; margin-bottom: 24px; }
 .top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }

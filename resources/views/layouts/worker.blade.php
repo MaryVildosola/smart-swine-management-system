@@ -519,47 +519,47 @@ function toggleDropdown(dropdownId, iconId) {
     <div id="notificationsBackdrop" class="fixed inset-0 z-[190] hidden bg-black/50 backdrop-blur-sm"
         onclick="closeNotificationsPanel()"></div>
     <div id="notificationsPanel"
-        class="fixed top-0 right-0 bottom-0 z-[200] w-full max-w-sm bg-white border-l border-slate-200 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
-        <div class="p-6 border-b border-slate-100 flex justify-between items-center shrink-0">
+        class="fixed top-0 right-0 bottom-0 z-[200] w-full max-w-sm bg-white dark:bg-[#0b1120] border-l border-slate-200 dark:border-white/10 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-6 border-b border-slate-100 dark:border-white/10 flex justify-between items-center shrink-0">
             <div>
-                <h2 class="text-2xl font-black text-slate-900">Alerts</h2>
+                <h2 class="text-2xl font-black text-slate-900 dark:text-white">Alerts</h2>
                 <p class="text-slate-400 text-xs font-semibold mt-0.5">All farm notifications</p>
             </div>
             <button onclick="closeNotificationsPanel()"
-                class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition">
+                class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-white/5 text-slate-500 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 transition">
                 <i class='bx bx-x text-2xl'></i>
             </button>
         </div>
 
         <!-- Filter Tabs -->
-        <div class="flex gap-2 px-6 py-4 border-b border-slate-100 shrink-0">
+        <div class="flex gap-2 px-6 py-4 border-b border-slate-100 dark:border-white/10 shrink-0">
             <button onclick="filterPanel('all', this)"
-                class="panel-filter-btn flex-1 py-2 rounded-xl bg-green-100 text-green-700 border border-green-200 text-xs font-black uppercase">All</button>
+                class="panel-filter-btn flex-1 py-2 rounded-xl bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-500/30 text-xs font-black uppercase">All</button>
             <button onclick="filterPanel('critical', this)"
-                class="panel-filter-btn flex-1 py-2 rounded-xl bg-slate-100 text-slate-500 border border-slate-200 text-xs font-black uppercase">Critical</button>
+                class="panel-filter-btn flex-1 py-2 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-white/10 text-xs font-black uppercase">Critical</button>
             <button onclick="filterPanel('health', this)"
-                class="panel-filter-btn flex-1 py-2 rounded-xl bg-slate-100 text-slate-500 border border-slate-200 text-xs font-black uppercase">Health</button>
+                class="panel-filter-btn flex-1 py-2 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-white/10 text-xs font-black uppercase">Health</button>
             <button onclick="filterPanel('general', this)"
-                class="panel-filter-btn flex-1 py-2 rounded-xl bg-slate-100 text-slate-500 border border-slate-200 text-xs font-black uppercase">General</button>
+                class="panel-filter-btn flex-1 py-2 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-white/10 text-xs font-black uppercase">General</button>
         </div>
 
         <!-- Alert Items -->
         <div class="flex-1 overflow-y-auto p-4 space-y-3" id="alertPanelList">
             <!-- Critical -->
             <div class="alert-item" data-type="critical">
-                <div class="p-4 rounded-2xl bg-red-50 border border-red-200">
+                <div class="p-4 rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20">
                     <div class="flex gap-3 items-start">
-                        <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center shrink-0">
-                            <i class='bx bx-heart-broken text-red-600 text-lg'></i>
+                        <div class="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-500/20 flex items-center justify-center shrink-0">
+                            <i class='bx bx-heart-broken text-red-600 dark:text-red-400 text-lg'></i>
                         </div>
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
-                                <p class="text-red-700 font-black text-sm">Pig #42 &mdash; Health Crisis</p>
+                                <p class="text-red-700 dark:text-red-400 font-black text-sm">Pig #42 &mdash; Health Crisis</p>
                                 <span class="text-slate-400 text-[10px]">2 min ago</span>
                             </div>
-                            <p class="text-slate-600 text-xs mt-1 leading-snug">Rapid breathing and lethargy in Pen 3. Vet required.</p>
+                            <p class="text-slate-600 dark:text-slate-300 text-xs mt-1 leading-snug">Rapid breathing and lethargy in Pen 3. Vet required.</p>
                             <div class="flex gap-2 mt-3">
-                                <span class="px-2 py-0.5 bg-red-100 text-red-700 rounded-md text-[9px] font-black border border-red-200 uppercase">Critical</span>
+                                <span class="px-2 py-0.5 bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400 rounded-md text-[9px] font-black border border-red-200 dark:border-red-500/30 uppercase">Critical</span>
                             </div>
                         </div>
                     </div>
@@ -567,19 +567,19 @@ function toggleDropdown(dropdownId, iconId) {
             </div>
             <!-- Health -->
             <div class="alert-item" data-type="health">
-                <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200">
+                <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20">
                     <div class="flex gap-3 items-start">
-                        <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
-                            <i class='bx bx-error-alt text-amber-600 text-lg'></i>
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center shrink-0">
+                            <i class='bx bx-error-alt text-amber-600 dark:text-amber-400 text-lg'></i>
                         </div>
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
-                                <p class="text-amber-700 font-black text-sm">Pig #17 &mdash; Check Needed</p>
+                                <p class="text-amber-700 dark:text-amber-400 font-black text-sm">Pig #17 &mdash; Check Needed</p>
                                 <span class="text-slate-400 text-[10px]">1 hr ago</span>
                             </div>
-                            <p class="text-slate-600 text-xs mt-1 leading-snug">Due for routine health monitoring. Last check was 4 days ago.</p>
+                            <p class="text-slate-600 dark:text-slate-300 text-xs mt-1 leading-snug">Due for routine health monitoring. Last check was 4 days ago.</p>
                             <div class="flex gap-2 mt-3">
-                                <span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-md text-[9px] font-black border border-amber-200 uppercase">Health</span>
+                                <span class="px-2 py-0.5 bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400 rounded-md text-[9px] font-black border border-amber-200 dark:border-amber-500/30 uppercase">Health</span>
                             </div>
                         </div>
                     </div>

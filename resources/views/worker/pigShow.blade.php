@@ -18,7 +18,7 @@
 @endphp
 
 <div id="pig-record-card"
-     class="bg-white w-full max-h-[88vh] flex flex-col overflow-hidden"
+     class="bg-white dark:bg-[#0b1120] w-full max-h-[88vh] flex flex-col overflow-hidden"
      style="border-radius: 2rem; box-shadow: 0 32px 80px rgba(0,0,0,0.22);">
 
     {{-- ▌ TOP ACCENT LINE --}}
@@ -30,12 +30,12 @@
         {{-- ════════════════════════════════
              HERO SECTION
         ════════════════════════════════ --}}
-        <div class="px-8 pt-7 pb-0">
+        <div class="px-6 pt-6 pb-2">
             <div class="flex items-start justify-between gap-4">
                 <div>
-                    <p class="text-[10px] font-black uppercase tracking-[0.35em] mb-2" style="color: {{ $hColor }}">Animal Record · Porcitrack</p>
-                    <h1 class="font-black leading-none text-slate-900 tracking-tighter" style="font-size: 3.2rem">#{{ $pig->tag }}</h1>
-                    <p class="text-slate-400 font-bold text-sm uppercase tracking-widest mt-1">{{ $pig->breed ?? 'Yorkshire' }}</p>
+                    <p class="text-[10px] font-black uppercase tracking-[0.35em] mb-1 text-green-600 dark:text-green-500">Animal Record &middot; Porcitrack</p>
+                    <h1 class="text-4xl font-black leading-none text-slate-900 dark:text-white tracking-tight mb-1">#{{ $pig->tag }}</h1>
+                    <p class="text-slate-400 font-bold text-xs uppercase tracking-widest">{{ $pig->breed ?? 'Yorkshire' }}</p>
                 </div>
                 <div class="shrink-0 text-right">
                     <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest"
@@ -46,7 +46,7 @@
                         {{ $health }}
                     </span>
                     @if($todayChecked > 0)
-                    <div class="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-50 text-slate-400 border border-slate-200">
+                    <div class="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-50 dark:bg-white/5 text-slate-400 dark:text-slate-300 border border-slate-200 dark:border-white/10">
                         <i class='bx bx-check text-xs'></i> Checked today
                     </div>
                     @endif
@@ -54,7 +54,7 @@
             </div>
 
             {{-- ── QUICK STATS ── --}}
-            <div class="grid grid-cols-4 gap-2.5 mt-5">
+            <div class="grid grid-cols-4 gap-2 mt-4">
                 @php $qstats = [
                     ['bx-home-alt-2',   $pig->pen->name,   'Pen'],
                     ['bx-time-five',    $ageLabel,         'Age'],
@@ -62,10 +62,10 @@
                     ['bx-trending-up',  $pig->growth_stage,'Stage'],
                 ]; @endphp
                 @foreach($qstats as [$ico,$val,$lbl])
-                <div class="rounded-2xl p-4 text-center" style="background:#f8fafc; border:1px solid #e2e8f0;">
-                    <i class='bx {{ $ico }} text-xl mb-1.5 block' style="color:{{ $hColor }}"></i>
-                    <p class="text-slate-900 font-black text-sm leading-tight">{{ $val }}</p>
-                    <p class="text-slate-400 text-[9px] font-black uppercase tracking-widest mt-0.5">{{ $lbl }}</p>
+                <div class="rounded-2xl p-3 text-center bg-slate-50 dark:bg-[#141e36] border border-slate-200 dark:border-white/10 shadow-[inset_0_2px_8px_rgba(0,0,0,0.02)]">
+                    <i class='bx {{ $ico }} text-lg mb-1 block' style="color:{{ $hColor }}"></i>
+                    <p class="text-slate-900 dark:text-white font-black text-xs leading-tight">{{ $val }}</p>
+                    <p class="text-slate-400 text-[8px] font-black uppercase tracking-widest mt-0.5">{{ $lbl }}</p>
                 </div>
                 @endforeach
             </div>
@@ -74,14 +74,14 @@
         {{-- ════════════════════════════════
              VITALS BAND
         ════════════════════════════════ --}}
-        <div class="mx-8 mt-5 rounded-2xl overflow-hidden" style="border: 1px solid #e2e8f0;">
-            <div class="grid grid-cols-3 divide-x divide-slate-100">
+        <div class="mx-6 mt-4 rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10">
+            <div class="grid grid-cols-3 divide-x divide-slate-100 dark:divide-white/10">
                 {{-- Feeding Status --}}
                 <div class="p-4">
                     <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Feeding Status</p>
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full shrink-0" style="background: {{ $feedColor[0] }}"></span>
-                        <span class="font-black text-sm text-slate-900">{{ $feedSt }}</span>
+                        <span class="font-black text-sm text-slate-900 dark:text-white">{{ $feedSt }}</span>
                     </div>
                 </div>
                 {{-- BCS Score --}}

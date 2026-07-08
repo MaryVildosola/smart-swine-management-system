@@ -68,16 +68,20 @@
         border-color: rgba(34,197,94,0.4) !important;
         color: #15803d !important;
     }
+
+    details.bio-dropdown > summary { list-style: none; }
+    details.bio-dropdown > summary::-webkit-details-marker { display: none; }
+    details.bio-dropdown[open] > summary .dropdown-icon { transform: rotate(180deg); }
 </style>
 
 <div class="worker-dash">
     <div class="px-6 md:px-12 py-10 max-w-full">
 
         <!-- Header Section -->
-        <div class="mb-10 md:mb-14 flex justify-between items-center w-full">
+        <div class="mb-8 md:mb-10 flex justify-between items-center w-full">
             <div>
-                <p class="text-xs md:text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Operational Dashboard</p>
-                <h1 class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">Hello, <span class="text-green-600">{{ explode(' ', Auth::user()->name)[0] }}</span></h1>
+                <p class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Operational Dashboard</p>
+                <h1 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter">Hello, <span class="text-green-600">{{ explode(' ', Auth::user()->name)[0] }}</span></h1>
             </div>
         </div>
 
@@ -101,52 +105,52 @@
         @endif
 
         <!-- Top Actions Wrapper -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-            <button onclick="startQRScanner()" class="group relative p-8 rounded-[2.5rem] bg-green-600 hover:bg-green-700 transition-all shadow-xl shadow-green-500/20 flex items-center gap-6 overflow-hidden">
-                <div class="absolute right-0 top-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
-                <div class="w-16 h-16 rounded-3xl bg-white/20 flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
-                    <i class='bx bx-qr-scan text-3xl'></i>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <button onclick="startQRScanner()" class="group relative p-6 rounded-[2rem] bg-green-600 hover:bg-green-700 transition-all shadow-xl shadow-green-500/20 flex items-center gap-4 overflow-hidden">
+                <div class="absolute right-0 top-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 blur-2xl"></div>
+                <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
+                    <i class='bx bx-qr-scan text-2xl'></i>
                 </div>
                 <div class="text-left relative z-10">
-                    <p class="text-white font-black text-2xl tracking-tight">Scan QR Code</p>
-                    <p class="text-white/70 text-[10px] uppercase font-black tracking-widest mt-1">Manual ID Verification</p>
+                    <p class="text-white font-black text-xl tracking-tight">Scan QR Code</p>
+                    <p class="text-white/70 text-[9px] uppercase font-black tracking-widest mt-1">Manual ID Verification</p>
                 </div>
             </button>
 
-            <div class="dash-card backdrop-blur-2xl bg-white/80 p-8 rounded-[2.5rem] flex items-center justify-between border border-slate-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)]">
-                <div class="flex items-center gap-5">
-                    <div class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
-                        <i class='bx bx-cloud-upload text-2xl'></i>
+            <div class="dash-card backdrop-blur-2xl bg-white/80 p-6 rounded-[2rem] flex items-center justify-between border border-slate-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)]">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400">
+                        <i class='bx bx-cloud-upload text-xl'></i>
                     </div>
                     <div>
-                        <p class="text-slate-900 font-extrabold text-lg">Auto-Sync Active</p>
-                        <p class="text-slate-400 text-[10px] uppercase font-black tracking-widest">Network: Operational</p>
+                        <p class="text-slate-900 font-extrabold text-base">Auto-Sync Active</p>
+                        <p class="text-slate-400 text-[9px] uppercase font-black tracking-widest">Network: Operational</p>
                     </div>
                 </div>
-                <div class="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]"></div>
             </div>
         </div>
 
 
         <!-- Stats Grid -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
             @foreach($stats as $s)
-                <div class="dash-card backdrop-blur-2xl bg-white/80 p-7 rounded-[2.2rem] border border-slate-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)] relative overflow-hidden group hover:shadow-[0_10px_25px_rgba(0,0,0,0.1)] transition-all">
+                <div class="dash-card backdrop-blur-2xl bg-white/80 p-5 rounded-[1.8rem] border border-slate-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)] relative overflow-hidden group hover:shadow-[0_10px_25px_rgba(0,0,0,0.1)] transition-all">
                     <div class="relative z-10">
-                        <span class="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] block mb-2">{{ $s['label'] }}</span>
-                        <span class="text-4xl font-black text-{{ $s['color'] }}-600 tracking-tighter">{{ $s['val'] }}</span>
+                        <span class="text-slate-400 text-[9px] font-black uppercase tracking-[0.2em] block mb-1">{{ $s['label'] }}</span>
+                        <span class="text-2xl font-black text-{{ $s['color'] }}-600 tracking-tighter">{{ $s['val'] }}</span>
                     </div>
-                    <i class='bx {{ $s['icon'] }} absolute bottom-[-15px] right-[-15px] text-7xl text-slate-50 group-hover:scale-110 group-hover:text-slate-100 transition-all duration-500'></i>
+                    <i class='bx {{ $s['icon'] }} absolute bottom-[-10px] right-[-10px] text-5xl text-slate-50 group-hover:scale-110 group-hover:text-slate-100 transition-all duration-500'></i>
                 </div>
             @endforeach
         </div>
 
         <!-- AI Biosecurity Intelligence Section -->
-        <div class="mb-16">
-            <div class="flex items-center justify-between mb-8 px-1">
+        <div class="mb-10">
+            <div class="flex items-center justify-between mb-6 px-1">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">AI Local Threat Alerts</h2>
-                    <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest mt-1">Real-time biosecurity intelligence</p>
+                    <h2 class="text-xl md:text-2xl font-black text-slate-900 tracking-tight">AI Local Threat Alerts</h2>
+                    <p class="text-[9px] text-slate-400 uppercase font-black tracking-widest mt-1">Real-time biosecurity intelligence</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="relative flex h-3 w-3">
@@ -159,106 +163,126 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($regionalDiseases as $disease)
-                    <div class="dash-card backdrop-blur-2xl bg-white/80 p-6 rounded-[2rem] border border-slate-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)] flex flex-col gap-4 hover:border-red-500/50 transition-all group">
-                        <div class="flex justify-between items-start">
-                            <div class="flex items-start gap-3">
+                    <details class="bio-dropdown dash-card backdrop-blur-2xl bg-white/80 dark:bg-[#141e36]/80 p-6 rounded-[2rem] border border-slate-100 dark:border-white/10 shadow-[0_5px_15px_rgba(0,0,0,0.05)] hover:border-red-500/50 transition-all group">
+                        <summary style="display: flex; justify-content: space-between; align-items: center; outline: none; list-style: none; cursor: pointer;">
+                            <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style="background: {{ $disease->level == 'High' ? 'rgba(239, 68, 68, 0.1)' : ($disease->level == 'Medium' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(34, 197, 94, 0.1)') }}; color: {{ $disease->level == 'High' ? '#ef4444' : ($disease->level == 'Medium' ? '#f59e0b' : '#22c55e') }};">
                                     <i class='bx {{ $disease->level == 'High' ? 'bxs-virus' : 'bx-virus' }} text-2xl'></i>
                                 </div>
                                 <div>
-                                    <h3 class="text-lg font-black text-slate-900 tracking-tight leading-tight">{{ $disease->name }}</h3>
+                                    <h3 class="text-lg font-black text-slate-900 dark:text-white tracking-tight leading-tight">{{ $disease->name }}</h3>
                                     <div class="text-[10px] text-slate-500 font-bold flex items-center gap-1 mt-1">
                                         <i class='bx bx-map-pin text-indigo-500'></i> {{ Str::limit($disease->distance, 40) }}
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="dash-inner bg-slate-50 border border-slate-100 rounded-2xl p-4 flex flex-col gap-3">
-                            <div>
-                                <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Transmission Vector</span>
-                                <span class="text-xs font-bold text-slate-900 block">{{ $disease->vector ?? 'Not specified' }}</span>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest" style="background: {{ $disease->level == 'High' ? 'rgba(239,68,68,0.1)' : ($disease->level == 'Medium' ? 'rgba(245,158,11,0.1)' : 'rgba(34,197,94,0.1)') }}; color: {{ $disease->level == 'High' ? '#ef4444' : ($disease->level == 'Medium' ? '#f59e0b' : '#22c55e') }};">
+                                    {{ $disease->level }} Risk
+                                </div>
+                                <i class='bx bx-chevron-down dropdown-icon text-slate-400 text-2xl transition-transform duration-200'></i>
                             </div>
-                            <div>
-                                <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Primary Symptoms</span>
-                                <span class="text-xs font-bold text-slate-900 block">{{ $disease->symptoms ?? 'Not specified' }}</span>
-                            </div>
-                        </div>
+                        </summary>
 
-                        <div class="mt-auto pt-2">
-                            <div class="w-full bg-indigo-50 border border-indigo-100 rounded-xl p-3 flex items-start gap-3 shadow-sm">
-                                <i class='bx bx-shield-quarter text-xl mt-0.5' style="color: #4f46e5 !important;"></i>
+                        <div class="mt-6 pt-6 border-t border-slate-100 dark:border-white/10 flex flex-col gap-4">
+                            <div class="dash-inner bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-2xl p-4 flex flex-col gap-3">
                                 <div>
-                                    <span class="text-[8px] font-black uppercase tracking-widest block mb-0.5" style="color: #4f46e5 !important;">Required Action</span>
-                                    <span class="text-xs font-bold block" style="color: #312e81 !important;">{{ $disease->action_required ?? 'Monitor closely' }}</span>
+                                    <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Transmission Vector</span>
+                                    <span class="text-xs font-bold text-slate-900 dark:text-slate-200 block">{{ $disease->vector ?? 'Not specified' }}</span>
+                                </div>
+                                <div>
+                                    <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Primary Symptoms</span>
+                                    <span class="text-xs font-bold text-slate-900 dark:text-slate-200 block">{{ $disease->symptoms ?? 'Not specified' }}</span>
+                                </div>
+                            </div>
+
+                            <div class="w-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 rounded-xl p-3 flex items-start gap-3 shadow-sm">
+                                <i class='bx bx-shield-quarter text-xl mt-0.5 text-indigo-600 dark:text-indigo-400'></i>
+                                <div>
+                                    <span class="text-[8px] font-black uppercase tracking-widest block mb-0.5 text-indigo-600 dark:text-indigo-400">Required Action</span>
+                                    <span class="text-xs font-bold block text-slate-900 dark:text-indigo-100">{{ $disease->action_required ?? 'Monitor closely' }}</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </details>
                 @empty
-                    <div class="col-span-full p-10 text-center bg-white/50 dark:bg-white/5 rounded-[2rem] border border-dashed border-slate-200 dark:border-white/10">
+                    <div class="col-span-full dash-inner p-10 text-center rounded-[2rem] border border-dashed border-slate-100">
                         <i class='bx bx-check-shield text-4xl text-green-500 mb-3'></i>
-                        <p class="text-slate-500 dark:text-white/50 text-sm font-bold">No active local threats detected.</p>
+                        <p class="text-slate-500 text-sm font-bold">No active local threats detected.</p>
                     </div>
                 @endforelse
             </div>
         </div>
 
-        <!-- Section Header -->
-        <div class="flex items-center justify-between mb-8 px-1">
-            <div>
-                <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Pens Overview</h2>
-                <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest mt-1">Real-time inventory</p>
-            </div>
-  <button class="w-10 h-10 rounded-xl bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-400 hover:text-green-600 dark:text-white/60 transition shadow-sm">
-    <i class='bx bx-filter-alt'></i>
-</button>
-        </div>
-
-        <!-- Pens Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            @foreach($pens as $pen)
-                <div onclick="openPenPreview('{{ $pen['id'] }}','{{ addslashes($pen['name']) }}','{{ $pen['type'] }}',{{ $pen['count'] ?? 0 }},{{ $pen['sick'] ?? 0 }},{{ $pen['weight'] ?? 0 }},{{ $pen['progress'] ?? 0 }},'{{ $pen['color'] }}','{{ addslashes($pen['tag']) }}')" class="dash-card group backdrop-blur-2xl bg-white/80 rounded-[2.5rem] p-8 border border-slate-100 hover:border-green-500/50 hover:shadow-[0_15px_30px_rgba(0,0,0,0.1)] transition-all cursor-pointer relative overflow-hidden shadow-[0_5px_15px_rgba(0,0,0,0.05)]">
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <h3 class="text-2xl font-black text-slate-900 tracking-tighter">{{ $pen['name'] }}</h3>
-                            <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mt-1">{{ $pen['type'] }}</p>
-                        </div>
-                        <span class="px-3 py-1 bg-{{ $pen['color'] }}-50 text-{{ $pen['color'] }}-600 rounded-full text-[9px] font-black border border-{{ $pen['color'] }}-100 uppercase tracking-widest">{{ $pen['tag'] }}</span>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-3 mb-8">
-                        <div class="dash-inner bg-slate-50 shadow-sm border border-slate-100 rounded-2xl p-4 text-center group-hover:bg-green-50 transition-colors">
-                            <p class="text-slate-400 text-[8px] uppercase font-black mb-1">Pigs</p>
-                            <p class="text-slate-900 font-black text-xl tracking-tight">{{ $pen['count'] }}</p>
-                        </div>
-                        <div class="dash-inner bg-slate-50 shadow-sm border border-slate-100 rounded-2xl p-4 text-center">
-                            <p class="text-slate-400 text-[8px] uppercase font-black mb-1">Sick</p>
-                            <p class="{{ $pen['sick'] > 0 ? 'text-red-500' : 'text-slate-900' }} font-black text-xl tracking-tight">{{ $pen['sick'] }}</p>
-                        </div>
-                        <div class="dash-inner bg-slate-50 shadow-sm border border-slate-100 rounded-2xl p-4 text-center">
-                            <p class="text-slate-400 text-[8px] uppercase font-black mb-1">Avg Kg</p>
-                            <p class="text-slate-900 font-black text-xl tracking-tight">{{ $pen['weight'] }}</p>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <p class="text-slate-400 text-[9px] font-black uppercase tracking-widest">Weight Target</p>
-                            <p class="text-slate-900 text-[9px] font-black">{{ $pen['progress'] ?? 0 }}%</p>
-                        </div>
-                        <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5">
-                            <div class="h-full bg-{{ $pen['color'] }}-500 rounded-full shadow-[0_0_10px_rgba(0,0,0,0.1)] transition-all duration-1000" style="width: {{ $pen['progress'] ?? 0 }}%"></div>
-                        </div>
-                    </div>
+        <!-- Pens Overview Section -->
+        <details class="bio-dropdown mb-10">
+            <summary style="display: flex; justify-content: space-between; align-items: center; outline: none; list-style: none; cursor: pointer;" class="mb-6 px-1">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Pens Overview</h2>
+                    <p class="text-[9px] text-slate-400 uppercase font-black tracking-widest mt-1">Real-time inventory</p>
                 </div>
-            @endforeach
-        </div>
+                <div class="flex items-center gap-4">
+                    <button class="w-8 h-8 rounded-xl bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-400 hover:text-green-600 dark:text-white/60 transition shadow-sm" onclick="event.preventDefault();">
+                        <i class='bx bx-filter-alt'></i>
+                    </button>
+                    <i class='bx bx-chevron-down dropdown-icon text-slate-400 text-3xl transition-transform duration-200'></i>
+                </div>
+            </summary>
+
+            <!-- Pens Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach($pens as $pen)
+                    <details class="bio-dropdown dash-card group backdrop-blur-2xl bg-white/80 rounded-[2rem] p-5 border border-slate-100 hover:border-green-500/50 hover:shadow-[0_15px_30px_rgba(0,0,0,0.1)] transition-all cursor-pointer relative shadow-[0_5px_15px_rgba(0,0,0,0.05)]">
+                        <summary style="display: flex; justify-content: space-between; align-items: center; outline: none; list-style: none;">
+                            <div class="flex flex-col">
+                                <div class="flex items-center gap-3">
+                                    <h3 class="text-xl font-black text-slate-900 tracking-tighter">{{ $pen['name'] }}</h3>
+                                    <span class="px-2 py-0.5 bg-{{ $pen['color'] }}-50 text-{{ $pen['color'] }}-600 rounded-full text-[8px] font-black border border-{{ $pen['color'] }}-100 uppercase tracking-widest">{{ $pen['tag'] }}</span>
+                                </div>
+                                <p class="text-slate-400 text-[9px] font-black uppercase tracking-widest mt-1">{{ $pen['type'] }}</p>
+                            </div>
+                            <i class='bx bx-chevron-down dropdown-icon text-slate-400 text-2xl transition-transform duration-200'></i>
+                        </summary>
+
+                        <div class="mt-4 pt-4 border-t border-slate-100/20 flex flex-col gap-4">
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="dash-inner bg-slate-50 shadow-sm border border-slate-100 rounded-2xl p-3 text-center group-hover:bg-green-50 transition-colors">
+                                    <p class="text-slate-400 text-[8px] uppercase font-black mb-1">Pigs</p>
+                                    <p class="text-slate-900 font-black text-lg tracking-tight">{{ $pen['count'] }}</p>
+                                </div>
+                                <div class="dash-inner bg-slate-50 shadow-sm border border-slate-100 rounded-2xl p-3 text-center">
+                                    <p class="text-slate-400 text-[8px] uppercase font-black mb-1">Sick</p>
+                                    <p class="{{ $pen['sick'] > 0 ? 'text-red-500' : 'text-slate-900' }} font-black text-lg tracking-tight">{{ $pen['sick'] }}</p>
+                                </div>
+                                <div class="dash-inner bg-slate-50 shadow-sm border border-slate-100 rounded-2xl p-3 text-center">
+                                    <p class="text-slate-400 text-[8px] uppercase font-black mb-1">Avg Kg</p>
+                                    <p class="text-slate-900 font-black text-lg tracking-tight">{{ $pen['weight'] }}</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <p class="text-slate-400 text-[9px] font-black uppercase tracking-widest">Weight Target</p>
+                                    <p class="text-slate-900 text-[9px] font-black">{{ $pen['progress'] ?? 0 }}%</p>
+                                </div>
+                                <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden p-0.5">
+                                    <div class="h-full bg-{{ $pen['color'] }}-500 rounded-full shadow-[0_0_10px_rgba(0,0,0,0.1)] transition-all duration-1000" style="width: {{ $pen['progress'] ?? 0 }}%"></div>
+                                </div>
+                            </div>
+                            
+                            <button onclick="openPenPreview('{{ $pen['id'] }}','{{ addslashes($pen['name']) }}','{{ $pen['type'] }}',{{ $pen['count'] ?? 0 }},{{ $pen['sick'] ?? 0 }},{{ $pen['weight'] ?? 0 }},{{ $pen['progress'] ?? 0 }},'{{ $pen['color'] }}','{{ addslashes($pen['tag']) }}')" class="w-full mt-2 py-2.5 rounded-xl bg-slate-100/50 text-slate-500 text-xs font-bold hover:bg-green-600 hover:text-white border border-slate-200 transition-all shadow-sm flex items-center justify-center gap-2">
+                                <i class='bx bx-cog'></i> Manage Pen Details
+                            </button>
+                        </div>
+                    </details>
+                @endforeach
+            </div>
+        </details>
 
         <!-- Recent Logs Header -->
-        <div class="flex items-center justify-between mb-8 px-1">
+        <div class="flex items-center justify-between mb-6 px-1">
             <div>
-                <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Recent Activity</h2>
+                <h2 class="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Recent Activity</h2>
                 <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest mt-1">Latest synchronization</p>
             </div>
             <a href="{{ route('worker.activity-log') }}" class="text-[10px] font-black text-green-600 uppercase tracking-[0.2em] hover:text-green-700 transition">View History</a>
@@ -280,11 +304,11 @@
                 </div>
             </div>
             @empty
-            <div class="p-10 text-center bg-white dark:bg-white/5 rounded-[2rem] border border-dashed border-slate-200 dark:border-white/10">
-    <p class="text-slate-400 dark:text-white/50 text-sm font-medium">
-        No recent activity found.
-    </p>
-</div>
+            <div class="p-10 text-center dash-inner rounded-[2rem] border border-dashed border-slate-100">
+                <p class="text-slate-400 text-sm font-medium">
+                    No recent activity found.
+                </p>
+            </div>
             @endforelse
         </div>
 
@@ -292,8 +316,8 @@
 </div>
 
     <!-- QR Scanner Modal -->
-    <div id="qrModal" class="fixed inset-0 z-[200] hidden bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-6">
-        <div class="w-full max-w-sm">
+    <div id="qrModal" class="fixed inset-0 z-[200] hidden bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-start p-6 overflow-y-auto">
+        <div class="w-full max-w-sm my-auto py-8">
             <div class="flex justify-between items-center mb-8">
                 <div>
                     <h2 class="text-3xl font-black text-white tracking-tight">Scanner</h2>
@@ -335,35 +359,35 @@
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closePenPreview()"></div>
         <!-- Sheet -->
-        <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[2.5rem] shadow-2xl p-8 pb-10 animate-fade-in max-w-2xl mx-auto">
+        <div class="absolute bottom-0 left-0 right-0 bg-white dark:bg-[#0b1120] rounded-t-[2.5rem] shadow-2xl p-8 pb-10 animate-fade-in max-w-2xl mx-auto border-t border-slate-100 dark:border-white/10">
             <!-- Handle -->
-            <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-7"></div>
+            <div class="w-12 h-1.5 bg-slate-200 dark:bg-white/20 rounded-full mx-auto mb-7"></div>
 
             <!-- Header -->
             <div class="flex justify-between items-start mb-7">
                 <div>
-                    <span id="ppTag" class="inline-block px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border mb-2"></span>
-                    <h2 id="ppName" class="text-3xl font-black text-slate-900 tracking-tighter"></h2>
+                    <span id="ppTag" class="inline-block px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border mb-2 bg-slate-50 dark:bg-white/5 text-slate-500 dark:text-slate-300 border-slate-200 dark:border-white/10"></span>
+                    <h2 id="ppName" class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter"></h2>
                     <p id="ppType" class="text-slate-400 text-[10px] font-black uppercase tracking-widest mt-1"></p>
                 </div>
-                <button onclick="closePenPreview()" class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center hover:bg-slate-200 transition active:scale-90">
+                <button onclick="closePenPreview()" class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-white/5 text-slate-400 flex items-center justify-center hover:opacity-80 transition active:scale-90">
                     <i class='bx bx-x text-2xl'></i>
                 </button>
             </div>
 
             <!-- Stats -->
             <div class="grid grid-cols-3 gap-4 mb-7">
-                <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 text-center">
+                <div class="bg-slate-50 dark:bg-[#141e36] border border-slate-100 dark:border-white/10 rounded-2xl p-5 text-center shadow-[inset_0_4px_15px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_4px_15px_rgba(0,0,0,0.2)]">
                     <p class="text-slate-400 text-[9px] uppercase font-black mb-1">Total Pigs</p>
-                    <p id="ppCount" class="text-slate-900 font-black text-3xl tracking-tight"></p>
+                    <p id="ppCount" class="text-slate-900 dark:text-white font-black text-3xl tracking-tight"></p>
                 </div>
-                <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 text-center">
+                <div class="bg-slate-50 dark:bg-[#141e36] border border-slate-100 dark:border-white/10 rounded-2xl p-5 text-center shadow-[inset_0_4px_15px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_4px_15px_rgba(0,0,0,0.2)]">
                     <p class="text-slate-400 text-[9px] uppercase font-black mb-1">Sick</p>
-                    <p id="ppSick" class="font-black text-3xl tracking-tight"></p>
+                    <p id="ppSick" class="font-black text-3xl tracking-tight text-red-500"></p>
                 </div>
-                <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 text-center">
+                <div class="bg-slate-50 dark:bg-[#141e36] border border-slate-100 dark:border-white/10 rounded-2xl p-5 text-center shadow-[inset_0_4px_15px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_4px_15px_rgba(0,0,0,0.2)]">
                     <p class="text-slate-400 text-[9px] uppercase font-black mb-1">Avg Kg</p>
-                    <p id="ppWeight" class="text-slate-900 font-black text-3xl tracking-tight"></p>
+                    <p id="ppWeight" class="text-slate-900 dark:text-white font-black text-3xl tracking-tight"></p>
                 </div>
             </div>
 
@@ -391,16 +415,16 @@
     </div>
 
     <!-- Expanded Pen Feeding & Task Modal -->
-    <div id="feedingModal" class="fixed inset-0 z-[210] hidden bg-slate-900/95 backdrop-blur-3xl flex items-start justify-center p-4 overflow-y-auto">
-        <div class="bg-white w-full max-w-2xl rounded-[3rem] overflow-hidden shadow-2xl border border-slate-200 animate-fade-in my-6">
-            <div class="p-8 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+    <div id="feedingModal" class="fixed inset-0 z-[210] hidden bg-black/60 backdrop-blur-sm flex items-start justify-center p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-[#0b1120] w-full max-w-2xl rounded-[3rem] overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10 animate-fade-in my-6">
+            <div class="p-8 border-b border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-[#141e36] flex justify-between items-center">
                 <div>
-                    <div class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-[10px] font-black border border-blue-200 uppercase tracking-widest mb-2 inline-block">
+                    <div class="px-3 py-1 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-full text-[10px] font-black border border-blue-500/20 uppercase tracking-widest mb-2 inline-block">
                         Pen Identifier: <span id="targetPenId">--</span>
                     </div>
-                    <h2 class="text-4xl font-black text-slate-900 tracking-tighter" id="targetPenTitle">Routine Feeding</h2>
+                    <h2 class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter" id="targetPenTitle">Routine Feeding</h2>
                 </div>
-                <button onclick="closeFeedingModal()" class="w-16 h-16 rounded-3xl bg-white text-slate-400 flex items-center justify-center hover:bg-slate-100 transition border border-slate-200 shadow-sm active:scale-90">
+                <button onclick="closeFeedingModal()" class="w-16 h-16 rounded-3xl bg-white dark:bg-white/5 text-slate-400 flex items-center justify-center hover:opacity-80 transition border border-slate-100 dark:border-white/10 shadow-sm active:scale-90">
                     <i class='bx bx-x text-4xl'></i>
                 </button>
             </div>
@@ -408,20 +432,20 @@
             <div class="p-8 space-y-8">
                 <!-- PEN STATS SUMMARY -->
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="p-5 bg-green-50 border border-green-100 rounded-3xl text-center">
-                        <p class="text-[10px] font-black text-green-600 uppercase tracking-widest mb-1">Healthy Pigs</p>
-                        <p class="text-3xl font-black text-slate-900" id="penStatHealthy">--</p>
+                    <div class="p-5 bg-green-50 dark:bg-green-500/10 border border-green-100 dark:border-green-500/20 rounded-3xl text-center">
+                        <p class="text-[10px] font-black text-green-600 dark:text-green-500 uppercase tracking-widest mb-1">Healthy Pigs</p>
+                        <p class="text-3xl font-black text-slate-900 dark:text-white" id="penStatHealthy">--</p>
                     </div>
-                    <div class="p-5 bg-red-50 border border-red-100 rounded-3xl text-center">
-                        <p class="text-[10px] font-black text-red-600 uppercase tracking-widest mb-1">Sick Pigs</p>
-                        <p class="text-3xl font-black text-slate-900" id="penStatSick">--</p>
+                    <div class="p-5 bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 rounded-3xl text-center">
+                        <p class="text-[10px] font-black text-red-600 dark:text-red-400 uppercase tracking-widest mb-1">Sick Pigs</p>
+                        <p class="text-3xl font-black text-slate-900 dark:text-white" id="penStatSick">--</p>
                     </div>
                 </div>
 
                 <!-- PEN TASKS SECTION -->
                 <div id="penTasksSection" class="hidden">
-                    <div class="p-6 bg-amber-50 border border-amber-200 rounded-[2.5rem] shadow-sm">
-                        <p class="text-[10px] font-black text-amber-700 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <div class="p-6 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 rounded-[2.5rem] shadow-sm">
+                        <p class="text-[10px] font-black text-amber-700 dark:text-amber-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                             <i class='bx bx-task text-base'></i>
                             Pen Maintenance Tasks &mdash; Check if Done
                         </p>
@@ -431,9 +455,9 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- WATER SUPPLY -->
-                    <div class="bg-slate-50 p-6 rounded-[2rem] border border-slate-200">
+                    <div class="bg-slate-50 dark:bg-[#141e36] p-6 rounded-[2rem] border border-slate-200 dark:border-white/10 shadow-[inset_0_4px_15px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_4px_15px_rgba(0,0,0,0.2)]">
                         <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Water Supply Status</label>
-                        <select id="penWaterStatus" class="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-sm font-bold focus:border-blue-500 transition">
+                        <select id="penWaterStatus" class="w-full bg-white dark:bg-[#0b1120] border border-slate-200 dark:border-white/10 rounded-xl py-3 px-4 text-sm font-bold focus:border-blue-500 transition text-slate-900 dark:text-white">
                             <option value="Operational">Operational</option>
                             <option value="Leaking">Leaking</option>
                             <option value="Low Pressure">Low Pressure</option>
@@ -443,9 +467,9 @@
                     </div>
 
                     <!-- HYGIENE -->
-                    <div class="bg-slate-50 p-6 rounded-[2rem] border border-slate-200">
+                    <div class="bg-slate-50 dark:bg-[#141e36] p-6 rounded-[2rem] border border-slate-200 dark:border-white/10 shadow-[inset_0_4px_15px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_4px_15px_rgba(0,0,0,0.2)]">
                         <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Pen Hygiene/Bedding</label>
-                        <select id="penHygieneStatus" class="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-sm font-bold focus:border-blue-500 transition">
+                        <select id="penHygieneStatus" class="w-full bg-white dark:bg-[#0b1120] border border-slate-200 dark:border-white/10 rounded-xl py-3 px-4 text-sm font-bold focus:border-blue-500 transition text-slate-900 dark:text-white">
                             <option value="Clean">Clean / Adequate</option>
                             <option value="Fair">Fair / Needs Cleaning</option>
                             <option value="Dirty">Dirty / High Ammonia</option>
@@ -455,20 +479,20 @@
                 </div>
 
                 <!-- FEEDING INPUT -->
-                <div class="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-200">
-                    <label class="block text-sm font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <div class="bg-slate-50 dark:bg-[#141e36] p-8 rounded-[2.5rem] border border-slate-200 dark:border-white/10 shadow-[inset_0_4px_15px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_4px_15px_rgba(0,0,0,0.2)]">
+                    <label class="block text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest mb-4 flex items-center gap-2">
                         <i class='bx bx-bowl-hot text-green-600'></i> Quantity to Feed (kg)
                     </label>
                     <div class="relative">
-                        <input type="number" id="feedQty" placeholder="0.0" class="w-full bg-white border border-slate-200 rounded-2xl py-6 px-8 text-4xl font-black text-slate-900 focus:outline-none focus:border-green-500 transition shadow-sm">
-                        <span class="absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 font-black text-2xl">KG</span>
+                        <input type="number" id="feedQty" placeholder="0.0" class="w-full bg-white dark:bg-[#0b1120] border border-slate-200 dark:border-white/10 rounded-2xl py-6 px-8 text-4xl font-black text-slate-900 dark:text-white focus:outline-none focus:border-green-500 transition shadow-sm">
+                        <span class="absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 dark:text-slate-600 font-black text-2xl">KG</span>
                     </div>
                 </div>
 
                 <!-- NOTES -->
-                <div class="bg-slate-50 p-6 rounded-[2rem] border border-slate-200">
+                <div class="bg-slate-50 dark:bg-[#141e36] p-6 rounded-[2rem] border border-slate-200 dark:border-white/10 shadow-[inset_0_4px_15px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_4px_15px_rgba(0,0,0,0.2)]">
                     <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Batch Observations / Notes</label>
-                    <textarea id="penNotes" rows="2" placeholder="Any issues with the batch?" class="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-sm font-medium focus:border-blue-500 transition resize-none"></textarea>
+                    <textarea id="penNotes" rows="2" placeholder="Any issues with the batch?" class="w-full bg-white dark:bg-[#0b1120] border border-slate-200 dark:border-white/10 rounded-xl py-3 px-4 text-sm font-medium focus:border-blue-500 transition resize-none text-slate-900 dark:text-white"></textarea>
                 </div>
 
                 <div class="pt-2">
@@ -481,18 +505,18 @@
     </div>
 
     <!-- Unified Health Monitoring Modal (Comprehensive Assessment) -->
-    <div id="healthModal" class="fixed inset-0 z-[210] hidden bg-slate-900/95 backdrop-blur-3xl flex items-start justify-center p-4 overflow-y-auto">
-        <div class="bg-white w-full max-w-2xl rounded-[3rem] overflow-hidden shadow-2xl border border-slate-200 animate-fade-in my-6">
+    <div id="healthModal" class="fixed inset-0 z-[210] hidden bg-black/60 backdrop-blur-sm flex items-start justify-center p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-[#0b1120] w-full max-w-2xl rounded-[3rem] overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10 animate-fade-in my-6">
             <!-- Header -->
-            <div class="p-8 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+            <div class="p-8 border-b border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-[#141e36] flex justify-between items-center">
                 <div>
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-black border border-green-200 uppercase tracking-widest">Pig Registry</span>
-                        <span id="pigInfoPenBadge" class="px-3 py-1 bg-slate-200 text-slate-700 rounded-full text-[10px] font-black border border-slate-300 uppercase tracking-widest">Pen: --</span>
+                        <span class="px-3 py-1 bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 rounded-full text-[10px] font-black border border-green-200 dark:border-green-500/30 uppercase tracking-widest">Pig Registry</span>
+                        <span id="pigInfoPenBadge" class="px-3 py-1 bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300 rounded-full text-[10px] font-black border border-slate-300 dark:border-white/20 uppercase tracking-widest">Pen: --</span>
                     </div>
-                    <h2 class="text-5xl font-black text-slate-900 tracking-tighter" id="targetPigId">--</h2>
+                    <h2 class="text-5xl font-black text-slate-900 dark:text-white tracking-tighter" id="targetPigId">--</h2>
                 </div>
-                <button onclick="closeHealthModal()" class="w-16 h-16 rounded-3xl bg-white text-slate-400 flex items-center justify-center hover:bg-slate-100 transition border border-slate-200 shadow-sm active:scale-90">
+                <button onclick="closeHealthModal()" class="w-16 h-16 rounded-3xl bg-white dark:bg-white/5 text-slate-400 flex items-center justify-center hover:opacity-80 transition border border-slate-200 dark:border-white/10 shadow-sm active:scale-90">
                     <i class='bx bx-x text-4xl'></i>
                 </button>
             </div>
@@ -500,8 +524,8 @@
             <div class="p-8 space-y-10">
                 <!-- SECTION 1: PENDING TASKS (Actionable) -->
                 <div id="pigTasksSection" class="hidden">
-                    <div class="p-6 bg-amber-50 border border-amber-200 rounded-[2.5rem] shadow-sm">
-                        <p class="text-[10px] font-black text-amber-700 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <div class="p-6 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 rounded-[2.5rem] shadow-sm">
+                        <p class="text-[10px] font-black text-amber-700 dark:text-amber-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                             <i class='bx bx-task text-base'></i>
                             Pending Tasks &mdash; Check if Completed
                         </p>

@@ -11,8 +11,6 @@
 
     .page-wrap { 
         padding: 24px 32px; 
-        max-width: 1000px; 
-        margin: 0 auto; 
     }
 
     .premium-panel { 

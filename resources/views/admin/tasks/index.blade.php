@@ -10,8 +10,6 @@
 
     .task-wrap { 
         padding: 24px 32px; 
-        max-width: 1550px; 
-        margin: 0 auto; 
     }
 
     .premium-panel { 

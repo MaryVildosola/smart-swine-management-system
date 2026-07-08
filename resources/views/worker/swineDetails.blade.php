@@ -44,23 +44,23 @@
             window['penData_{{ $pen->id }}'] = @json($pen->pigs);
         </script>
         <div onclick="enterPen({{ $pen->id }}, '{{ addslashes($pen->name) }}', window['penData_{{ $pen->id }}'])"
-            class="dash-card glass-panel p-8 rounded-[2.5rem] hover:border-green-500/50 hover:shadow-xl transition-all cursor-pointer">
+            class="dash-card glass-panel p-5 rounded-[1.5rem] hover:border-green-500/50 hover:shadow-lg transition-all cursor-pointer border border-slate-200 dark:border-white/10 bg-white/50 dark:bg-[#141e36]/50">
             
-            <div class="w-16 h-16 rounded-3xl bg-green-600 text-white flex items-center justify-center mb-6 shadow-xl">
-                <i class='bx bxs-grid-alt text-3xl'></i>
+            <div class="w-12 h-12 rounded-2xl bg-green-600 text-white flex items-center justify-center mb-4 shadow-md">
+                <i class='bx bxs-grid-alt text-2xl'></i>
             </div>
 
-            <div class="flex justify-between items-end">
+            <div class="flex justify-between items-end gap-2">
                 <div>
-                    <h3 class="text-3xl font-black text-slate-900 tracking-tighter mb-1">{{ $pen->name }}</h3>
-                    <p class="text-[10px] font-black text-green-500 uppercase tracking-[0.2em]">{{ count($pen->pigs) }} Animals Active</p>
+                    <h3 class="text-xl font-black text-slate-900 dark:text-white tracking-tight mb-0.5">{{ $pen->name }}</h3>
+                    <p class="text-[9px] font-black text-green-600 dark:text-green-500 uppercase tracking-widest">{{ count($pen->pigs) }} Animals Active</p>
                 </div>
                 
                 @php $sickCount = collect($pen->pigs)->where('health_status', 'Sick')->count(); @endphp
                 @if($sickCount > 0)
-                <div class="px-3 py-1.5 rounded-xl bg-red-50 text-red-600 border border-red-100 flex items-center gap-1.5 animate-pulse">
-                    <i class='bx bxs-virus text-sm'></i>
-                    <span class="text-[10px] font-black uppercase tracking-wider">{{ $sickCount }} Sick</span>
+                <div class="px-2.5 py-1 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-500/20 flex items-center gap-1 animate-pulse">
+                    <i class='bx bxs-virus text-xs'></i>
+                    <span class="text-[9px] font-black uppercase tracking-wider">{{ $sickCount }} Sick</span>
                 </div>
                 @endif
             </div>
@@ -174,15 +174,15 @@ function enterPen(id, name, pigs) {
 
         return `
         <div onclick="showFloatingCard(${p.id}, '${name}')"
-            class="dash-card glass-panel p-6 rounded-[2rem] flex justify-between items-center cursor-pointer hover:border-green-500/50 transition">
+            class="dash-card glass-panel p-4 rounded-[1.25rem] flex justify-between items-center cursor-pointer hover:border-green-500/50 transition border border-slate-200 dark:border-white/10 bg-white/50 dark:bg-[#141e36]/50">
 
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl dash-inner flex items-center justify-center">
-                    <i class='bx bx-hash text-white'></i>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl dash-inner flex items-center justify-center">
+                    <i class='bx bx-hash text-white text-lg'></i>
                 </div>
                 <div>
-                    <h4 class="text-lg font-black text-slate-900">#${p.tag}</h4>
-                    <span id="pig-list-health-${p.id}" class="text-xs text-${color}-400 uppercase font-black tracking-widest transition-colors">${p.health_status}</span>
+                    <h4 class="text-base font-black text-slate-900 dark:text-white leading-tight mb-0.5">#${p.tag}</h4>
+                    <span id="pig-list-health-${p.id}" class="text-[10px] text-${color}-500 uppercase font-black tracking-widest transition-colors block">${p.health_status}</span>
                 </div>
             </div>
 
@@ -227,18 +227,18 @@ function showFloatingCard(id, penName, activityId = null) {
     
     // INSTANT SHELL: Show profile immediately while syncing history
     content.innerHTML = `
-        <div id="pig-record-card" class="bg-white w-full flex flex-col overflow-hidden" style="border-radius:2rem; box-shadow: 0 32px 80px rgba(0,0,0,0.25); max-height:88vh;">
+        <div id="pig-record-card" class="bg-white dark:bg-[#0b1120] w-full flex flex-col overflow-hidden border border-slate-200 dark:border-white/10" style="border-radius:2rem; box-shadow: 0 32px 80px rgba(0,0,0,0.25); max-height:88vh;">
             <div class="h-2 w-full shrink-0" style="background:#16a34a;"></div>
             <div class="flex flex-col">
-                <div class="px-8 pt-8 pb-4">
-                    <p class="text-xs font-black uppercase tracking-[0.3em] mb-2" style="color:#16a34a">Animal Record</p>
-                    <h1 class="font-black leading-none text-slate-900 mb-1" style="font-size:3.5rem;letter-spacing:-0.04em">#${pig.tag}</h1>
-                    <p class="text-slate-400 font-bold text-sm uppercase tracking-widest">${pig.breed || 'Yorkshire'}</p>
+                <div class="px-6 pt-6 pb-2">
+                    <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-1 text-green-600 dark:text-green-500">Animal Record</p>
+                    <h1 class="text-4xl font-black leading-none text-slate-900 dark:text-white mb-1 tracking-tight">#${pig.tag}</h1>
+                    <p class="text-slate-400 font-bold text-xs uppercase tracking-widest">${pig.breed || 'Yorkshire'}</p>
                 </div>
-                <div class="flex-1 flex items-center justify-center pb-16">
-                    <div class="flex flex-col items-center gap-4">
-                        <div class="w-10 h-10 border-[3px] border-green-600 border-t-transparent rounded-full animate-spin"></div>
-                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-300">Loading history...</p>
+                <div class="flex-1 flex items-center justify-center pb-12">
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="w-8 h-8 border-[3px] border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                        <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">Loading history...</p>
                     </div>
                 </div>
             </div>

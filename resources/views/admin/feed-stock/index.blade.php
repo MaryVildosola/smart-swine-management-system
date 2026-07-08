@@ -2,7 +2,7 @@
 @section('contents')
 <style>
 /* Integration of Original Inventory Aesthetic */
-.farm-content { padding: 20px 32px 32px 32px; max-width: 1550px; margin: 0 auto; }
+.farm-content { padding: 20px 32px 32px 32px; }
 .farm-title { font-size: 1.5rem; font-weight: 800; color: #1e293b; margin-bottom: 4px; }
 .farm-subtitle { color: #64748b; font-size: 0.875rem; font-weight: 400; }
 
