@@ -46,11 +46,16 @@ php artisan key:generate
 
 ### 4. Database Setup
 Create a new MySQL database named `swineforge` (or whatever you set in `.env`). 
-Then, migrate the database structure and insert dummy data:
+You have two options to populate your database:
+
+**Option A (Recommended): Import Dummy Data**
+Import the `database-dummy-data.sql` file (included in the root folder) directly into your MySQL database using phpMyAdmin, HeidiSQL, or the command line. This will instantly populate the system with realistic data so you can see how it works!
+
+**Option B: Fresh Install**
+Run the following command to migrate the database structure without any dummy data:
 ```bash
-php artisan migrate --seed
+php artisan migrate
 ```
-*(Note: If you encounter an error during seeding, make sure your database exists and your `.env` credentials are correct).*
 
 ### 5. Firebase Configuration (Mandatory)
 SwineForge uses Firebase for authentication and real-time operations.
