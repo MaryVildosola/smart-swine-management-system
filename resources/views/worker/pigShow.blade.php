@@ -33,7 +33,7 @@
         <div class="px-6 pt-6 pb-2">
             <div class="flex items-start justify-between gap-4">
                 <div>
-                    <p class="text-[10px] font-black uppercase tracking-[0.35em] mb-1 text-green-600 dark:text-green-500">Animal Record &middot; Porcitrack</p>
+                    <p class="text-[10px] font-black uppercase tracking-[0.35em] mb-1 text-green-600 dark:text-green-500">Animal Record &middot; SwineForge</p>
                     <h1 class="text-4xl font-black leading-none text-slate-900 dark:text-white tracking-tight mb-1">#{{ $pig->tag }}</h1>
                     <p class="text-slate-400 font-bold text-xs uppercase tracking-widest">{{ $pig->breed ?? 'Yorkshire' }}</p>
                 </div>

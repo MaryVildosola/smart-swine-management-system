@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title> PorciTrack - Farm Admin </title>
+    <title> SwineForge - Farm Admin </title>
 
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('assets/images/pig-logo.png') }}" type="image/png">
@@ -420,7 +420,7 @@
             <div class="container">
                 <span class="text-gray dark:text-defaulttextcolor/50"> Copyright © <span id="year"></span> <a
                         href="javascript:void(0);"
-                        class="text-defaulttextcolor font-semibold dark:text-defaulttextcolor">PorciTrack</a>.
+                        class="text-defaulttextcolor font-semibold dark:text-defaulttextcolor">SwineForge</a>.
                     All rights reserved.
                 </span>
             </div>

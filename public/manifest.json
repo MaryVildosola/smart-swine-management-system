@@ -1,11 +1,11 @@
 {
-    "name": "PorciTrack Farm Management",
-    "short_name": "PorciTrack v3",
+    "name": "SwineForge Farm Management",
+    "short_name": "SwineForge v3",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#0d1f0d",
     "theme_color": "#2e7d32",
-    "description": "Progressive Farm Management System for PorciTrack",
+    "description": "Progressive Farm Management System for SwineForge",
     "icons": [
         {
             "src": "/assets/images/pig-logo.png",

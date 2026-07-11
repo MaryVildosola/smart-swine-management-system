@@ -1066,7 +1066,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 30px;">
                             <div>
                                 <h1 style="font-size: 1.75rem; font-weight: 900; margin: 0; color: #0f172a; letter-spacing: -0.05em;">PEN BATCH REPORT</h1>
-                                <p style="color: #64748b; font-size: 0.8rem; font-weight: 700; margin: 4px 0 0; text-transform: uppercase; letter-spacing: 0.05em;">PorciTrack Farm Intelligence System</p>
+                                <p style="color: #64748b; font-size: 0.8rem; font-weight: 700; margin: 4px 0 0; text-transform: uppercase; letter-spacing: 0.05em;">SwineForge Farm Intelligence System</p>
                             </div>
                             <div style="text-align: right;">
                                 <p style="font-size: 0.65rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin: 0;">Report Generated</p>

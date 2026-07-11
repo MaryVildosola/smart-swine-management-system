@@ -1,6 +1,6 @@
-# PorciTrack — Smart Pig Farm Management
+# SwineForge — Smart Pig Farm Management
 
-PorciTrack is a comprehensive farm management system designed for modern piggery operations. It features real-time livestock tracking, inventory management, and an offline-first synchronization engine for field workers.
+SwineForge is a comprehensive farm management system designed for modern piggery operations. It features real-time livestock tracking, inventory management, and an offline-first synchronization engine for field workers.
 
 ## 🚀 Key Features
 - **Live Analytics Dashboard**: 360° visibility over farm performance.

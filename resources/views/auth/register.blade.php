@@ -179,7 +179,7 @@
 
 <div class="auth-container">
     <div class="logo-card">
-        <img src="{{ asset('assets/images/pig-logo.png') }}" alt="PorciTrack Logo">
+        <img src="{{ asset('assets/images/pig-logo.png') }}" alt="SwineForge Logo">
     </div>
 
     <div class="form-card register-card">

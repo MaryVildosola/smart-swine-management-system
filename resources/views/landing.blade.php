@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PorciTrack – Smart pig farm management system for tracking pigs, feed, health, and productivity.">
-    <title>PorciTrack – Smart Farm Management</title>
+    <meta name="description" content="SwineForge – Smart pig farm management system for tracking pigs, feed, health, and productivity.">
+    <title>SwineForge – Smart Farm Management</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -366,8 +366,8 @@
     <!-- NAVBAR -->
     <nav>
         <div class="nav-logo">
-            <img src="{{ asset('assets/images/pig-logo.png') }}" alt="PorciTrack">
-            PorciTrack
+            <img src="{{ asset('assets/images/pig-logo.png') }}" alt="SwineForge">
+            SwineForge
         </div>
         <div class="nav-links">
             <a href="#features">Features</a>
@@ -384,7 +384,7 @@
                 <span class="hero-badge-dot"></span> Smart Pig Farm Management
             </div>
             <h1>Manage Your Farm<br>with <em>Precision & Ease</em></h1>
-            <p>PorciTrack gives you complete visibility over your pig farm — from pens and health tracking to feed formulas, inventory, and worker tasks. All in one system.</p>
+            <p>SwineForge gives you complete visibility over your pig farm — from pens and health tracking to feed formulas, inventory, and worker tasks. All in one system.</p>
             <div class="hero-actions">
                 <a href="{{ route('login') }}" class="btn-primary">Get Started</a>
                 <a href="#features" class="btn-secondary">Learn More</a>
@@ -417,7 +417,7 @@
                 <div class="reveal">
                     <div class="section-tag">Features</div>
                     <h2 class="section-title">Everything You Need<br>to Run a Smart Farm</h2>
-                    <p class="section-sub">From daily operations to in-depth analytics, PorciTrack covers every aspect of modern pig farm management.</p>
+                    <p class="section-sub">From daily operations to in-depth analytics, SwineForge covers every aspect of modern pig farm management.</p>
                 </div>
                 <div class="features-grid">
                     <div class="feature-card reveal">
@@ -473,7 +473,7 @@
             <div class="reveal">
                 <div class="section-tag">How It Works</div>
                 <h2 class="section-title">Up and Running in Minutes</h2>
-                <p class="section-sub">PorciTrack is designed to be simple. No technical expertise required to get your farm connected.</p>
+                <p class="section-sub">SwineForge is designed to be simple. No technical expertise required to get your farm connected.</p>
             </div>
             <div class="steps">
                 <div class="step reveal">
@@ -548,17 +548,17 @@
     <!-- CTA -->
     <div class="cta-section">
         <h2>Ready to Transform Your Farm?</h2>
-        <p>Join PorciTrack and bring modern management to your piggery today.</p>
+        <p>Join SwineForge and bring modern management to your piggery today.</p>
         <a href="{{ route('login') }}" class="btn-primary">Get Started Now</a>
     </div>
 
     <!-- FOOTER -->
     <footer>
         <div class="footer-logo">
-            <img src="{{ asset('assets/images/pig-logo.png') }}" alt="PorciTrack">
-            PorciTrack
+            <img src="{{ asset('assets/images/pig-logo.png') }}" alt="SwineForge">
+            SwineForge
         </div>
-        <p>© {{ date('Y') }} PorciTrack. All rights reserved.</p>
+        <p>© {{ date('Y') }} SwineForge. All rights reserved.</p>
     </footer>
 
     <script>

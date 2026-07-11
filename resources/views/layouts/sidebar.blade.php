@@ -1,4 +1,4 @@
-{{-- New PorciTrack Dark Sidebar with Dropdowns --}}
+{{-- New SwineForge Dark Sidebar with Dropdowns --}}
 
 <!-- Start::main-sidebar -->
 <div class="main-sidebar" id="sidebar-scroll" style="padding-top: 0 !important; margin-top: 0 !important;">
@@ -132,7 +132,7 @@
     function confirmAdminLogout() {
         Swal.fire({
             title: '<span style="font-weight:900;color:#1e293b;">Log Out?</span>',
-            html: '<p style="color:#64748b;font-size:0.88rem;margin:0;">Are you sure you want to log out of PorciTrack?</p>',
+            html: '<p style="color:#64748b;font-size:0.88rem;margin:0;">Are you sure you want to log out of SwineForge?</p>',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Yes, log out',

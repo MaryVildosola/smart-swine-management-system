@@ -343,7 +343,7 @@ body.light-theme .glass-panel {
                     class="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center shadow-lg border border-white/10">
                     <i class='bx bx-layer text-white text-sm'></i>
                 </div>
-                <h2 class="font-bold text-white text-sm tracking-tight hidden sm:block">Porcitrack</h2>
+                <h2 class="font-bold text-white text-sm tracking-tight hidden sm:block">SwineForge</h2>
             </div>
 
             <!-- Right: Actions & Menu -->
@@ -910,7 +910,7 @@ function toggleDropdown(dropdownId, iconId) {
             const isLight = document.body.classList.contains('light-theme');
             Swal.fire({
                 title: 'Log Out?',
-                text: 'Are you sure you want to log out of PorciTrack?',
+                text: 'Are you sure you want to log out of SwineForge?',
                 icon: 'question',
                 background: isLight ? '#ffffff' : '#0b1120',
                 color: isLight ? '#1e293b' : '#ffffff',

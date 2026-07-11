@@ -198,7 +198,7 @@
             pdf.setTextColor(17, 24, 39);
             pdf.setFontSize(22);
             pdf.setFont("helvetica", "bold");
-            pdf.text("PORCITRACK", 200, 40, { align: 'center' });
+            pdf.text("SWINEFORGE", 200, 40, { align: 'center' });
             
             pdf.setFontSize(16);
             pdf.setFont("helvetica", "normal");
@@ -215,7 +215,7 @@
             
             pdf.setFontSize(10);
             pdf.setTextColor(107, 114, 128);
-            pdf.text("Generated via Porcitrack Farm Management", 200, 490, { align: 'center' });
+            pdf.text("Generated via SwineForge Farm Management", 200, 490, { align: 'center' });
             
             pdf.save(`porci-label-${Date.now()}.pdf`);
         } catch (e) {

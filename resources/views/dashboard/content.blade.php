@@ -3,7 +3,7 @@
     <div class="xl:col-span-12 col-span-12">
         <div class="box custom-box">
             <div class="box-header">
-                <div class="box-title">Welcome to PorciTrack Dashboard</div>
+                <div class="box-title">Welcome to SwineForge Dashboard</div>
             </div>
             <div class="box-body">
                 <p class="text-[.875rem] mb-0 text-[#8c9097] dark:text-white/50">
